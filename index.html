@@ -161,7 +161,6 @@
         .bloco-redacao { margin-top: 10px; }
         .bloco-redacao label { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); display: block; margin-bottom: 3px; }
         
-        /* Modos de Exibição da Redação */
         .caixa-redacao {
             border: 1px solid #cbd5e1;
             border-radius: 4px;
@@ -172,7 +171,6 @@
             outline: none;
         }
 
-        /* Modo Caderno (Pautado) */
         .modo-caderno {
             background-color: #fffdf9;
             background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
@@ -184,14 +182,12 @@
             background-image: linear-gradient(#334155 1px, transparent 1px);
         }
 
-        /* Modo Digitação (Limpo) */
         .modo-digitacao {
             background-color: var(--bg-page);
             background-image: none;
             line-height: normal;
         }
 
-        /* Tipos de Fonte */
         .fonte-forma { font-family: 'Inter', sans-serif; font-size: 0.9rem; }
         .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.45rem; }
 
@@ -341,76 +337,40 @@
                     </div>
 
                     <div class="panel-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3>📝 Treino de Redação</h3>
-                            <span style="font-size: 0.78rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">Total: 0 palavras (~0 linhas)</span>
-                        </div>
-
-                        <div class="bloco-redacao">
-                            <div class="caderno-toolbar">
-                                <label>1. Introdução</label>
-                                <div class="toolbar-options">
-                                    <select id="modo-intro" onchange="mudarModoExibicao('intro')" style="font-size: 0.72rem; padding: 2px 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h3 style="margin-bottom: 0;">📝 Treino de Redação</h3>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="toolbar-options" style="display: flex; gap: 5px;">
+                                    <select id="modo-global" onchange="mudarModoGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px;">
                                         <option value="caderno">Modo: Caderno</option>
                                         <option value="digitacao">Modo: Digitação</option>
                                     </select>
-                                    <select id="fonte-intro" onchange="mudarEstiloFonte('intro')" style="font-size: 0.72rem; padding: 2px 4px;">
+                                    <select id="fonte-global" onchange="mudarFonteGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px;">
                                         <option value="forma">Forma</option>
                                         <option value="cursiva">Cursiva</option>
                                     </select>
                                 </div>
+                                <span style="font-size: 0.78rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">Total: 0 palavras (~0 linhas)</span>
                             </div>
+                        </div>
+
+                        <div class="bloco-redacao">
+                            <label>1. Introdução</label>
                             <textarea id="red-intro" class="caixa-redacao modo-caderno fonte-forma" placeholder="Apresentação do tema + Tese..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="bloco-redacao">
-                            <div class="caderno-toolbar">
-                                <label>2. Desenvolvimento 1</label>
-                                <div class="toolbar-options">
-                                    <select id="modo-dev1" onchange="mudarModoExibicao('dev1')" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="caderno">Modo: Caderno</option>
-                                        <option value="digitacao">Modo: Digitação</option>
-                                    </select>
-                                    <select id="fonte-dev1" onchange="mudarEstiloFonte('dev1')" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="forma">Forma</option>
-                                        <option value="cursiva">Cursiva</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <label>2. Desenvolvimento 1</label>
                             <textarea id="red-dev1" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do primeiro argumento..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="bloco-redacao">
-                            <div class="caderno-toolbar">
-                                <label>3. Desenvolvimento 2</label>
-                                <div class="toolbar-options">
-                                    <select id="modo-dev2" onchange="mudarModoExibicao('dev2')" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="caderno">Modo: Caderno</option>
-                                        <option value="digitacao">Modo: Digitação</option>
-                                    </select>
-                                    <select id="fonte-dev2" onchange="mudarEstiloFonte('dev2')" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="forma">Forma</option>
-                                        <option value="cursiva">Cursiva</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <label>3. Desenvolvimento 2</label>
                             <textarea id="red-dev2" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do segundo argumento..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="bloco-redacao">
-                            <div class="caderno-toolbar">
-                                <label>4. Conclusão</label>
-                                <div class="toolbar-options">
-                                    <select id="modo-concl" onchange="mudarModoExibicao('concl')" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="caderno">Modo: Caderno</option>
-                                        <option value="digitacao">Modo: Digitação</option>
-                                    </select>
-                                    <select id="fonte-concl" onchange="mudarEstiloFonte('concl')" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="forma">Forma</option>
-                                        <option value="cursiva">Cursiva</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <label>4. Conclusão</label>
                             <textarea id="red-concl" class="caixa-redacao modo-caderno fonte-forma" placeholder="Fechamento do texto..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
@@ -1091,28 +1051,30 @@
         function pausarTimer() { timerRunning = false; clearInterval(timerInterval); }
         function zerarTimer() { pausarTimer(); seconds = 0; document.getElementById('timer').innerText = "00:00:00"; }
 
-        function mudarModoExibicao(bloco) {
-            const modo = document.getElementById(`modo-${bloco}`).value;
-            const ta = document.getElementById(`red-${bloco}`);
-            if (modo === 'caderno') {
-                ta.classList.remove('modo-digitacao');
-                ta.classList.add('modo-caderno');
-            } else {
-                ta.classList.remove('modo-caderno');
-                ta.classList.add('modo-digitacao');
-            }
+        function mudarModoGlobal(modo) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(bloco => {
+                const ta = document.getElementById(`red-${bloco}`);
+                if (modo === 'caderno') {
+                    ta.classList.remove('modo-digitacao');
+                    ta.classList.add('modo-caderno');
+                } else {
+                    ta.classList.remove('modo-caderno');
+                    ta.classList.add('modo-digitacao');
+                }
+            });
         }
 
-        function mudarEstiloFonte(bloco) {
-            const fonte = document.getElementById(`fonte-${bloco}`).value;
-            const ta = document.getElementById(`red-${bloco}`);
-            if (fonte === 'cursiva') {
-                ta.classList.remove('fonte-forma');
-                ta.classList.add('fonte-cursiva');
-            } else {
-                ta.classList.remove('fonte-cursiva');
-                ta.classList.add('fonte-forma');
-            }
+        function mudarFonteGlobal(fonte) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(bloco => {
+                const ta = document.getElementById(`red-${bloco}`);
+                if (fonte === 'cursiva') {
+                    ta.classList.remove('fonte-forma');
+                    ta.classList.add('fonte-cursiva');
+                } else {
+                    ta.classList.remove('fonte-cursiva');
+                    ta.classList.add('fonte-forma');
+                }
+            });
         }
 
         function calcularPalavrasRedacao() {
