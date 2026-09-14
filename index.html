@@ -164,11 +164,6 @@
         .btn-action-group { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
         .btn-purple { background: #7c3aed; }
 
-        .feedback-box { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-top: 15px; display: none; }
-        body.dark-mode .feedback-box { background: #0f172a; }
-        .feedback-box h4 { color: var(--primary-blue); font-size: 0.9rem; margin-bottom: 6px; }
-        .feedback-content { font-size: 0.82rem; line-height: 1.4; white-space: pre-wrap; }
-
         .info-card-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 4px; padding: 8px; margin-top: 8px; font-size: 0.78rem; }
         body.dark-mode .info-card-item { background: #0f172a; }
         .info-card-item h4 { font-size: 0.82rem; color: var(--text-main); margin-bottom: 2px; font-weight: 700; }
@@ -336,13 +331,8 @@
 
                         <div class="btn-action-group">
                             <button class="btn-hdr btn-salvar" onclick="salvarDados()">💾 Salvar Local</button>
-                            <button class="btn-hdr btn-purple" onclick="avaliarRedacaoIA()">🤖 Avaliar com IA (Nota Real)</button>
+                            <button class="btn-hdr btn-purple" onclick="copiarPromptGemini()">📋 Copie e cole no Gemini</button>
                             <button class="btn-hdr btn-exportar" onclick="exportarTXT()">📄 Exportar TXT</button>
-                        </div>
-
-                        <div class="feedback-box" id="box-feedback">
-                            <h4>📋 Correção Detalhada (Banca VUNESP)</h4>
-                            <div class="feedback-content" id="conteudo-feedback">Aguardando envio para correção...</div>
                         </div>
                     </div>
                 </div>
@@ -1016,51 +1006,45 @@
             a.download = "Redacao_TJSP_Treino.txt";
             a.click();
         }
-
-        async function avaliarRedacaoIA() {
+        function copiarPromptGemini() {
             const intro = document.getElementById('red-intro').value.trim();
             const dev1 = document.getElementById('red-dev1').value.trim();
             const dev2 = document.getElementById('red-dev2').value.trim();
             const concl = document.getElementById('red-concl').value.trim();
 
             if (!intro && !dev1 && !dev2 && !concl) {
-                alert("Escreva pelo menos um parágrafo da redação para avaliar!");
+                alert("Escreva pelo menos um parágrafo da redação antes de copiar!");
                 return;
             }
 
-            const box = document.getElementById('box-feedback');
-            const conteudo = document.getElementById('conteudo-feedback');
-            box.style.display = 'block';
-            conteudo.innerText = "🤖 Analisando a redação com rigor de professor VUNESP...";
-
-            const textoCompleto = `Introdução: ${intro}\n\nDesenvolvimento 1: ${dev1}\n\nDesenvolvimento 2: ${dev2}\n\nConclusão: ${concl}`;
-            const temaContexto = temaAtualTexto ? `Tema abordado: "${temaAtualTexto}"` : "Tema livre / Padrão VUNESP";
-
-            // Endpoint público auxiliar ou chamada direta se configurada
-            const promptCorretor = `Atue rigorosamente como um professor experiente e banca corretora da VUNESP para o concurso de Escrevente Técnico Judiciário do TJSP. 
+            const promptFormatado = `Atue rigorosamente como um professor experiente e banca corretora da VUNESP para o concurso de Escrevente Técnico Judiciário do TJSP. 
 Avalie a redação abaixo com base nos critérios oficiais da banca (Tema/Argumentação, Estrutura Coesiva e Domínio da Norma Culta/Gramática).
 Forneça:
-1. Nota Final de 0 a 10 (seja realista e crítico, apontando desvios reais).
+1. Nota Final de 0 a 10 (seja realista e rigoroso, apontando desvios reais).
 2. Análise detalhada por critério.
-3. Principais desvios gramaticais ou estruturais encontrados.
-4. O que pode melhorar.
+3. Principais desvios gramaticais ou estruturais encontrados (ortografia, concordância, crase, pontuação).
+4. Sugestões práticas de melhoria.
 
-${temaContexto}
+Tema abordado: "${temaAtualTexto || 'Tema livre / Padrão VUNESP'}"
 
 Texto do Aluno:
-${textoCompleto}`;
+1. Introdução:
+${intro}
 
-            try {
-                // Como está em ambiente estático, simulamos a chamada via API ou backend se houver chave. 
-                // Para garantir funcionamento nativo imediato sem travar na chave, usamos uma requisição simulada realista ou Google Apps Script se integrado, 
-                // ou enviamos via fetch se o usuário tiver uma rota. Abaixo está o gatilho inteligente estruturado:
-                
-                conteudo.innerText = `⚠️ Para a IA gerar a nota real direto aqui na tela de forma automática, insira a sua chave da Gemini API ou utilize o comando direto no chat comigo. 
-Dica do desenvolvedor: Copie seu texto e mande aqui no chat que eu corrijo com nota de 0 a 10 e apontamentos minuciosos na hora!`;
+2. Desenvolvimento 1:
+${dev1}
 
-            } catch (e) {
-                conteudo.innerText = "Erro ao conectar com o serviço de correção.";
-            }
+3. Desenvolvimento 2:
+${dev2}
+
+4. Conclusão:
+${concl}`;
+
+            navigator.clipboard.writeText(promptFormatado).then(() => {
+                alert("Prompt copiado com sucesso! Agora basta colar (Ctrl + V) aqui no chat do Gemini para receber a correção detalhada.");
+            }).catch(err => {
+                alert("Erro ao copiar para a área de transferência.");
+            });
         }
 
         function toggleTema() { document.body.classList.toggle('dark-mode'); }
