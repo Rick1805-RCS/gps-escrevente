@@ -896,7 +896,6 @@
             }
             renderTabelas();
             
-            // Atualiza os gráficos em tempo real se a aba de evolução estiver aberta
             if (document.getElementById('evolucao').classList.contains('active')) {
                 renderGraficoEvolucao();
                 renderGraficoEdital();
@@ -911,7 +910,7 @@
             event.currentTarget.classList.add('active');
 
             const legendBox = document.getElementById('global-legend-box');
-            if (tabId === 'portugues' || tabId === 'direito' || tabId === 'rlm' || tabId === 'matematica' || tabId === 'informatica' || tabId === 'atualidades') {
+            if (['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].includes(tabId)) {
                 legendBox.style.display = 'block';
             } else {
                 legendBox.style.display = 'none';
@@ -953,10 +952,7 @@
             ];
 
             let html = '';
-
-            const materiasFiltradas = selectedMateria === 'todas' 
-                ? materiasMap 
-                : materiasMap.filter(m => m.id === selectedMateria);
+            const materiasFiltradas = selectedMateria === 'todas' ? materiasMap : materiasMap.filter(m => m.id === selectedMateria);
 
             materiasFiltradas.forEach(m => {
                 let c = 0, e = 0;
@@ -985,7 +981,6 @@
             if (!ctx) return;
 
             const selectedMateria = document.getElementById('select-materia-evol')?.value || 'todas';
-
             let labels = [];
             let dataPct = [];
 
@@ -1052,14 +1047,7 @@
                     datasets: [{
                         label: '% de Assuntos do Edital Já Praticados/Estudados',
                         data: dataProgresso,
-                        backgroundColor: [
-                            '#93c5fd', // Português
-                            '#fdba74', // Direito
-                            '#c4b5fd', // RLM
-                            '#f472b6', // Matemática
-                            '#a5b4fc', // Informática
-                            '#bef264'  // Atualidades
-                        ]
+                        backgroundColor: ['#93c5fd', '#fdba74', '#c4b5fd', '#f472b6', '#a5b4fc', '#bef264']
                     }]
                 },
                 options: {
@@ -1133,15 +1121,7 @@
             const materia = document.getElementById('ciclo-materia-select').value;
             const desc = document.getElementById('ciclo-desc').value.trim();
 
-            gradeCicloCustom.push({
-                id: Date.now(),
-                dia: dia,
-                tempo: tempo,
-                tipo: tipo,
-                materia: materia,
-                desc: desc
-            });
-
+            gradeCicloCustom.push({ id: Date.now(), dia, tempo, tipo, materia, desc });
             document.getElementById('ciclo-desc').value = '';
 
             renderCicloTable();
@@ -1192,14 +1172,7 @@
 
             const prioridadeAuto = calcularPrioridadeAutomatica(assunto);
 
-            dadosEstudo[matKey].push({
-                materia: nomeMateria,
-                prioridade: prioridadeAuto,
-                assunto: assunto,
-                certo: 0,
-                errado: 0
-            });
-
+            dadosEstudo[matKey].push({ materia: nomeMateria, prioridade: prioridadeAuto, assunto: assunto, certo: 0, errado: 0 });
             document.getElementById('add-assunto-input').value = '';
 
             renderTabelas();
@@ -1374,43 +1347,56 @@
         function carregarDadosSalvos() {
             const localEstudo = localStorage.getItem('gps_escrevente_model_data_v7');
             if (localEstudo) {
-                const parsed = JSON.parse(localEstudo);
-                if (parsed.portugues) dadosEstudo.portugues = parsed.portugues;
-                if (parsed.direito) dadosEstudo.direito = parsed.direito;
-                if (parsed.rlm) dadosEstudo.rlm = parsed.rlm;
-                if (parsed.matematica) dadosEstudo.matematica = parsed.matematica;
-                if (parsed.informatica) dadosEstudo.informatica = parsed.informatica;
-                if (parsed.atualidades) dadosEstudo.atualidades = parsed.atualidades;
+                try {
+                    const parsed = JSON.parse(localEstudo);
+                    if (parsed.portugues && parsed.portugues.length > 0) dadosEstudo.portugues = parsed.portugues;
+                    if (parsed.direito && parsed.direito.length > 0) dadosEstudo.direito = parsed.direito;
+                    if (parsed.rlm && parsed.rlm.length > 0) dadosEstudo.rlm = parsed.rlm;
+                    if (parsed.matematica && parsed.matematica.length > 0) dadosEstudo.matematica = parsed.matematica;
+                    if (parsed.informatica && parsed.informatica.length > 0) dadosEstudo.informatica = parsed.informatica;
+                    if (parsed.atualidades && parsed.atualidades.length > 0) dadosEstudo.atualidades = parsed.atualidades;
+                } catch(e) {}
             }
 
             const localCiclo = localStorage.getItem('gps_grade_ciclo_custom');
             if (localCiclo) {
-                gradeCicloCustom = JSON.parse(localCiclo);
+                try {
+                    const parsedCiclo = JSON.parse(localCiclo);
+                    if (parsedCiclo && parsedCiclo.length > 0) gradeCicloCustom = parsedCiclo;
+                } catch(e) {}
             }
 
             const localTemas = localStorage.getItem('gps_acervo_temas_data');
             if (localTemas) {
-                acervoTemasVunesp = JSON.parse(localTemas);
+                try {
+                    const parsedTemas = JSON.parse(localTemas);
+                    if (parsedTemas && parsedTemas.length > 0) acervoTemasVunesp = parsedTemas;
+                } catch(e) {}
             }
 
             const localRedacao = localStorage.getItem('gps_redacao_blocos');
             if (localRedacao) {
-                const parsedRed = JSON.parse(localRedacao);
-                document.getElementById('red-intro').value = parsedRed.intro || "";
-                document.getElementById('red-dev1').value = parsedRed.dev1 || "";
-                document.getElementById('red-dev2').value = parsedRed.dev2 || "";
-                document.getElementById('red-concl').value = parsedRed.concl || "";
-                calcularPalavrasRedacao();
+                try {
+                    const parsedRed = JSON.parse(localRedacao);
+                    if (parsedRed) {
+                        document.getElementById('red-intro').value = parsedRed.intro || "";
+                        document.getElementById('red-dev1').value = parsedRed.dev1 || "";
+                        document.getElementById('red-dev2').value = parsedRed.dev2 || "";
+                        document.getElementById('red-concl').value = parsedRed.concl || "";
+                        calcularPalavrasRedacao();
+                    }
+                } catch(e) {}
             }
 
             renderTabelas();
             renderCicloTable();
         }
 
-        // ==========================================
-        // NOVAS FUNÇÕES DE SINCRONIZAÇÃO VIA PLANILHA
-        // ==========================================
-        
+        window.onload = () => {
+            carregarDadosSalvos();
+            filtrarHoje();
+        };
+
         const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
 
         async function salvarNuvemSheets() {
@@ -1438,7 +1424,7 @@
             };
 
             const btn = document.querySelector('button[onclick="salvarNuvemSheets()"]');
-            btn.innerText = "Salvando...";
+            if(btn) btn.innerText = "Salvando...";
 
             try {
                 await fetch(URL_PLANILHA, {
@@ -1446,73 +1432,76 @@
                     body: JSON.stringify(payload)
                 });
                 
-                salvarDados(); // Mantém o backup local 
-                btn.innerText = "☁️ Salvar Nuvem";
+                salvarDados(); 
+                if(btn) btn.innerText = "☁️ Salvar Nuvem";
                 alert("Progresso salvo com sucesso na nuvem!");
             } catch (e) {
-                btn.innerText = "☁️ Salvar Nuvem";
+                if(btn) btn.innerText = "☁️ Salvar Nuvem";
                 alert("Erro de conexão ao salvar.");
             }
         }
 
         async function carregarNuvemSheets() {
-    const email = document.getElementById('email-aluno').value;
-    if (!email || !email.includes('@')) {
-        alert("Por favor, digite seu e-mail para sincronizar os dados da nuvem.");
-        return;
-    }
-
-    const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]');
-    if(btn) btn.innerText = "Baixando...";
-
-    try {
-        const payload = {
-            action: "load",
-            email: email,
-            sheet: "Dados"
-        };
-
-        const response = await fetch(URL_PLANILHA, {
-            method: 'POST',
-            body: JSON.stringify(payload)
-        });
-        
-        const parsed = await response.json();
-
-        if (parsed.status === "success") {
-            const data = parsed.data;
-            if (!data) {
-                alert("Nenhum progresso encontrado na nuvem para este e-mail.");
-                if(btn) btn.innerText = "🔄 Sincronizar";
+            const email = document.getElementById('email-aluno').value;
+            if (!email || !email.includes('@')) {
+                alert("Por favor, digite seu e-mail para sincronizar os dados da nuvem.");
                 return;
             }
 
-            if (data.estudo) Object.assign(dadosEstudo, data.estudo);
-            if (data.ciclo) gradeCicloCustom = data.ciclo;
-            if (data.temas) acervoTemasVunesp = data.temas;
-            if (data.redacao) {
-                document.getElementById('red-intro').value = data.redacao.intro || "";
-                document.getElementById('red-dev1').value = data.redacao.dev1 || "";
-                document.getElementById('red-dev2').value = data.redacao.dev2 || "";
-                document.getElementById('red-concl').value = data.redacao.concl || "";
-                calcularPalavrasRedacao(); 
-            }
+            const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]');
+            if(btn) btn.innerText = "Baixando...";
 
-            renderTabelas();
-            renderCicloTable();
-            salvarDados(); 
-            
-            if(btn) btn.innerText = "🔄 Sincronizar";
-            alert("Sincronização concluída! Dados atualizados.");
-        } else if (parsed.status === "blocked") {
-            alert("Acesso negado: E-mail não encontrado na lista de alunos autorizados.");
-            if(btn) btn.innerText = "🔄 Sincronizar";
-        } else {
-            alert("Erro: " + (parsed.message || "Desconhecido"));
-            if(btn) btn.innerText = "🔄 Sincronizar";
+            try {
+                const payload = {
+                    action: "load",
+                    email: email,
+                    sheet: "Dados"
+                };
+
+                const response = await fetch(URL_PLANILHA, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                
+                const parsed = await response.json();
+
+                if (parsed.status === "success") {
+                    const data = parsed.data;
+                    if (!data) {
+                        alert("Nenhum progresso encontrado na nuvem para este e-mail.");
+                        if(btn) btn.innerText = "🔄 Sincronizar";
+                        return;
+                    }
+
+                    if (data.estudo) Object.assign(dadosEstudo, data.estudo);
+                    if (data.ciclo) gradeCicloCustom = data.ciclo;
+                    if (data.temas) acervoTemasVunesp = data.temas;
+                    if (data.redacao) {
+                        document.getElementById('red-intro').value = data.redacao.intro || "";
+                        document.getElementById('red-dev1').value = data.redacao.dev1 || "";
+                        document.getElementById('red-dev2').value = data.redacao.dev2 || "";
+                        document.getElementById('red-concl').value = data.redacao.concl || "";
+                        calcularPalavrasRedacao(); 
+                    }
+
+                    renderTabelas();
+                    renderCicloTable();
+                    salvarDados(); 
+                    
+                    if(btn) btn.innerText = "🔄 Sincronizar";
+                    alert("Sincronização concluída! Dados atualizados.");
+                } else if (parsed.status === "blocked") {
+                    alert("Acesso negado: E-mail não encontrado na lista de alunos autorizados.");
+                    if(btn) btn.innerText = "🔄 Sincronizar";
+                } else {
+                    alert("Erro: " + (parsed.message || "Desconhecido"));
+                    if(btn) btn.innerText = "🔄 Sincronizar";
+                }
+            } catch (e) {
+                if(btn) btn.innerText = "🔄 Sincronizar";
+                alert("Erro de conexão ao baixar dados.");
+            }
         }
-    } catch (e) {
-        if(btn) btn.innerText = "🔄 Sincronizar";
-        alert("Erro de conexão ao baixar dados.");
-    }
-}
+    </script>
+</body>
+</html>
