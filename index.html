@@ -1456,53 +1456,63 @@
         }
 
         async function carregarNuvemSheets() {
-            const email = document.getElementById('email-aluno').value;
-            if (!email || !email.includes('@')) {
-                alert("Por favor, digite seu e-mail para sincronizar os dados da nuvem.");
+    const email = document.getElementById('email-aluno').value;
+    if (!email || !email.includes('@')) {
+        alert("Por favor, digite seu e-mail para sincronizar os dados da nuvem.");
+        return;
+    }
+
+    const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]');
+    if(btn) btn.innerText = "Baixando...";
+
+    try {
+        const payload = {
+            action: "load",
+            email: email,
+            sheet: "Dados"
+        };
+
+        const response = await fetch(URL_PLANILHA, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        
+        const parsed = await response.json();
+
+        if (parsed.status === "success") {
+            const data = parsed.data;
+            if (!data) {
+                alert("Nenhum progresso encontrado na nuvem para este e-mail.");
+                if(btn) btn.innerText = "🔄 Sincronizar";
                 return;
             }
 
-            const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]');
-            btn.innerText = "Baixando...";
-
-            try {
-                const response = await fetch(URL_PLANILHA + "?email=" + encodeURIComponent(email));
-                const parsed = await response.json();
-
-                if (parsed.erro) {
-                    alert("Nenhum progresso encontrado na nuvem para este e-mail.");
-                    btn.innerText = "🔄 Sincronizar";
-                    return;
-                }
-
-                if (parsed.estudo) Object.assign(dadosEstudo, parsed.estudo);
-                if (parsed.ciclo) gradeCicloCustom = parsed.ciclo;
-                if (parsed.temas) acervoTemasVunesp = parsed.temas;
-                if (parsed.redacao) {
-                    document.getElementById('red-intro').value = parsed.redacao.intro || "";
-                    document.getElementById('red-dev1').value = parsed.redacao.dev1 || "";
-                    document.getElementById('red-dev2').value = parsed.redacao.dev2 || "";
-                    document.getElementById('red-concl').value = parsed.redacao.concl || "";
-                    calcularPalavrasRedacao(); 
-                }
-
-                renderTabelas();
-                renderCicloTable();
-                salvarDados(); 
-                
-                btn.innerText = "🔄 Sincronizar";
-                alert("Sincronização concluída! Dados atualizados.");
-                
-            } catch (e) {
-                btn.innerText = "🔄 Sincronizar";
-                alert("Erro de conexão ao baixar dados.");
+            if (data.estudo) Object.assign(dadosEstudo, data.estudo);
+            if (data.ciclo) gradeCicloCustom = data.ciclo;
+            if (data.temas) acervoTemasVunesp = data.temas;
+            if (data.redacao) {
+                document.getElementById('red-intro').value = data.redacao.intro || "";
+                document.getElementById('red-dev1').value = data.redacao.dev1 || "";
+                document.getElementById('red-dev2').value = data.redacao.dev2 || "";
+                document.getElementById('red-concl').value = data.redacao.concl || "";
+                calcularPalavrasRedacao(); 
             }
-        }
 
-        window.onload = () => {
-            carregarDadosSalvos();
-            filtrarHoje();
-        };
-    </script>
-</body>
-</html>
+            renderTabelas();
+            renderCicloTable();
+            salvarDados(); 
+            
+            if(btn) btn.innerText = "🔄 Sincronizar";
+            alert("Sincronização concluída! Dados atualizados.");
+        } else if (parsed.status === "blocked") {
+            alert("Acesso negado: E-mail não encontrado na lista de alunos autorizados.");
+            if(btn) btn.innerText = "🔄 Sincronizar";
+        } else {
+            alert("Erro: " + (parsed.message || "Desconhecido"));
+            if(btn) btn.innerText = "🔄 Sincronizar";
+        }
+    } catch (e) {
+        if(btn) btn.innerText = "🔄 Sincronizar";
+        alert("Erro de conexão ao baixar dados.");
+    }
+}
