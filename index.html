@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Escrevente — TJSP</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-page: #f4f6f9;
@@ -47,7 +48,7 @@
             --primary-blue: #60a5fa;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-page); color: var(--text-main); padding-bottom: 20px; }
 
         .header-bar {
@@ -157,9 +158,36 @@
 
         .tema-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 10px; margin-top: 8px; font-size: 0.85rem; color: #1e40af; }
         
+        /* Estilização da Folha de Caderno */
         .bloco-redacao { margin-top: 10px; }
         .bloco-redacao label { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); display: block; margin-bottom: 3px; }
-        .bloco-redacao textarea { width: 100%; height: 75px; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main); font-size: 0.85rem; resize: vertical; }
+        
+        .folha-caderno {
+            background-color: #fffdf9;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 100% 32px; /* Espaçamento de linha de caderno */
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 4px 10px;
+            width: 100%;
+            height: 110px;
+            resize: vertical;
+            outline: none;
+            font-size: 1.15rem;
+            line-height: 32px; /* Alinha perfeitamente com o fundo */
+            color: #1e293b;
+        }
+        body.dark-mode .folha-caderno {
+            background-color: #1a2234;
+            background-image: linear-gradient(#334155 1px, transparent 1px);
+            color: #f8fafc;
+        }
+
+        /* Classes para troca de fonte */
+        .fonte-forma { font-family: 'Inter', sans-serif; font-size: 0.9rem; line-height: 32px; }
+        .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.45rem; line-height: 32px; }
+
+        .caderno-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
 
         .btn-action-group { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
         .btn-purple { background: #7c3aed; }
@@ -294,7 +322,7 @@
 
                     <div class="panel-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3>🎲 Sorteador de Temas</h3>
+                            <h3>🎲 Sorteador de Temas VUNESP</h3>
                             <button class="btn-sm btn-zerar" onclick="excluirTemaAtual()" title="Excluir Tema">🗑️ Excluir Tema</button>
                         </div>
                         <button class="btn-sm btn-iniciar" style="margin-top: 6px;" onclick="sortearTema()">🎲 Gerar Tema Aleatório</button>
@@ -305,28 +333,52 @@
 
                     <div class="panel-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3>📝 Treino de Redação</h3>
+                            <h3>📝 Treino de Redação (Folha de Caderno)</h3>
                             <span style="font-size: 0.78rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">Total: 0 palavras (~0 linhas)</span>
                         </div>
 
                         <div class="bloco-redacao">
-                            <label>1. Introdução</label>
-                            <textarea id="red-intro" placeholder="Apresentação do tema + Tese..." oninput="calcularPalavrasRedacao()"></textarea>
+                            <div class="caderno-toolbar">
+                                <label>1. Introdução</label>
+                                <select onchange="mudarEstiloFonte(this, 'red-intro')" style="font-size: 0.72rem; padding: 2px 4px;">
+                                    <option value="forma">Letra de Forma</option>
+                                    <option value="cursiva">Letra Cursiva</option>
+                                </select>
+                            </div>
+                            <textarea id="red-intro" class="folha-caderno fonte-forma" placeholder="Apresentação do tema + Tese..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="bloco-redacao">
-                            <label>2. Desenvolvimento 1</label>
-                            <textarea id="red-dev1" placeholder="Desenvolvimento do primeiro argumento..." oninput="calcularPalavrasRedacao()"></textarea>
+                            <div class="caderno-toolbar">
+                                <label>2. Desenvolvimento 1</label>
+                                <select onchange="mudarEstiloFonte(this, 'red-dev1')" style="font-size: 0.72rem; padding: 2px 4px;">
+                                    <option value="forma">Letra de Forma</option>
+                                    <option value="cursiva">Letra Cursiva</option>
+                                </select>
+                            </div>
+                            <textarea id="red-dev1" class="folha-caderno fonte-forma" placeholder="Desenvolvimento do primeiro argumento..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="bloco-redacao">
-                            <label>3. Desenvolvimento 2</label>
-                            <textarea id="red-dev2" placeholder="Desenvolvimento do segundo argumento..." oninput="calcularPalavrasRedacao()"></textarea>
+                            <div class="caderno-toolbar">
+                                <label>3. Desenvolvimento 2</label>
+                                <select onchange="mudarEstiloFonte(this, 'red-dev2')" style="font-size: 0.72rem; padding: 2px 4px;">
+                                    <option value="forma">Letra de Forma</option>
+                                    <option value="cursiva">Letra Cursiva</option>
+                                </select>
+                            </div>
+                            <textarea id="red-dev2" class="folha-caderno fonte-forma" placeholder="Desenvolvimento do segundo argumento..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="bloco-redacao">
-                            <label>4. Conclusão</label>
-                            <textarea id="red-concl" placeholder="Fechamento do texto..." oninput="calcularPalavrasRedacao()"></textarea>
+                            <div class="caderno-toolbar">
+                                <label>4. Conclusão</label>
+                                <select onchange="mudarEstiloFonte(this, 'red-concl')" style="font-size: 0.72rem; padding: 2px 4px;">
+                                    <option value="forma">Letra de Forma</option>
+                                    <option value="cursiva">Letra Cursiva</option>
+                                </select>
+                            </div>
+                            <textarea id="red-concl" class="folha-caderno fonte-forma" placeholder="Fechamento do texto..." oninput="calcularPalavrasRedacao()"></textarea>
                         </div>
 
                         <div class="btn-action-group">
@@ -694,7 +746,27 @@
             "Sistema carcerário brasileiro e o desafio da ressocialização",
             "Desafios da mobilidade urbana sustentável nas grandes metrópoles",
             "Impacto das apostas virtuais (bets) na economia das famílias",
-            "Preservação da privacidade de dados no ambiente digital"
+            "Preservação da privacidade de dados no ambiente digital",
+            "A cultura do cancelamento e seus reflexos na vida pública",
+            "Cidadania e exclusão digital na sociedade contemporânea",
+            "O valor da leitura e da educação literária na formação do pensamento crítico",
+            "Impactos do trabalho remoto na dinâmica familiar e corporativa",
+            "A importância do saneamento básico para a dignidade humana no Brasil",
+            "Segurança pública e o combate à desinformação (fake news)",
+            "A sustentabilidade das cidades e a gestão de resíduos sólidos",
+            "O papel da arte e da cultura na transformação social",
+            "Desigualdade de gênero no mercado de trabalho brasileiro",
+            "A expansão do consumo consciente e os limites dos recursos naturais",
+            "Os desafios da inclusão escolar de crianças atípicas",
+            "A longevidade e o redesenho das relações de trabalho e previdência",
+            "Etica e responsabilidade no uso de algoritmos e redes sociais",
+            "O impacto da polarização política no diálogo democrático",
+            "Caminhos para combater a evasão escolar no ensino médio brasileiro",
+            "A valorização do patrimônio histórico e cultural nas metrópoles",
+            "O fenômeno do endividamento das famílias brasileiras",
+            "A escassez hídrica e os novos modelos de gestão da água",
+            "O papel da ciência e da inovação tecnológica no desenvolvimento nacional",
+            "A empatia e o altruísmo em tempos de individualismo digital"
         ];
 
         let myChart = null;
@@ -985,6 +1057,11 @@
         }
         function pausarTimer() { timerRunning = false; clearInterval(timerInterval); }
         function zerarTimer() { pausarTimer(); seconds = 0; document.getElementById('timer').innerText = "00:00:00"; }
+
+        function mudarEstiloFonte(selectEl, textareaId) {
+            const ta = document.getElementById(textareaId);
+            ta.className = "folha-caderno " + (selectEl.value === 'cursiva' ? 'fonte-cursiva' : 'fonte-forma');
+        }
 
         function calcularPalavrasRedacao() {
             const textoCompleto = `${document.getElementById('red-intro').value} ${document.getElementById('red-dev1').value} ${document.getElementById('red-dev2').value} ${document.getElementById('red-concl').value}`.trim();
