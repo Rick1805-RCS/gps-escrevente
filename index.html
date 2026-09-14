@@ -12,7 +12,7 @@
             --bg-card: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --primary-blue: #3b82f6; /* Azul esmaecido solicitado */
+            --primary-blue: #3b82f6;
             --btn-salvar: #10b981;
             --btn-exportar: #4b5563;
             --btn-importar: #4f46e5;
@@ -112,11 +112,11 @@
         body.dark-mode th { background: #0f172a; color: #f8fafc; }
         td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
         
-        .txt-materia-destaque { font-weight: 800; color: #0f172a; font-size: 0.85rem; }
+        .txt-materia-destaque { font-weight: 800; color: #0f172a; font-size: 0.82rem; white-space: nowrap; }
         body.dark-mode .txt-materia-destaque { color: #60a5fa; }
 
         input[type="number"] { width: 55px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); }
-        .input-total-readonly { background: #e2e8f0; color: #475569; border: 1px solid var(--border-color); font-weight: 800; }
+        .input-total-readonly { background: #e2e8f0; color: #475569; border: 1px solid var(--border-color); font-weight: 800; width: 55px; text-align: center; border-radius: 4px; padding: 4px; }
         body.dark-mode .input-total-readonly { background: #334155; color: #cbd5e1; }
 
         select, input[type="text"], input[type="date"] { padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); font-weight: 700; font-size: 0.8rem; }
@@ -713,14 +713,13 @@
             ['portugues', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
                 const container = document.getElementById(`table-${mat}`);
                 if (!container) return;
-                // Larguras ajustadas para aproximar o assunto das colunas da direita
-                let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 120px;">Matéria</th><th>Assunto</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 65px; text-align: center;">%</th><th style="width: 155px;">Status Atual</th><th style="width: 35px; text-align: center;"></th></tr></thead><tbody>`;
+                let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 140px;">Matéria</th><th>Assunto</th><th style="width: 65px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">Certo</th><th style="width: 65px; text-align: center;">Errado</th><th style="width: 70px; text-align: center;">%</th><th style="width: 160px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
                 dadosEstudo[mat].forEach((item, index) => {
                     const totalQ = item.certo + item.errado;
                     const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
                     let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
                     const statusObj = calcularStatusEHora(item.certo, item.errado);
-                    html += `<tr><td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td><td><span class="txt-materia-destaque">${item.materia}</span></td><td><b>${item.assunto}</b></td><td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}" style="width: 50px; text-align: center;"></td><td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></td><td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></td><td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td><td><div class="status-container">${statusObj.badge}${statusObj.rev}</div></td><td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir Assunto">🗑️</button></td></tr>`;
+                    html += `<tr><td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td><td><span class="txt-materia-destaque">${item.materia}</span></td><td><b>${item.assunto}</b></td><td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td><td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></td><td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></td><td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td><td><div class="status-container">${statusObj.badge}${statusObj.rev}</div></td><td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir Assunto">🗑️</button></td></tr>`;
                 });
                 html += `</tbody></table>`;
                 container.innerHTML = html;
@@ -732,14 +731,14 @@
             const container = document.getElementById('table-direito');
             if (!container) return;
             const filtroRamo = document.getElementById('select-ramo-direito')?.value || 'todos';
-            let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 150px;">Matéria</th><th>Assunto</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 65px; text-align: center;">%</th><th style="width: 155px;">Status Atual</th><th style="width: 35px; text-align: center;"></th></tr></thead><tbody>`;
+            let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 200px;">Matéria</th><th>Assunto</th><th style="width: 65px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">Certo</th><th style="width: 65px; text-align: center;">Errado</th><th style="width: 70px; text-align: center;">%</th><th style="width: 160px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
             dadosEstudo.direito.forEach((item, index) => {
                 if (filtroRamo !== 'todos' && item.materia !== filtroRamo) return;
                 const totalQ = item.certo + item.errado;
                 const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
                 let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
                 const statusObj = calcularStatusEHora(item.certo, item.errado);
-                html += `<tr><td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td><td><span class="txt-materia-destaque">${item.materia}</span></td><td><b>${item.assunto}</b></td><td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}" style="width: 50px; text-align: center;"></td><td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('direito', ${index}, 'certo', this.value)"></td><td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('direito', ${index}, 'errado', this.value)"></td><td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td><td><div class="status-container">${statusObj.badge}${statusObj.rev}</div></td><td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('direito', ${index})" title="Excluir Assunto">🗑️</button></td></tr>`;
+                html += `<tr><td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td><td><span class="txt-materia-destaque">${item.materia}</span></td><td><b>${item.assunto}</b></td><td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td><td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('direito', ${index}, 'certo', this.value)"></td><td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('direito', ${index}, 'errado', this.value)"></td><td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td><td><div class="status-container">${statusObj.badge}${statusObj.rev}</div></td><td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('direito', ${index})" title="Excluir Assunto">🗑️</button></td></tr>`;
             });
             html += `</tbody></table>`;
             container.innerHTML = html;
