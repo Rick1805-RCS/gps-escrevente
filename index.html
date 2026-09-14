@@ -317,9 +317,9 @@
     <div id="modal-acesso">
         <div class="modal-card">
             <h2>Olá, apoiador!</h2>
-            <p>Digite seu e-mail cadastrado para liberar o acesso ao GPS Escrevente:</p>
+            <p>Digite seu e-mail para liberar o acesso ao GPS Escrevente:</p>
             <input type="email" id="modal-input-email" placeholder="seu-email@exemplo.com">
-            <button onclick="verificarAcessoInicial()">Acessar GPS</button>
+            <button id="btn-modal-acessar" onclick="verificarAcessoInicial()">Acessar GPS</button>
         </div>
     </div>
 
@@ -836,19 +836,56 @@
 
         let myChart = null;
         let chartEdital = null;
+        const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
 
-        function verificarAcessoInicial() {
+        async function verificarAcessoInicial() {
             const inputEmail = document.getElementById('modal-input-email').value.trim();
             if (!inputEmail || !inputEmail.includes('@')) {
                 alert("Por favor, digite um e-mail válido.");
                 return;
             }
-            // Preenche automaticamente o campo de email do cabeçalho
-            document.getElementById('email-aluno').value = inputEmail;
-            // Salva no localStorage para lembrar nas próximas aberturas se desejar
-            localStorage.setItem('gps_email_usuario', inputEmail);
-            // Fecha o modal esmaecido
-            document.getElementById('modal-acesso').style.display = 'none';
+
+            const btn = document.getElementById('btn-modal-acessar');
+            btn.innerText = "Verificando...";
+            btn.disabled = true;
+
+            try {
+                // Faz a chamada real para o Google Apps Script para checar autorização
+                const payload = { action: "load", email: inputEmail, sheet: "Dados" };
+                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
+                const parsed = await response.json();
+
+                if (parsed.status === "blocked") {
+                    alert(parsed.message || "Acesso negado: E-mail não autorizado.");
+                    btn.innerText = "Acessar GPS";
+                    btn.disabled = false;
+                } else {
+                    // E-mail válido e autorizado
+                    document.getElementById('email-aluno').value = inputEmail;
+                    localStorage.setItem('gps_email_usuario', inputEmail);
+                    document.getElementById('modal-acesso').style.display = 'none';
+                    
+                    // Se houver dados retornados da nuvem na checagem, já podemos aproveitar
+                    if (parsed.status === "success" && parsed.data) {
+                        const data = parsed.data;
+                        if (data.estudo) Object.assign(dadosEstudo, data.estudo);
+                        if (data.ciclo) gradeCicloCustom = data.ciclo;
+                        if (data.temas) acervoTemasVunesp = data.temas;
+                        if (data.redacao) {
+                            document.getElementById('red-intro').value = data.redacao.intro || "";
+                            document.getElementById('red-dev1').value = data.redacao.dev1 || "";
+                            document.getElementById('red-dev2').value = data.redacao.dev2 || "";
+                            document.getElementById('red-concl').value = data.redacao.concl || "";
+                            calcularPalavrasRedacao();
+                        }
+                        renderTabelas(); renderCicloTable(); salvarDados();
+                    }
+                }
+            } catch (e) {
+                alert("Erro de conexão ao verificar o e-mail com a nuvem. Verifique sua internet.");
+                btn.innerText = "Acessar GPS";
+                btn.disabled = false;
+            }
         }
 
         function calcularStatusEHora(certo, errado) {
@@ -1305,8 +1342,6 @@ ${concl}`;
 
         window.onload = () => { carregarDadosSalvos(); filtrarHoje(); };
 
-        const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
-
         async function salvarNuvemSheets() {
             const email = document.getElementById('email-aluno').value.trim();
             if (!email || !email.includes('@')) { alert("Por favor, digite um e-mail válido para salvar na nuvem."); return; }
@@ -1364,7 +1399,7 @@ ${concl}`;
                         alert("Nenhum progresso encontrado na nuvem para este e-mail.");
                     } else {
                         if (data.estudo) Object.assign(dadosEstudo, data.estudo);
-                        if (data.ciclo) gradeCicloCustom = data.ciclo;
+                        if(data.ciclo) gradeCicloCustom = data.ciclo;
                         if (data.temas) acervoTemasVunesp = data.temas;
                         if (data.redacao) {
                             document.getElementById('red-intro').value = data.redacao.intro || "";
