@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Escrevente — TJSP | Painel de Controle de Estudos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg: #f8fafc;
@@ -32,7 +33,7 @@
         }
 
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; transition: background-color 0.3s, color 0.3s; }
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1350px; margin: 0 auto; }
         header { background: var(--header-bg); color: white; padding: 20px 25px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border: 1px solid var(--border); }
         header h1 { margin: 0; font-size: 22px; font-weight: 700; }
         
@@ -44,9 +45,18 @@
         .tab-content.active { display: block; }
 
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        
+        .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+
+        .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 15px; text-align: center; }
+        .kpi-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .kpi-val { font-size: 24px; font-weight: 800; color: var(--primary); margin-top: 5px; }
+
+        .progress-bar-container { background-color: var(--border); border-radius: 8px; height: 12px; width: 100%; overflow: hidden; margin-top: 8px; }
+        .progress-bar-fill { background-color: var(--accent); height: 100%; width: 0%; transition: width 0.3s ease; }
+
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
         th { background: var(--table-header); color: var(--text); font-weight: 700; }
         tr:hover { background: var(--table-hover); }
 
@@ -72,9 +82,7 @@
         .btn-secondary { background: #64748b; }
         .btn-sm { padding: 4px 8px; font-size: 12px; }
 
-        .controls-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
-        .bottom-actions { margin-top: 20px; display: flex; justify-content: flex-start; }
-        
+        .controls-bar { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-bottom: 15px; }
         .tema-box { background: #eff6ff; border-left: 4px solid var(--accent); padding: 15px; border-radius: 6px; margin: 15px 0; color: #1e3a8a; }
         body.dark-mode .tema-box { background: #1e293b; color: #93c5fd; border-left-color: #3b82f6; }
         .redacao-section { margin-bottom: 15px; }
@@ -110,9 +118,9 @@
     <!-- TAB 1: PORTUGUÊS -->
     <div id="tab-portugues" class="tab-content active">
         <div class="card controls-bar">
-            <div style="flex-grow: 1; max-width: 500px;">
+            <div style="flex-grow: 1;">
                 <label for="busca-pt">🔎 <b>Buscar em Português:</b></label>
-                <input type="text" id="busca-pt" placeholder="Digite o assunto ou palavra-chave..." oninput="renderTabela('portugues')" style="width: 100%; margin-top: 5px;">
+                <input type="text" id="busca-pt" placeholder="Digite o assunto ou palavra-chave..." oninput="renderTabela('portugues')" style="width: 100%;">
             </div>
         </div>
         <div class="card" style="overflow-x: auto;">
@@ -126,14 +134,14 @@
                         <th>Res. 1 (%)</th>
                         <th>Res. 2 (%)</th>
                         <th>Status Atual</th>
-                        <th>Revisão (Dias)</th>
+                        <th>Revisão</th>
                         <th>Observações</th>
-                        <th>Ações</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody id="tbody-portugues"></tbody>
             </table>
-            <div class="bottom-actions">
+            <div style="margin-top: 15px;">
                 <button class="btn btn-success" onclick="abrirModalAdd('portugues')">➕ Adicionar Assunto</button>
             </div>
         </div>
@@ -143,8 +151,8 @@
     <div id="tab-direito" class="tab-content">
         <div class="card controls-bar">
             <div>
-                <label for="filtro-dir">🔍 <b>Matéria:</b></label><br>
-                <select id="filtro-dir" onchange="renderTabela('direito')" style="margin-top: 5px;">
+                <label for="filtro-dir">🔍 <b>Matéria:</b></label>
+                <select id="filtro-dir" onchange="renderTabela('direito')">
                     <option value="TODAS">Todas as Matérias</option>
                     <option value="Processo Penal">Processo Penal</option>
                     <option value="Penal">Penal</option>
@@ -154,9 +162,9 @@
                     <option value="Normas TJSP">Normas TJSP</option>
                 </select>
             </div>
-            <div style="flex-grow: 1; max-width: 500px;">
+            <div style="flex-grow: 1;">
                 <label for="busca-dir">🔎 <b>Buscar no Direito:</b></label>
-                <input type="text" id="busca-dir" placeholder="Digite o assunto ou artigo..." oninput="renderTabela('direito')" style="width: 100%; margin-top: 5px;">
+                <input type="text" id="busca-dir" placeholder="Digite o assunto ou artigo..." oninput="renderTabela('direito')" style="width: 100%;">
             </div>
         </div>
         <div class="card" style="overflow-x: auto;">
@@ -172,14 +180,14 @@
                         <th>Res. 1 (%)</th>
                         <th>Res. 2 (%)</th>
                         <th>Status Atual</th>
-                        <th>Revisão (Dias)</th>
+                        <th>Revisão</th>
                         <th>Observações</th>
-                        <th>Ações</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody id="tbody-direito"></tbody>
             </table>
-            <div class="bottom-actions">
+            <div style="margin-top: 15px;">
                 <button class="btn btn-success" onclick="abrirModalAdd('direito')">➕ Adicionar Assunto</button>
             </div>
         </div>
@@ -188,9 +196,9 @@
     <!-- TAB 3: RLM E INFORMÁTICA -->
     <div id="tab-rlm" class="tab-content">
         <div class="card controls-bar">
-            <div style="flex-grow: 1; max-width: 500px;">
+            <div style="flex-grow: 1;">
                 <label for="busca-rlm">🔎 <b>Buscar em RLM/Informática:</b></label>
-                <input type="text" id="busca-rlm" placeholder="Digite o assunto..." oninput="renderTabela('rlm')" style="width: 100%; margin-top: 5px;">
+                <input type="text" id="busca-rlm" placeholder="Digite o assunto..." oninput="renderTabela('rlm')" style="width: 100%;">
             </div>
         </div>
         <div class="card" style="overflow-x: auto;">
@@ -206,14 +214,14 @@
                         <th>Res. 1 (%)</th>
                         <th>Res. 2 (%)</th>
                         <th>Status Atual</th>
-                        <th>Revisão (Dias)</th>
+                        <th>Revisão</th>
                         <th>Observações</th>
-                        <th>Ações</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody id="tbody-rlm"></tbody>
             </table>
-            <div class="bottom-actions">
+            <div style="margin-top: 15px;">
                 <button class="btn btn-success" onclick="abrirModalAdd('rlm')">➕ Adicionar Assunto</button>
             </div>
         </div>
@@ -298,14 +306,20 @@
             </div>
         </div>
 
-        <div class="card">
-            <h3>📋 Histórico de Registros</h3>
-            <table>
-                <thead>
-                    <tr><th>Semana</th><th>Matéria</th><th>% Acerto</th><th>Qtd Q.</th><th>Ação</th></tr>
-                </thead>
-                <tbody id="tbody-historico"></tbody>
-            </table>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📈 Evolução Média % por Matéria</h3>
+                <canvas id="chartEvolucao" height="200"></canvas>
+            </div>
+            <div class="card">
+                <h3>📋 Histórico de Registros</h3>
+                <table>
+                    <thead>
+                        <tr><th>Semana</th><th>Matéria</th><th>% Acerto</th><th>Qtd Q.</th><th>Ação</th></tr>
+                    </thead>
+                    <tbody id="tbody-historico"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -318,7 +332,7 @@
         <input type="hidden" id="modal-index">
 
         <div id="modal-campos" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
-            <!-- Preenchido dinamicamente via JS -->
+            <!-- Preenchido via JS -->
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
@@ -331,36 +345,36 @@
 <script>
 // DADOS INICIAIS BASEADOS NOS ÚLTIMOS CONCURSOS DO TJSP VUNESP
 const dadosPortugues = [
-    {"prioridade": "🔴 Altíssima", "assunto": "Interpretação e Compreensão de Texto", "recorrencia": "25% a 30% da prova", "proxima_acao": "Bateria diária de 5 textos VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Sintaxe: Regência (Verbal e Nominal) e Crase", "recorrencia": "Sempre cobrado (2-3 qst)", "proxima_acao": "Revisão dos verbos coringa + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Pontuação (Em especial uso da Vírgula)", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Treino de isolamento de adjunto adverbial", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Conjunções e Coesão Textual", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Mapeamento das conformativas/concessivas", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Colocação Pronominal (Próclise, Érclise, Mesóclise)", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Decorar palavras atrativas + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Concordância Verbal e Nominal", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Casos especiais (sujeito composto, verbo haver/fazer)", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Substituição e Reescrita de Frases", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Treino de equivalência de sentido e correção", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🟡 Média", "assunto": "Classes de Palavras (Substantivo, Adjetivo, Advérbio)", "recorrencia": "Recorrente", "proxima_acao": "Questões de valor semântico das palavras", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"prioridade": "🟡 Média", "assunto": "Sinônimos, Antônimos e Sentido Figurado", "recorrencia": "Recorrente", "proxima_acao": "Leitura e contexto em questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""}
+    {"prioridade": "🔴 Altíssima", "assunto": "Interpretação e Compreensão de Texto", "recorrencia": "25% a 30% da prova", "proxima_acao": "Bateria diária de 5 textos VUNESP", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🔴 Altíssima", "assunto": "Sintaxe: Regência (Verbal e Nominal) e Crase", "recorrencia": "Sempre cobrado (2-3 qst)", "proxima_acao": "Revisão dos verbos coringa + 15 questões", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🔴 Altíssima", "assunto": "Pontuação (Em especial uso da Vírgula)", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Treino de isolamento de adjunto adverbial", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🔴 Altíssima", "assunto": "Conjunções e Coesão Textual", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Mapeamento das conformativas/concessivas", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🟠 Alta", "assunto": "Colocação Pronominal (Próclise, Érclise, Mesóclise)", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Decorar palavras atrativas + 15 questões", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🟠 Alta", "assunto": "Concordância Verbal e Nominal", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Casos especiais (sujeito composto, verbo haver/fazer)", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🟠 Alta", "assunto": "Substituição e Reescrita de Frases", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Treino de equivalência de sentido e correção", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🟡 Média", "assunto": "Classes de Palavras (Substantivo, Adjetivo, Advérbio)", "recorrencia": "Recorrente", "proxima_acao": "Questões de valor semântico das palavras", "res1": "", "res2": "", "obs": ""},
+    {"prioridade": "🟡 Média", "assunto": "Sinônimos, Antônimos e Sentido Figurado", "recorrencia": "Recorrente", "proxima_acao": "Leitura e contexto em questões VUNESP", "res1": "", "res2": "", "obs": ""}
 ];
 
 const dadosDireito = [
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Citação e intimação", "artigos": "351–372", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum", "artigos": "394–405", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Prisão e medidas cautelares", "artigos": "282–316", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes funcionais", "artigos": "312–317; 319–327", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes praticados por particular", "artigos": "329–333", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Prazos e Comunicação de Atos", "artigos": "212–275", "meta": "85%", "proxima_acao": "Lei + questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum e Tutelas", "artigos": "294–357", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Constitucional", "prioridade": "🔴 Muito alta", "assunto": "Direitos e garantias fundamentais", "artigos": "Art. 5º", "meta": "85%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Administrativo", "prioridade": "🔴 Muito alta", "assunto": "Atos e Sanções de Improbidade", "artigos": "Lei 8.429/92", "meta": "80%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"materia": "Normas TJSP", "prioridade": "🔴 Muito alta", "assunto": "Função correicional e Ofícios", "artigos": "Arts. 1–11; 47–65", "meta": "80%", "proxima_acao": "Estudo direto das normas", "res1": "", "res2": "", "revisao": "", "obs": ""}
+    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Citação e intimação", "artigos": "351–372", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum", "artigos": "394–405", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Prisão e medidas cautelares", "artigos": "282–316", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes funcionais", "artigos": "312–317; 319–327", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes praticados por particular", "artigos": "329–333", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "obs": ""},
+    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Prazos e Comunicação de Atos", "artigos": "212–275", "meta": "85%", "proxima_acao": "Lei + questões", "res1": "", "res2": "", "obs": ""},
+    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum e Tutelas", "artigos": "294–357", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Constitucional", "prioridade": "🔴 Muito alta", "assunto": "Direitos e garantias fundamentais", "artigos": "Art. 5º", "meta": "85%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Administrativo", "prioridade": "🔴 Muito alta", "assunto": "Atos e Sanções de Improbidade", "artigos": "Lei 8.429/92", "meta": "80%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "obs": ""},
+    {"materia": "Normas TJSP", "prioridade": "🔴 Muito alta", "assunto": "Função correicional e Ofícios", "artigos": "Arts. 1–11; 47–65", "meta": "80%", "proxima_acao": "Estudo direto das normas", "res1": "", "res2": "", "obs": ""}
 ];
 
 const dadosRLM = [
-    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Tabela Verdade e Equivalências Lógicas", "foco": "Se...então, Negações de conectivos", "meta": "80%", "proxima_acao": "Tabela de memorização + questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Sequências Lógicas e Diagramas Lógicos", "foco": "Conjuntos e identificação de padrões", "meta": "80%", "proxima_acao": "15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Windows 11 e Gerenciamento de Arquivos", "foco": "Atalhos, pasta de arquivos, configurações", "meta": "85%", "proxima_acao": "Prática no sistema + questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Word e MS-Excel (Fórmulas)", "foco": "PROCV, SE, SOMASE, formatação", "meta": "85%", "proxima_acao": "Treino prático das fórmulas", "res1": "", "res2": "", "revisao": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🟠 Alta", "assunto": "Correio Eletrônico e Internet/Segurança", "foco": "Campos Cco, protocolos, phishing/malware", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""}
+    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Tabela Verdade e Equivalências Lógicas", "foco": "Se...então, Negações de conectivos", "meta": "80%", "proxima_acao": "Tabela de memorização + questões", "res1": "", "res2": "", "obs": ""},
+    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Sequências Lógicas e Diagramas Lógicos", "foco": "Conjuntos e identificação de padrões", "meta": "80%", "proxima_acao": "15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
+    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Windows 11 e Gerenciamento de Arquivos", "foco": "Atalhos, pasta de arquivos, configurações", "meta": "85%", "proxima_acao": "Prática no sistema + questões", "res1": "", "res2": "", "obs": ""},
+    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Word e MS-Excel (Fórmulas)", "foco": "PROCV, SE, SOMASE, formatação", "meta": "85%", "proxima_acao": "Treino prático das fórmulas", "res1": "", "res2": "", "obs": ""},
+    {"area": "Informática", "prioridade": "🟠 Alta", "assunto": "Correio Eletrônico e Internet/Segurança", "foco": "Campos Cco, protocolos, phishing/malware", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "obs": ""}
 ];
 
 const temasVunesp = [
@@ -380,6 +394,7 @@ let evolucaoData = JSON.parse(localStorage.getItem('gps_tjsp_evolucao')) || [];
 let redacaoSalva = JSON.parse(localStorage.getItem('gps_tjsp_red')) || { intro: "", arg1: "", arg2: "", concl: "", tema: "" };
 
 let isDarkMode = localStorage.getItem('gps_tjsp_dark') === 'true';
+let chartInstance = null;
 
 if (isDarkMode) document.body.classList.add('dark-mode');
 
@@ -421,19 +436,19 @@ function calcStatus(res1, res2) {
 }
 
 function sugerirRevisao(res1, res2) {
-    let r1 = res1 !== "" && res1 !== null ? parseFloat(res1) : null;
-    let r2 = res2 !== "" && res2 !== null ? parseFloat(res2) : null;
+    let r1 = (res1 !== "" && res1 !== null && !isNaN(res1)) ? parseFloat(res1) : null;
+    let r2 = (res2 !== "" && res2 !== null && !isNaN(res2)) ? parseFloat(res2) : null;
 
     if (r1 === null && r2 === null) return "1 dia";
 
     let vals = [];
     if (r1 !== null) vals.push(r1);
     if (r2 !== null) vals.push(r2);
-    let avg = vals.reduce((a,b)=>a+b, 0) / vals.length;
+    let avg = vals.reduce((a, b) => a + b, 0) / vals.length;
 
-    if (avg < 60) return "1 dia";
-    if (avg < 75) return "3 dias";
-    if (avg < 90) return "7 dias";
+    if (avg < 70) return "1 dia";
+    if (avg < 85) return "3 dias";
+    if (avg < 95) return "7 dias";
     return "15 dias";
 }
 
@@ -464,8 +479,8 @@ function renderTabela(tipo) {
         if (!matchBusca || !matchFiltro) return;
 
         let statusObj = calcStatus(row.res1, row.res2);
-        let sugestaoDias = sugerirRevisao(row.res1, row.res2);
-        let revVal = row.revisao !== undefined && row.revisao !== "" ? row.revisao : sugestaoDias;
+        let revSugestao = sugerirRevisao(row.res1, row.res2);
+        let revVal = (row.revisao !== undefined && row.revisao !== "") ? row.revisao : revSugestao;
 
         let tr = document.createElement('tr');
 
@@ -478,12 +493,12 @@ function renderTabela(tipo) {
                 <td><input type="number" value="${row.res1}" onchange="updateRow('pt', ${idx}, 'res1', this.value)"> %</td>
                 <td><input type="number" value="${row.res2}" onchange="updateRow('pt', ${idx}, 'res2', this.value)"> %</td>
                 <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
-                <td><input type="text" value="${revVal}" style="width:75px; text-align:center;" onchange="updateRow('pt', ${idx}, 'revisao', this.value)" title="Sugestão baseada em acertos"></td>
+                <td><input type="text" value="${revVal}" style="width: 55px; text-align:center;" onchange="updateRow('pt', ${idx}, 'revisao', this.value)"></td>
                 <td><input type="text" value="${row.obs}" onchange="updateRow('pt', ${idx}, 'obs', this.value)"></td>
                 <td>
-                    <div style="display:flex; gap:5px;">
-                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('portugues', ${idx})" title="Editar Assunto">✏️ Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('portugues', ${idx})" title="Excluir">🗑️</button>
+                    <div style="display:flex; gap:4px;">
+                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('portugues', ${idx})" title="Editar">✏️</button>
+                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('pt', ${idx})" title="Excluir">🗑️</button>
                     </div>
                 </td>
             `;
@@ -498,12 +513,12 @@ function renderTabela(tipo) {
                 <td><input type="number" value="${row.res1}" onchange="updateRow('dir', ${idx}, 'res1', this.value)"> %</td>
                 <td><input type="number" value="${row.res2}" onchange="updateRow('dir', ${idx}, 'res2', this.value)"> %</td>
                 <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
-                <td><input type="text" value="${revVal}" style="width:75px; text-align:center;" onchange="updateRow('dir', ${idx}, 'revisao', this.value)" title="Sugestão baseada em acertos"></td>
+                <td><input type="text" value="${revVal}" style="width: 55px; text-align:center;" onchange="updateRow('dir', ${idx}, 'revisao', this.value)"></td>
                 <td><input type="text" value="${row.obs}" onchange="updateRow('dir', ${idx}, 'obs', this.value)"></td>
                 <td>
-                    <div style="display:flex; gap:5px;">
-                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('direito', ${idx})" title="Editar Assunto">✏️ Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('direito', ${idx})" title="Excluir">🗑️</button>
+                    <div style="display:flex; gap:4px;">
+                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('direito', ${idx})" title="Editar">✏️</button>
+                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('dir', ${idx})" title="Excluir">🗑️</button>
                     </div>
                 </td>
             `;
@@ -518,11 +533,11 @@ function renderTabela(tipo) {
                 <td><input type="number" value="${row.res1}" onchange="updateRow('rlm', ${idx}, 'res1', this.value)"> %</td>
                 <td><input type="number" value="${row.res2}" onchange="updateRow('rlm', ${idx}, 'res2', this.value)"> %</td>
                 <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
-                <td><input type="text" value="${revVal}" style="width:75px; text-align:center;" onchange="updateRow('rlm', ${idx}, 'revisao', this.value)" title="Sugestão baseada em acertos"></td>
+                <td><input type="text" value="${revVal}" style="width: 55px; text-align:center;" onchange="updateRow('rlm', ${idx}, 'revisao', this.value)"></td>
                 <td><input type="text" value="${row.obs}" onchange="updateRow('rlm', ${idx}, 'obs', this.value)"></td>
                 <td>
-                    <div style="display:flex; gap:5px;">
-                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('rlm', ${idx})" title="Editar Assunto">✏️ Editar</button>
+                    <div style="display:flex; gap:4px;">
+                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('rlm', ${idx})" title="Editar">✏️</button>
                         <button class="btn btn-danger btn-sm" onclick="deletarAssunto('rlm', ${idx})" title="Excluir">🗑️</button>
                     </div>
                 </td>
@@ -537,6 +552,18 @@ function updateRow(tipo, idx, field, val) {
     if (tipo === 'dir') appDir[idx][field] = val;
     if (tipo === 'rlm') appRlm[idx][field] = val;
     salvarDados();
+}
+
+function deletarAssunto(tipo, idx) {
+    if (confirm("Tem certeza que deseja excluir este assunto?")) {
+        if (tipo === 'pt') appPt.splice(idx, 1);
+        if (tipo === 'dir') appDir.splice(idx, 1);
+        if (tipo === 'rlm') appRlm.splice(idx, 1);
+        
+        let aba = (tipo === 'pt') ? 'portugues' : (tipo === 'dir') ? 'direito' : 'rlm';
+        renderTabela(aba);
+        salvarDados();
+    }
 }
 
 function abrirModalAdd(tipo) {
@@ -570,12 +597,11 @@ function gerarCamposHtml(tipo, item) {
             <div><label><b>Prioridade:</b></label><br><input type="text" id="m-prioridade" value="${item.prioridade || '🔴 Altíssima'}"></div>
             <div><label><b>Assunto:</b></label><br><input type="text" id="m-assunto" value="${item.assunto || ''}" style="width:100%;"></div>
             <div><label><b>Recorrência:</b></label><br><input type="text" id="m-recorrencia" value="${item.recorrencia || ''}" style="width:100%;"></div>
-            <div><label><b>Próxima Ação / O que estudei:</b></label><br><textarea id="m-proxima_acao" style="width:100%; min-height:60px;" placeholder="Detalhe o que foi estudado...">${item.proxima_acao || ''}</textarea></div>
+            <div><label><b>Próxima Ação:</b></label><br><input type="text" id="m-proxima_acao" value="${item.proxima_acao || ''}" style="width:100%;"></div>
             <div style="display:flex; gap:10px;">
                 <div style="flex:1"><label><b>Res. 1 (%):</b></label><br><input type="number" id="m-res1" value="${item.res1 !== undefined ? item.res1 : ''}" style="width:100%;"></div>
                 <div style="flex:1"><label><b>Res. 2 (%):</b></label><br><input type="number" id="m-res2" value="${item.res2 !== undefined ? item.res2 : ''}" style="width:100%;"></div>
             </div>
-            <div><label><b>Revisão (Dias):</b></label><br><input type="text" id="m-revisao" value="${item.revisao || ''}" style="width:100%;"></div>
             <div><label><b>Observações:</b></label><br><input type="text" id="m-obs" value="${item.obs || ''}" style="width:100%;"></div>
         `;
     } else if (tipo === 'direito') {
@@ -595,12 +621,11 @@ function gerarCamposHtml(tipo, item) {
             <div><label><b>Assunto:</b></label><br><input type="text" id="m-assunto" value="${item.assunto || ''}" style="width:100%;"></div>
             <div><label><b>Artigos / Trecho:</b></label><br><input type="text" id="m-artigos" value="${item.artigos || ''}" style="width:100%;"></div>
             <div><label><b>Meta %:</b></label><br><input type="text" id="m-meta" value="${item.meta || '80%'}"></div>
-            <div><label><b>Próxima Ação / O que estudei:</b></label><br><textarea id="m-proxima_acao" style="width:100%; min-height:60px;" placeholder="Detalhe o que foi estudado...">${item.proxima_acao || ''}</textarea></div>
+            <div><label><b>Próxima Ação:</b></label><br><input type="text" id="m-proxima_acao" value="${item.proxima_acao || ''}" style="width:100%;"></div>
             <div style="display:flex; gap:10px;">
                 <div style="flex:1"><label><b>Res. 1 (%):</b></label><br><input type="number" id="m-res1" value="${item.res1 !== undefined ? item.res1 : ''}" style="width:100%;"></div>
                 <div style="flex:1"><label><b>Res. 2 (%):</b></label><br><input type="number" id="m-res2" value="${item.res2 !== undefined ? item.res2 : ''}" style="width:100%;"></div>
             </div>
-            <div><label><b>Revisão (Dias):</b></label><br><input type="text" id="m-revisao" value="${item.revisao || ''}" style="width:100%;"></div>
             <div><label><b>Observações:</b></label><br><input type="text" id="m-obs" value="${item.obs || ''}" style="width:100%;"></div>
         `;
     } else if (tipo === 'rlm') {
@@ -610,12 +635,11 @@ function gerarCamposHtml(tipo, item) {
             <div><label><b>Assunto:</b></label><br><input type="text" id="m-assunto" value="${item.assunto || ''}" style="width:100%;"></div>
             <div><label><b>Foco Principal:</b></label><br><input type="text" id="m-foco" value="${item.foco || ''}" style="width:100%;"></div>
             <div><label><b>Meta %:</b></label><br><input type="text" id="m-meta" value="${item.meta || '80%'}"></div>
-            <div><label><b>Próxima Ação / O que estudei:</b></label><br><textarea id="m-proxima_acao" style="width:100%; min-height:60px;" placeholder="Detalhe o que foi estudado...">${item.proxima_acao || ''}</textarea></div>
+            <div><label><b>Próxima Ação:</b></label><br><input type="text" id="m-proxima_acao" value="${item.proxima_acao || ''}" style="width:100%;"></div>
             <div style="display:flex; gap:10px;">
                 <div style="flex:1"><label><b>Res. 1 (%):</b></label><br><input type="number" id="m-res1" value="${item.res1 !== undefined ? item.res1 : ''}" style="width:100%;"></div>
                 <div style="flex:1"><label><b>Res. 2 (%):</b></label><br><input type="number" id="m-res2" value="${item.res2 !== undefined ? item.res2 : ''}" style="width:100%;"></div>
             </div>
-            <div><label><b>Revisão (Dias):</b></label><br><input type="text" id="m-revisao" value="${item.revisao || ''}" style="width:100%;"></div>
             <div><label><b>Observações:</b></label><br><input type="text" id="m-obs" value="${item.obs || ''}" style="width:100%;"></div>
         `;
     }
@@ -638,11 +662,9 @@ function salvarModalAssunto() {
             proxima_acao: document.getElementById('m-proxima_acao').value,
             res1: document.getElementById('m-res1').value,
             res2: document.getElementById('m-res2').value,
-            revisao: document.getElementById('m-revisao').value,
             obs: document.getElementById('m-obs').value
         };
-        if (idx === "") appPt.push(obj);
-        else appPt[idx] = obj;
+        if (idx === "") appPt.push(obj); else appPt[idx] = obj;
         renderTabela('portugues');
     } else if (tipo === 'direito') {
         obj = {
@@ -654,11 +676,9 @@ function salvarModalAssunto() {
             proxima_acao: document.getElementById('m-proxima_acao').value,
             res1: document.getElementById('m-res1').value,
             res2: document.getElementById('m-res2').value,
-            revisao: document.getElementById('m-revisao').value,
             obs: document.getElementById('m-obs').value
         };
-        if (idx === "") appDir.push(obj);
-        else appDir[idx] = obj;
+        if (idx === "") appDir.push(obj); else appDir[idx] = obj;
         renderTabela('direito');
     } else if (tipo === 'rlm') {
         obj = {
@@ -670,25 +690,14 @@ function salvarModalAssunto() {
             proxima_acao: document.getElementById('m-proxima_acao').value,
             res1: document.getElementById('m-res1').value,
             res2: document.getElementById('m-res2').value,
-            revisao: document.getElementById('m-revisao').value,
             obs: document.getElementById('m-obs').value
         };
-        if (idx === "") appRlm.push(obj);
-        else appRlm[idx] = obj;
+        if (idx === "") appRlm.push(obj); else appRlm[idx] = obj;
         renderTabela('rlm');
     }
 
     salvarDados();
     fecharModal();
-}
-
-function deletarAssunto(tipo, idx) {
-    if (confirm("Tem certeza de que deseja excluir este assunto?")) {
-        if (tipo === 'portugues') { appPt.splice(idx, 1); renderTabela('portugues'); }
-        if (tipo === 'direito') { appDir.splice(idx, 1); renderTabela('direito'); }
-        if (tipo === 'rlm') { appRlm.splice(idx, 1); renderTabela('rlm'); }
-        salvarDados();
-    }
 }
 
 function salvarDados() {
@@ -804,6 +813,33 @@ function renderEvolucao() {
             <td><button class="btn btn-danger btn-sm" onclick="deletarEvolucao(${idx})">🗑️</button></td>
         `;
         tbody.appendChild(tr);
+    });
+
+    const semanas = [...new Set(evolucaoData.map(d => d.semana))];
+    const materias = ["Português", "Processo Penal", "Penal", "CPC", "Constitucional", "Administrativo", "Normas TJSP", "RLM", "Informática"];
+
+    let datasets = materias.map(mat => {
+        let dataVals = semanas.map(sem => {
+            let recs = evolucaoData.filter(d => d.semana === sem && d.materia === mat);
+            if (recs.length === 0) return null;
+            return (recs.reduce((a, r) => a + r.pct, 0) / recs.length).toFixed(1);
+        });
+
+        return {
+            label: mat,
+            data: dataVals,
+            spanGaps: true,
+            tension: 0.2
+        };
+    });
+
+    const ctx = document.getElementById('chartEvolucao').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: { labels: semanas, datasets: datasets },
+        options: { responsive: true, scales: { y: { min: 0, max: 100 } } }
     });
 }
 
