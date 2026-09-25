@@ -3,666 +3,1507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPS Escrevente — TJSP | Painel de Controle de Estudos</title>
+    <title>GPS Escrevente — TJSP</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --primary: #1e293b;
-            --accent: #2563eb;
-            --border: #e2e8f0;
-            --text: #334155;
+            --bg-page: #f4f6f9;
+            --bg-header: #1b2431;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
             --text-muted: #64748b;
-            --header-bg: #1e293b;
-            --table-header: #f1f5f9;
-            --table-hover: #f8fafc;
+            --primary-blue: #3b82f6;
+            --btn-salvar: #10b981;
+            --btn-exportar: #4b5563;
+            --btn-importar: #4f46e5;
+            --btn-resetar: #ef4444;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-green: #10b981;
+            --border-color: #cbd5e1;
+
+            --materia-portugues: #93c5fd;
+            --materia-penal: #fca5a5;
+            --materia-proc-penal: #fdba74;
+            --materia-proc-civil: #fde047;
+            --materia-const: #86efac;
+            --materia-admin: #67e8f9;
+            --materia-normas: #7dd3fc;
+            --materia-rlm: #c4b5fd;
+            --materia-matematica: #f472b6;
+            --materia-info: #a5b4fc;
+            --materia-atualidades: #bef264;
+            --materia-revisao: #fda4af;
+            --materia-descanso: #cbd5e1;
         }
 
         body.dark-mode {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --primary: #f8fafc;
-            --accent: #3b82f6;
-            --border: #334155;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --header-bg: #0f172a;
-            --table-header: #334155;
-            --table-hover: #1e293b;
+            --bg-page: #0f172a;
+            --bg-header: #1e293b;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border-color: #334155;
+            --primary-blue: #60a5fa;
         }
 
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; transition: background-color 0.3s, color 0.3s; }
-        .container { max-width: 1350px; margin: 0 auto; }
-        header { background: var(--header-bg); color: white; padding: 20px 25px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border: 1px solid var(--border); }
-        header h1 { margin: 0; font-size: 22px; font-weight: 700; }
-        
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; }
-        .tab-btn { background: none; border: none; padding: 10px 18px; font-size: 15px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.2s; }
-        .tab-btn.active { background: var(--accent); color: white; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-page); color: var(--text-main); padding-bottom: 20px; }
 
+        /* Modal de Acesso Bloqueado / Identificação */
+        #modal-acesso {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
+        }
+        .modal-card h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        .modal-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .modal-card input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--bg-page);
+            color: var(--text-main);
+            text-align: center;
+        }
+        .modal-card button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: var(--btn-salvar);
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .modal-card button:hover {
+            opacity: 0.9;
+        }
+
+        .header-bar {
+            background-color: var(--bg-header);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand h1 { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
+
+        .header-actions { display: flex; gap: 8px; align-items: center; }
+        .btn-hdr {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .btn-tema { background: #475569; }
+        .btn-salvar { background: var(--btn-salvar); }
+        .btn-exportar { background: var(--btn-exportar); }
+        .btn-importar { background: var(--btn-importar); }
+        .btn-resetar { background: var(--btn-resetar); }
+
+        .nav-container { padding: 0 15px; margin-top: 10px; }
+        .nav-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border-color); justify-content: space-between; overflow-x: auto; }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #334155;
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            flex: 1;
+            justify-content: center;
+        }
+        body.dark-mode .tab-btn { color: #f1f5f9; }
+        .tab-btn.active { background: var(--primary-blue); color: #ffffff !important; }
+
+        .main-container { padding: 15px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-
-        .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 15px; text-align: center; }
-        .kpi-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .kpi-val { font-size: 24px; font-weight: 800; color: var(--primary); margin-top: 5px; }
-
-        .progress-bar-container { background-color: var(--border); border-radius: 8px; height: 12px; width: 100%; overflow: hidden; margin-top: 8px; }
-        .progress-bar-fill { background-color: var(--accent); height: 100%; width: 0%; transition: width 0.3s ease; }
-
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: var(--table-header); color: var(--text); font-weight: 700; }
-        tr:hover { background: var(--table-hover); }
-
-        .badge { padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-block; }
-        .badge-alta { background: #fee2e2; color: #991b1b; }
-        .badge-media { background: #ffedd5; color: #9a3412; }
+        .table-card { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 15px; }
         
-        .status-nao-iniciado { background: #f1f5f9; color: #475569; }
+        .subfilter-bar { background: #f1f5f9; padding: 10px 15px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+        body.dark-mode .subfilter-bar { background: #0f172a; }
+        .subfilter-bar label { font-size: 0.82rem; font-weight: 800; color: var(--primary-blue); }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #e2e8f0; color: #0f172a; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 8px 10px; border-bottom: 2px solid var(--border-color); }
+        body.dark-mode th { background: #0f172a; color: #f8fafc; }
+        td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
+        
+        .txt-materia-destaque { font-weight: 800; color: #0f172a; font-size: 0.82rem; white-space: nowrap; }
+        body.dark-mode .txt-materia-destaque { color: #60a5fa; }
+
+        input[type="number"] { width: 55px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); }
+        .input-total-readonly { background: #e2e8f0; color: #475569; border: 1px solid var(--border-color); font-weight: 800; width: 55px; text-align: center; border-radius: 4px; padding: 4px; }
+        body.dark-mode .input-total-readonly { background: #334155; color: #cbd5e1; }
+
+        select, input[type="text"], input[type="date"] { padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); font-weight: 700; font-size: 0.8rem; }
+        
+        .dot { height: 14px; width: 14px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .dot-alta { background-color: var(--accent-red); }
+        .dot-media { background-color: var(--accent-yellow); }
+        .dot-baixa { background-color: var(--accent-green); }
+
+        .pct-badge { font-weight: 800; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
+        .pct-good { background: rgba(16,185,129,0.2); color: #047857; }
+        .pct-mid { background: rgba(245,158,11,0.2); color: #b45309; }
+        .pct-bad { background: rgba(239,68,68,0.2); color: #b91c1c; }
+
+        .status-container { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+        .status-badge { font-weight: 800; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; display: inline-block; }
         .status-ataque { background: #fee2e2; color: #991b1b; }
-        .status-consolidacao { background: #ffedd5; color: #9a3412; }
-        .status-manutencao { background: #dcfce7; color: #166534; }
-        .status-congelar { background: #e0e7ff; color: #3730a3; }
+        .status-consolidado { background: #dcfce7; color: #166534; }
+        .status-manutencao { background: #fef3c7; color: #92400e; }
+        .rev-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); display: flex; align-items: center; gap: 5px; white-space: nowrap; }
 
-        input[type="number"] { width: 55px; padding: 6px; border: 1px solid var(--border); border-radius: 6px; text-align: center; font-weight: 600; background: var(--card); color: var(--text); }
-        input[type="text"], textarea, select { padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--text); font-family: inherit; }
-        input[type="text"] { width: 85%; }
-        textarea { width: 100%; box-sizing: border-box; resize: vertical; min-height: 90px; }
+        .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
+        .redacao-col-left, .redacao-col-right { display: flex; flex-direction: column; gap: 15px; }
 
-        .btn { background: var(--accent); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
-        .btn:hover { opacity: 0.9; }
-        .btn-success { background: #16a34a; }
-        .btn-danger { background: #dc2626; }
-        .btn-secondary { background: #64748b; }
-        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        .panel-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
+        .panel-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 800; margin-bottom: 8px; }
 
-        .controls-bar { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-bottom: 15px; }
-        .tema-box { background: #eff6ff; border-left: 4px solid var(--accent); padding: 15px; border-radius: 6px; margin: 15px 0; color: #1e3a8a; }
-        body.dark-mode .tema-box { background: #1e293b; color: #93c5fd; border-left-color: #3b82f6; }
-        .redacao-section { margin-bottom: 15px; }
-        .redacao-section h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--accent); }
+        .timer-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .timer-display { font-size: 1.2rem; font-weight: 800; border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 4px; background: var(--bg-page); }
+        
+        .btn-sm { border: none; padding: 6px 10px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-iniciar { background: #10b981; }
+        .btn-pausar { background: #2563eb; }
+        .btn-zerar { background: #ef4444; }
+
+        .btn-del-row { background: transparent; border: none; font-size: 0.9rem; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+        .btn-del-row:hover { opacity: 1; }
+
+        .tema-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 10px; margin-top: 8px; font-size: 0.85rem; color: #1e40af; }
+        
+        .bloco-redacao { margin-top: 10px; }
+        .bloco-redacao label { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); display: block; margin-bottom: 3px; }
+        
+        .caixa-redacao {
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 8px 10px;
+            width: 100%;
+            height: 110px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .modo-caderno {
+            background-color: #fffdf9;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+        }
+        body.dark-mode .modo-caderno {
+            background-color: #1a2234;
+            background-image: linear-gradient(#334155 1px, transparent 1px);
+        }
+
+        .modo-digitacao {
+            background-color: var(--bg-page);
+            background-image: none;
+            line-height: normal;
+        }
+
+        .fonte-forma { font-family: 'Inter', sans-serif; font-size: 0.9rem; }
+        .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.45rem; }
+
+        .caderno-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; gap: 8px; }
+        .toolbar-options { display: flex; gap: 5px; }
+
+        .btn-action-group { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
+        .btn-purple { background: #7c3aed; }
+
+        .info-card-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 4px; padding: 8px; margin-top: 8px; font-size: 0.78rem; }
+        body.dark-mode .info-card-item { background: #0f172a; }
+        .info-card-item h4 { font-size: 0.82rem; color: var(--text-main); margin-bottom: 2px; font-weight: 700; }
+
+        .legend-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; margin-top: 15px; }
+        .legend-title { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .legend-group-title { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 6px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 0.78rem; }
+
+        .filter-panel { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--bg-card); padding: 10px 15px; border-radius: 6px; border: 1px solid var(--border-color); flex-wrap: wrap; }
+        .filter-panel label { font-weight: 800; font-size: 0.8rem; }
+
+        .evol-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 15px; }
+        .evol-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center; }
+        .evol-card h4 { font-size: 0.8rem; color: var(--primary-blue); font-weight: 800; margin-bottom: 4px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+        .evol-stats { display: flex; justify-content: space-around; font-size: 0.75rem; font-weight: 700; margin-top: 4px; }
+
+        .ciclo-grid-container { overflow-x: auto; margin-top: 8px; }
+        .ciclo-table { width: 100%; border-collapse: separate; border-spacing: 3px; min-width: 650px; }
+        .ciclo-table th { background: #475569; color: #ffffff; text-align: center; padding: 5px 3px; font-size: 0.72rem; font-weight: 800; border-radius: 4px; text-transform: uppercase; }
+        .ciclo-table td { background: #f1f5f9; vertical-align: top; padding: 3px; border-radius: 4px; border: 1px solid var(--border-color); width: 14%; }
+        body.dark-mode .ciclo-table td { background: #0f172a; }
+
+        .ciclo-card-slot { background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border-color); padding: 3px 5px; margin-bottom: 3px; display: flex; flex-direction: column; gap: 2px; position: relative; }
+        .badge-tipo-neutral { background-color: #e2e8f0; color: #1e293b; font-size: 0.6rem; font-weight: 800; padding: 1px 4px; border-radius: 6px; text-align: center; text-transform: uppercase; display: inline-block; border: 1px solid var(--border-color); }
+        body.dark-mode .badge-tipo-neutral { background-color: #334155; color: #f8fafc; }
+        .slot-materia-destaque { color: #0f172a; font-weight: 800; font-size: 0.72rem; text-align: center; padding: 3px 4px; border-radius: 3px; margin-top: 1px; text-transform: uppercase; line-height: 1.1; }
+        
+        .bg-mat-portugues { background-color: var(--materia-portugues); }
+        .bg-mat-penal { background-color: var(--materia-penal); }
+        .bg-mat-proc-penal { background-color: var(--materia-proc-penal); }
+        .bg-mat-proc-civil { background-color: var(--materia-proc-civil); }
+        .bg-mat-const { background-color: var(--materia-const); }
+        .bg-mat-admin { background-color: var(--materia-admin); }
+        .bg-mat-normas { background-color: var(--materia-normas); }
+        .bg-mat-rlm { background-color: var(--materia-rlm); }
+        .bg-mat-matematica { background-color: var(--materia-matematica); }
+        .bg-mat-info { background-color: var(--materia-info); }
+        .bg-mat-atualidades { background-color: var(--materia-atualidades); }
+        .bg-mat-revisao { background-color: var(--materia-revisao); }
+        .bg-mat-descanso { background-color: var(--materia-descanso); }
+
+        .slot-desc { font-size: 0.62rem; color: var(--text-muted); text-align: center; margin-top: 1px; line-height: 1; }
+        .etiquetas-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .etiqueta-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; }
+        .etiqueta-box { width: 12px; height: 12px; border-radius: 3px; }
+        .form-ciclo-inline { display: flex; gap: 8px; background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
+        .field-group { display: flex; flex-direction: column; gap: 3px; }
+        .field-group label { font-size: 0.72rem; font-weight: 800; color: var(--primary-blue); text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div>
-            <h1>🧭 GPS Escrevente — TJSP</h1>
-            <small style="opacity: 0.8">Gerenciador Estratégico: Português, Direito, RLM e Redação VUNESP</small>
-        </div>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn btn-secondary" onclick="toggleDarkMode()">🌙 Tema</button>
-            <button class="btn btn-success" onclick="salvarDados()">💾 Salvar</button>
-            <button class="btn btn-secondary" onclick="exportarBackup()">📥 Exportar</button>
-            <button class="btn btn-secondary" onclick="document.getElementById('file-import').click()">📤 Importar</button>
-            <input type="file" id="file-import" style="display:none" onchange="importarBackup(event)" accept=".json">
-            <button class="btn btn-danger" onclick="limparAlteracoes()">🗑️ Resetar</button>
-        </div>
-    </header>
-
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-portugues', event)">📘 Português</button>
-        <button class="tab-btn" onclick="switchTab('tab-direito', event)">⚖️ Direito (Bloco II)</button>
-        <button class="tab-btn" onclick="switchTab('tab-rlm', event)">📐 RLM e Informática</button>
-        <button class="tab-btn" onclick="switchTab('tab-redacao', event)">✍️ Redação VUNESP</button>
-        <button class="tab-btn" onclick="switchTab('tab-evolucao', event)">📈 Evolução Semanal</button>
-    </div>
-
-    <!-- TAB 1: PORTUGUÊS -->
-    <div id="tab-portugues" class="tab-content active">
-        <div class="card controls-bar">
-            <div style="flex-grow: 1;">
-                <label for="busca-pt">🔎 <b>Buscar em Português:</b></label>
-                <input type="text" id="busca-pt" placeholder="Digite o assunto ou palavra-chave..." oninput="renderTabela('portugues')" style="width: 100%;">
-            </div>
-        </div>
-        <div class="card" style="overflow-x: auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Prioridade / Incidência</th>
-                        <th>Assunto (Histórico VUNESP)</th>
-                        <th>Recorrência em Prova</th>
-                        <th>Próxima Ação</th>
-                        <th>Res. 1 (%)</th>
-                        <th>Res. 2 (%)</th>
-                        <th>Status Atual</th>
-                        <th>Observações</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-portugues"></tbody>
-            </table>
+    <!-- Modal Inicial de Autenticação / Identificação do Apoiador -->
+    <div id="modal-acesso">
+        <div class="modal-card">
+            <h2>Olá, apoiador!</h2>
+            <p>Digite seu e-mail para liberar o acesso ao GPS Escrevente:</p>
+            <input type="email" id="modal-input-email" placeholder="seu-email@exemplo.com">
+            <button id="btn-modal-acessar" onclick="verificarAcessoInicial()">Acessar GPS</button>
         </div>
     </div>
 
-    <!-- TAB 2: DIREITO -->
-    <div id="tab-direito" class="tab-content">
-        <div class="card controls-bar">
-            <div>
-                <label for="filtro-dir">🔍 <b>Matéria:</b></label>
-                <select id="filtro-dir" onchange="renderTabela('direito')">
-                    <option value="TODAS">Todas as Matérias</option>
-                    <option value="Processo Penal">Processo Penal</option>
-                    <option value="Penal">Penal</option>
-                    <option value="CPC">CPC</option>
-                    <option value="Constitucional">Constitucional</option>
-                    <option value="Administrativo">Administrativo</option>
-                    <option value="Normas TJSP">Normas TJSP</option>
-                </select>
-            </div>
-            <div style="flex-grow: 1;">
-                <label for="busca-dir">🔎 <b>Buscar no Direito:</b></label>
-                <input type="text" id="busca-dir" placeholder="Digite o assunto ou artigo..." oninput="renderTabela('direito')" style="width: 100%;">
-            </div>
+    <div class="header-bar">
+        <div class="brand">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3L4 6V12C4 16.97 7.41 21.5 12 22C16.59 21.5 20 16.97 20 12V6L12 3Z" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+              <circle cx="12" cy="11" r="4" stroke="#a78bfa" stroke-width="1.5"/>
+              <circle cx="12" cy="11" r="1.5" fill="#38bdf8"/>
+              <path d="M12 5V7M12 15V17M6 11H8M16 11H18" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <h1>GPS Escrevente — TJSP</h1>
         </div>
-        <div class="card" style="overflow-x: auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Matéria</th>
-                        <th>Prioridade</th>
-                        <th>Assunto</th>
-                        <th>Artigos / Trecho</th>
-                        <th>Meta %</th>
-                        <th>Próxima Ação</th>
-                        <th>Res. 1 (%)</th>
-                        <th>Res. 2 (%)</th>
-                        <th>Status Atual</th>
-                        <th>Observações</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-direito"></tbody>
-            </table>
+        <div class="header-actions">
+            <input type="email" id="email-aluno" placeholder="Digite seu e-mail..." style="padding: 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: bold; width: 250px; color: var(--text-main);">
+            <button class="btn-hdr btn-tema" onclick="toggleTema()">🌙 Tema</button>
+            <button class="btn-hdr btn-salvar" onclick="salvarNuvemSheets()">☁️ Salvar Nuvem</button>
+            <button class="btn-hdr btn-importar" onclick="carregarNuvemSheets()">🔄 Sincronizar</button>
+            <button class="btn-hdr btn-exportar" onclick="exportarBackup()">📤 Exportar Backup</button>
+            <input type="file" id="file-input" style="display:none;" onchange="importarBackup(event)">
+            <button class="btn-hdr btn-resetar" onclick="resetarDados()">🗑️ Resetar</button>
         </div>
     </div>
 
-    <!-- TAB 3: RLM E INFORMÁTICA -->
-    <div id="tab-rlm" class="tab-content">
-        <div class="card controls-bar">
-            <div style="flex-grow: 1;">
-                <label for="busca-rlm">🔎 <b>Buscar em RLM/Informática:</b></label>
-                <input type="text" id="busca-rlm" placeholder="Digite o assunto..." oninput="renderTabela('rlm')" style="width: 100%;">
-            </div>
-        </div>
-        <div class="card" style="overflow-x: auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Área</th>
-                        <th>Prioridade</th>
-                        <th>Assunto</th>
-                        <th>Foco Principal</th>
-                        <th>Meta %</th>
-                        <th>Próxima Ação</th>
-                        <th>Res. 1 (%)</th>
-                        <th>Res. 2 (%)</th>
-                        <th>Status Atual</th>
-                        <th>Observações</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-rlm"></tbody>
-            </table>
+    <div class="nav-container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('portugues')">📘 Português</button>
+            <button class="tab-btn" onclick="switchTab('direito')">⚖️ Direito</button>
+            <button class="tab-btn" onclick="switchTab('rlm')">📐 RLM</button>
+            <button class="tab-btn" onclick="switchTab('matematica')">🧮 Matemática</button>
+            <button class="tab-btn" onclick="switchTab('informatica')">💻 Informática</button>
+            <button class="tab-btn" onclick="switchTab('atualidades')">📰 Atualidades</button>
+            <button class="tab-btn" onclick="switchTab('redacao')">✍️ Redação</button>
+            <button class="tab-btn" onclick="switchTab('evolucao')">📊 Evolução</button>
+            <button class="tab-btn" onclick="switchTab('configuracoes')">⚙️ Configurações</button>
         </div>
     </div>
 
-    <!-- TAB 4: REDAÇÃO VUNESP -->
-    <div id="tab-redacao" class="tab-content">
-        <div class="card">
-            <h3>🎲 Sorteador de Temas de Redação (Padrão VUNESP)</h3>
-            <p style="font-size: 14px; opacity: 0.8;">A VUNESP costuma cobrar temas transversais, de impacto social, ético ou tecnológico, exigindo posicionamento claro.</p>
-            <button class="btn btn-success" onclick="gerarTemaRandomico()">🎲 Gerar Tema Aleatório</button>
-            <div class="tema-box" id="box-tema">
-                <b>Tema Atual:</b> Clique no botão acima para sortear um tema de treino.
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>📝 Esqueleto e Treino de Redação Dissertativo-Argumentativa</h3>
-            
-            <div class="redacao-section">
-                <h4>1. Introdução (Apresentação do Tema + Tese + Projeto de Texto)</h4>
-                <small style="opacity:0.7">Apresente a problemática e explicite claramente seu posicionamento (Tese).</small>
-                <textarea id="red-intro" placeholder="Ex: No cenário contemporâneo, a discussão sobre [Tema] revela-se central. Nesse contexto, cabe analisar não apenas [Argumento 1], mas também [Argumento 2]..." onchange="salvarRedacao()"></textarea>
-            </div>
-
-            <div class="redacao-section">
-                <h4>2. Desenvolvimento 1 (Defesa do Argumento 1 + Comprovação)</h4>
-                <small style="opacity:0.7">Aprofunde a primeira causa/efeito e traga fundamentação lógica ou repertório de apoio.</small>
-                <textarea id="red-arg1" placeholder="Ex: Em primeiro lugar, vale ressaltar que [Argumento 1]. De acordo com [Repertório/Fato], observa-se que... Logo, torna-se evidente que..." onchange="salvarRedacao()"></textarea>
-            </div>
-
-            <div class="redacao-section">
-                <h4>3. Desenvolvimento 2 (Defesa do Argumento 2 + Aprofundamento)</h4>
-                <small style="opacity:0.7">Desenvolva o segundo aspecto do problema, mantendo a coerência com a tese.</small>
-                <textarea id="red-arg2" placeholder="Ex: Ademais, é imperioso destacar [Argumento 2]. Essa realidade se manifesta quando... Consequentemente,..." onchange="salvarRedacao()"></textarea>
-            </div>
-
-            <div class="redacao-section">
-                <h4>4. Conclusão (Sintese + Fechamento Crítico)</h4>
-                <small style="opacity:0.7">Sintetize os argumentos e reforce a tese. *Nota: A VUNESP não exige obrigatoriamente proposta de intervenção nos moldes do ENEM, apenas o fechamento reflexivo.*</small>
-                <textarea id="red-concl" placeholder="Ex: Depreende-se, portanto, que [Reafirmação da Tese]. Assim, mediante [Ações/Reflexão], será possível superar os entraves apontados e promover..." onchange="salvarRedacao()"></textarea>
-            </div>
-            
-            <button class="btn btn-success" onclick="salvarRedacao(); alert('Redação salva com sucesso!')">💾 Salvar Treino de Redação</button>
-        </div>
-    </div>
-
-    <!-- TAB 5: EVOLUÇÃO SEMANAL -->
-    <div id="tab-evolucao" class="tab-content">
-        <div class="card">
-            <h3>➕ Registrar Desempenho Semanal</h3>
-            <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                <div>
-                    <label><b>Semana:</b></label><br>
-                    <input type="text" id="sem-nome" placeholder="Ex: Semana 1" style="width: 120px;">
-                </div>
-                <div>
-                    <label><b>Matéria:</b></label><br>
-                    <select id="sem-materia">
-                        <option>Português</option>
-                        <option>Processo Penal</option>
-                        <option>Penal</option>
-                        <option>CPC</option>
-                        <option>Constitucional</option>
-                        <option>Administrativo</option>
-                        <option>Normas TJSP</option>
-                        <option>RLM</option>
-                        <option>Informática</option>
+    <div class="main-container">
+        <div id="portugues" class="tab-content active"><div class="table-card"><div id="table-portugues"></div></div></div>
+        
+        <div id="direito" class="tab-content">
+            <div class="table-card">
+                <div class="subfilter-bar">
+                    <label>Filtrar Ramo do Direito:</label>
+                    <select id="select-ramo-direito" onchange="renderTabelaDireito()">
+                        <option value="todos">Todos os Ramos</option>
+                        <option value="Direito Penal">Direito Penal</option>
+                        <option value="Direito Processual Penal">Direito Processual Penal</option>
+                        <option value="Direito Processual Civil">Direito Processual Civil</option>
+                        <option value="Direito Constitucional">Direito Constitucional</option>
+                        <option value="Direito Administrativo">Direito Administrativo</option>
+                        <option value="Normas da Corregedoria">Normas da Corregedoria</option>
                     </select>
                 </div>
-                <div>
-                    <label><b>% de Acerto:</b></label><br>
-                    <input type="number" id="sem-pct" placeholder="80"> %
+                <div id="table-direito"></div>
+            </div>
+        </div>
+
+        <div id="rlm" class="tab-content"><div class="table-card"><div id="table-rlm"></div></div></div>
+        <div id="matematica" class="tab-content"><div class="table-card"><div id="table-matematica"></div></div></div>
+        <div id="informatica" class="tab-content"><div class="table-card"><div id="table-informatica"></div></div></div>
+        <div id="atualidades" class="tab-content"><div class="table-card"><div id="table-atualidades"></div></div></div>
+
+        <div id="redacao" class="tab-content">
+            <div class="redacao-grid">
+                <div class="redacao-col-left">
+                    <div class="panel-card">
+                        <h3>⏱️ Cronômetro</h3>
+                        <div class="timer-row">
+                            <div class="timer-display" id="timer">00:00:00</div>
+                            <button class="btn-sm btn-iniciar" onclick="iniciarTimer()">▶ Iniciar</button>
+                            <button class="btn-sm btn-pausar" onclick="pausarTimer()">⏸ Pausar</button>
+                            <button class="btn-sm btn-zerar" onclick="zerarTimer()">⏹ Zerar</button>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>🎲 Sorteador de Temas VUNESP</h3>
+                            <button class="btn-sm btn-zerar" onclick="excluirTemaAtual()" title="Excluir Tema">🗑️ Excluir Tema</button>
+                        </div>
+                        <button class="btn-sm btn-iniciar" style="margin-top: 6px;" onclick="sortearTema()">🎲 Gerar Tema Aleatório</button>
+                        <div class="tema-box" id="display-tema">
+                            <b>Tema Atual:</b> Clique no botão acima para sortear.
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h3 style="margin-bottom: 0;">📝 Treino de Redação</h3>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="toolbar-options" style="display: flex; gap: 5px;">
+                                    <select id="modo-global" onchange="mudarModoGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px;">
+                                        <option value="caderno">Modo: Caderno</option>
+                                        <option value="digitacao">Modo: Digitação</option>
+                                    </select>
+                                    <select id="fonte-global" onchange="mudarFonteGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px;">
+                                        <option value="forma">Forma</option>
+                                        <option value="cursiva">Cursiva</option>
+                                    </select>
+                                </div>
+                                <span style="font-size: 0.78rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">Total: 0 palavras (~0 linhas)</span>
+                            </div>
+                        </div>
+
+                        <div class="bloco-redacao">
+                            <label>1. Introdução</label>
+                            <textarea id="red-intro" class="caixa-redacao modo-caderno fonte-forma" placeholder="Apresentação do tema + Tese..." oninput="calcularPalavrasRedacao()"></textarea>
+                        </div>
+
+                        <div class="bloco-redacao">
+                            <label>2. Desenvolvimento 1</label>
+                            <textarea id="red-dev1" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do primeiro argumento..." oninput="calcularPalavrasRedacao()"></textarea>
+                        </div>
+
+                        <div class="bloco-redacao">
+                            <label>3. Desenvolvimento 2</label>
+                            <textarea id="red-dev2" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do segundo argumento..." oninput="calcularPalavrasRedacao()"></textarea>
+                        </div>
+
+                        <div class="bloco-redacao">
+                            <label>4. Conclusão</label>
+                            <textarea id="red-concl" class="caixa-redacao modo-caderno fonte-forma" placeholder="Fechamento do texto..." oninput="calcularPalavrasRedacao()"></textarea>
+                        </div>
+
+                        <div class="btn-action-group">
+                            <button class="btn-hdr btn-salvar" onclick="salvarDados()">💾 Salvar Local</button>
+                            <button class="btn-hdr btn-purple" onclick="copiarPromptGemini()">📋 Copie e cole no Gemini</button>
+                            <button class="btn-hdr btn-exportar" onclick="exportarTXT()">📄 Exportar TXT</button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label><b>Questões Feitas:</b></label><br>
-                    <input type="number" id="sem-qtd" placeholder="30">
-                </div>
-                <div style="margin-top: 18px;">
-                    <button class="btn" onclick="addEvolucao()">Adicionar Registro</button>
+
+                <div class="redacao-col-right">
+                    <div class="panel-card">
+                        <h3>💡 Dicas VUNESP</h3>
+                        <div class="info-card-item">
+                            <h4>1. Estrutura sem Proposta</h4>
+                            <p>Sintetize a tese na conclusão sem exigência de intervenção.</p>
+                        </div>
+                        <div class="info-card-item">
+                            <h4>2. Tese Clara</h4>
+                            <p>Defina o posicionamento no 1º parágrafo.</p>
+                        </div>
+                        <div class="info-card-item">
+                            <h4>3. Conectivos</h4>
+                            <p>Use elementos coesivos no início dos parágrafos.</p>
+                        </div>
+                        <div class="info-card-item">
+                            <h4>4. Foco Temático</h4>
+                            <p>Use as palavras-chave ao longo do texto.</p>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3>📚 Repertório</h3>
+                        <div class="info-card-item">
+                            <h4>Machado de Assis</h4>
+                            <p>Fragilidade da razão e aparências sociais.</p>
+                        </div>
+                        <div class="info-card-item">
+                            <h4>Zygmunt Bauman</h4>
+                            <p>Relações fluidas, consumo e trabalho.</p>
+                        </div>
+                        <div class="info-card-item">
+                            <h4>Sérgio Buarque de Holanda</h4>
+                            <p>O Homem Cordial e o público vs. privado.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid-2">
-            <div class="card">
-                <h3>📈 Evolução Média % por Matéria</h3>
-                <canvas id="chartEvolucao" height="200"></canvas>
+        <div id="evolucao" class="tab-content">
+            <div class="panel-card">
+                <h3>📈 Progresso de Cobertura do Edital TJSP</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Compare o seu avanço prático (questões resolvidas) em relação aos tópicos exigidos no edital oficial:</p>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="chartProgressoEdital"></canvas>
+                </div>
             </div>
-            <div class="card">
-                <h3>📋 Histórico de Registros</h3>
-                <table>
-                    <thead>
-                        <tr><th>Semana</th><th>Matéria</th><th>% Acerto</th><th>Qtd Q.</th><th>Ação</th></tr>
-                    </thead>
-                    <tbody id="tbody-historico"></tbody>
-                </table>
+
+            <div class="panel-card">
+                <h3>📊 Desempenho por Período & Matéria</h3>
+                <div class="filter-panel">
+                    <label>Filtrar Matéria:</label>
+                    <select id="select-materia-evol" onchange="renderGraficoEvolucao()">
+                        <option value="todas">Todas as Matérias</option>
+                        <option value="portugues">📘 Português</option>
+                        <option value="direito">⚖️ Direito</option>
+                        <option value="rlm">📐 RLM</option>
+                        <option value="matematica">🧮 Matemática</option>
+                        <option value="informatica">💻 Informática</option>
+                        <option value="atualidades">📰 Atualidades</option>
+                    </select>
+
+                    <label style="margin-left: 10px;">Início:</label>
+                    <input type="date" id="date-start" onchange="renderGraficoEvolucao()">
+                    <label>Fim:</label>
+                    <input type="date" id="date-end" onchange="renderGraficoEvolucao()">
+                    <button class="btn-hdr btn-salvar" onclick="filtrarHoje()">Semana Atual</button>
+                </div>
+
+                <div style="height: 250px; position: relative; margin-top: 10px;">
+                    <canvas id="chartEvolucao"></canvas>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <h3 style="font-size: 0.88rem; color: var(--primary-blue);">Desempenho Detalhado</h3>
+                    <div class="evol-grid" id="evol-cards-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="configuracoes" class="tab-content">
+            <div class="panel-card">
+                <h3>➕ Adicionar Assunto</h3>
+                <div class="form-add" style="display: grid; grid-template-columns: 220px 1fr 140px; gap: 10px; align-items: end;">
+                    <div>
+                        <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Disciplina:</label>
+                        <select id="add-materia-select">
+                            <option value="portugues">📘 Português</option>
+                            <option value="direito_penal">⚖️ Direito Penal</option>
+                            <option value="direito_proc_penal">⚖️ Direito Processual Penal</option>
+                            <option value="direito_proc_civil">⚖️ Direito Processual Civil</option>
+                            <option value="direito_const">⚖️ Direito Constitucional</option>
+                            <option value="direito_admin">⚖️ Direito Administrativo</option>
+                            <option value="normas_corregedoria">⚖️ Normas da Corregedoria</option>
+                            <option value="rlm">📐 RLM</option>
+                            <option value="matematica">🧮 Matemática</option>
+                            <option value="informatica">💻 Informática</option>
+                            <option value="atualidades">📰 Atualidades</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Descrição do Assunto:</label>
+                        <input type="text" id="add-assunto-input">
+                    </div>
+                    <button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarNovoAssunto()">💾 Salvar Assunto</button>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <h3>🗓️ Ciclo de Estudos Semanal (Grade Personalizável)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Monte e organize sua rotina semanal configurando a matéria e o tempo de estudo:</p>
+                
+                <div class="form-ciclo-inline">
+                    <div class="field-group">
+                        <label>Dia</label>
+                        <select id="ciclo-dia">
+                            <option value="Segunda">Segunda</option>
+                            <option value="Terça">Terça</option>
+                            <option value="Quarta">Quarta</option>
+                            <option value="Quinta">Quinta</option>
+                            <option value="Sexta">Sexta</option>
+                            <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label>hrs</label>
+                        <input type="number" id="ciclo-tempo" min="1" max="12" value="2" style="width: 50px;">
+                    </div>
+
+                    <div class="field-group">
+                        <label>Tipo</label>
+                        <select id="ciclo-tipo">
+                            <option value="teoria">TEORIA</option>
+                            <option value="questoes">QUESTÕES</option>
+                            <option value="revisao-teorica">REVISÃO TEÓRICA</option>
+                            <option value="revisao-questoes">REVISÃO QUESTÕES</option>
+                            <option value="descanso">DESCANSO</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group" style="flex: 1;">
+                        <label>Matéria</label>
+                        <select id="ciclo-materia-select">
+                            <option value="Língua Portuguesa">Língua Portuguesa</option>
+                            <option value="Direito Penal">Direito Penal</option>
+                            <option value="Direito Processual Penal">Direito Processual Penal</option>
+                            <option value="Direito Processual Civil">Direito Processual Civil</option>
+                            <option value="Direito Constitucional">Direito Constitucional</option>
+                            <option value="Direito Administrativo">Direito Administrativo</option>
+                            <option value="Normas da Corregedoria">Normas da Corregedoria</option>
+                            <option value="R. Lógico">R. Lógico</option>
+                            <option value="Matemática">Matemática</option>
+                            <option value="Informática">Informática</option>
+                            <option value="Atualidades">Atualidades</option>
+                            <option value="Revisão Geral">Revisão Geral</option>
+                            <option value="DESCANSO">DESCANSO</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group" style="flex: 1;">
+                        <label>Detalhe / Obs</label>
+                        <input type="text" id="ciclo-desc" placeholder="Opcional">
+                    </div>
+
+                    <button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarSlotCiclo()">➕ Adicionar</button>
+                </div>
+
+                <div class="ciclo-grid-container">
+                    <table class="ciclo-table">
+                        <thead>
+                            <tr>
+                                <th>SEGUNDA</th>
+                                <th>TERÇA</th>
+                                <th>QUARTA</th>
+                                <th>QUINTA</th>
+                                <th>SEXTA</th>
+                                <th>SÁBADO</th>
+                                <th>DOMINGO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="col-Segunda"></td>
+                                <td id="col-Terça"></td>
+                                <td id="col-Quarta"></td>
+                                <td id="col-Quinta"></td>
+                                <td id="col-Sexta"></td>
+                                <td id="col-Sábado"></td>
+                                <td id="col-Domingo"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="etiquetas-container">
+                    <div style="font-size: 0.75rem; font-weight: 800; width: 100%; margin-bottom: 2px;">CORES DE DESTAQUE POR MATÉRIA:</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-portugues"></div> Português</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-penal"></div> D. Penal</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-penal"></div> D. Proc. Penal</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-civil"></div> D. Proc. Civil</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-const"></div> D. Constitucional</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-admin"></div> D. Administrativo</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-normas"></div> Normas Corregedoria</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-rlm"></div> RLM</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-matematica"></div> Matemática</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-info"></div> Informática</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-atualidades"></div> Atualidades</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-revisao"></div> Revisões</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-descanso"></div> Descanso</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend-box" id="global-legend-box">
+            <div class="legend-title">LEGENDAS DO PAINEL</div>
+            <div class="legend-grid">
+                <div>
+                    <div class="legend-group-title">Nível de Prioridade</div>
+                    <div class="legend-item"><span class="dot dot-alta"></span> <span class="text"><b>Vermelho:</b> Alta (Histórico frequente na VUNESP)</span></div>
+                    <div class="legend-item"><span class="dot dot-media"></span> <span class="text"><b>Amarelo:</b> Média</span></div>
+                    <div class="legend-item"><span class="dot dot-baixa"></span> <span class="text"><b>Verde:</b> Baixa</span></div>
+                </div>
+                <div>
+                    <div class="legend-group-title">Status do Aprendizado (Automático)</div>
+                    <div class="legend-item"><span class="status-badge status-ataque">Ataque</span> <span class="text">0% a 59% (Revisão em 1 dia)</span></div>
+                    <div class="legend-item"><span class="status-badge status-manutencao">Manutenção</span> <span class="text">60% a 79% (Revisão em 7 dias)</span></div>
+                    <div class="legend-item"><span class="status-badge status-consolidado">Consolidado</span> <span class="text">80% a 100% (Revisão em 15 dias)</span></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-// DADOS INICIAIS BASEADOS NOS ÚLTIMOS CONCURSOS DO TJSP VUNESP
-const dadosPortugues = [
-    {"prioridade": "🔴 Altíssima", "assunto": "Interpretação e Compreensão de Texto", "recorrencia": "25% a 30% da prova", "proxima_acao": "Bateria diária de 5 textos VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Sintaxe: Regência (Verbal e Nominal) e Crase", "recorrencia": "Sempre cobrado (2-3 qst)", "proxima_acao": "Revisão dos verbos coringa + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Pontuação (Em especial uso da Vírgula)", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Treino de isolamento de adjunto adverbial", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Conjunções e Coesão Textual", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Mapeamento das conformativas/concessivas", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Colocação Pronominal (Próclise, Érclise, Mesóclise)", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Decorar palavras atrativas + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Concordância Verbal e Nominal", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Casos especiais (sujeito composto, verbo haver/fazer)", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Substituição e Reescrita de Frases", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Treino de equivalência de sentido e correção", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟡 Média", "assunto": "Classes de Palavras (Substantivo, Adjetivo, Advérbio)", "recorrencia": "Recorrente", "proxima_acao": "Questões de valor semântico das palavras", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟡 Média", "assunto": "Sinônimos, Antônimos e Sentido Figurado", "recorrencia": "Recorrente", "proxima_acao": "Leitura e contexto em questões VUNESP", "res1": "", "res2": "", "obs": ""}
-];
-
-const dadosDireito = [
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Citação e intimação", "artigos": "351–372", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum", "artigos": "394–405", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Prisão e medidas cautelares", "artigos": "282–316", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes funcionais", "artigos": "312–317; 319–327", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes praticados por particular", "artigos": "329–333", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Prazos e Comunicação de Atos", "artigos": "212–275", "meta": "85%", "proxima_acao": "Lei + questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum e Tutelas", "artigos": "294–357", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Constitucional", "prioridade": "🔴 Muito alta", "assunto": "Direitos e garantias fundamentais", "artigos": "Art. 5º", "meta": "85%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Administrativo", "prioridade": "🔴 Muito alta", "assunto": "Atos e Sanções de Improbidade", "artigos": "Lei 8.429/92", "meta": "80%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Normas TJSP", "prioridade": "🔴 Muito alta", "assunto": "Função correicional e Ofícios", "artigos": "Arts. 1–11; 47–65", "meta": "80%", "proxima_acao": "Estudo direto das normas", "res1": "", "res2": "", "obs": ""}
-];
-
-const dadosRLM = [
-    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Tabela Verdade e Equivalências Lógicas", "foco": "Se...então, Negações de conectivos", "meta": "80%", "proxima_acao": "Tabela de memorização + questões", "res1": "", "res2": "", "obs": ""},
-    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Sequências Lógicas e Diagramas Lógicos", "foco": "Conjuntos e identificação de padrões", "meta": "80%", "proxima_acao": "15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Windows 11 e Gerenciamento de Arquivos", "foco": "Atalhos, pasta de arquivos, configurações", "meta": "85%", "proxima_acao": "Prática no sistema + questões", "res1": "", "res2": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Word e MS-Excel (Fórmulas)", "foco": "PROCV, SE, SOMASE, formatação", "meta": "85%", "proxima_acao": "Treino prático das fórmulas", "res1": "", "res2": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🟠 Alta", "assunto": "Correio Eletrônico e Internet/Segurança", "foco": "Campos Cco, protocolos, phishing/malware", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "obs": ""}
-];
-
-const temasVunesp = [
-    "O impacto do uso de inteligência artificial na privacidade do cidadão e no mercado de trabalho.",
-    "A cultura do cancelamento nas redes sociais: justiça comunitária ou limitação à liberdade de expressão?",
-    "Trabalho remoto e saúde mental: os limites entre a produtividade e a desconexão necessária.",
-    "O envelhecimento da população brasileira e os desafios da assistência social e urbana.",
-    "Lixo eletrônico e o consumo desenfreado de tecnologia: responsabilidade individual ou corporativa?",
-    "A persistência do analfabetismo funcional no Brasil contemporâneo.",
-    "O papel das redes sociais na disseminação de notícias falsas e a ameaça à democracia."
-];
-
-let appPt = JSON.parse(localStorage.getItem('gps_tjsp_pt')) || JSON.parse(JSON.stringify(dadosPortugues));
-let appDir = JSON.parse(localStorage.getItem('gps_tjsp_dir')) || JSON.parse(JSON.stringify(dadosDireito));
-let appRlm = JSON.parse(localStorage.getItem('gps_tjsp_rlm')) || JSON.parse(JSON.stringify(dadosRLM));
-let evolucaoData = JSON.parse(localStorage.getItem('gps_tjsp_evolucao')) || [];
-let redacaoSalva = JSON.parse(localStorage.getItem('gps_tjsp_red')) || { intro: "", arg1: "", arg2: "", concl: "", tema: "" };
-
-let isDarkMode = localStorage.getItem('gps_tjsp_dark') === 'true';
-let chartInstance = null;
-
-if (isDarkMode) document.body.classList.add('dark-mode');
-
-function toggleDarkMode() {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    localStorage.setItem('gps_tjsp_dark', isDarkMode);
-}
-
-function switchTab(tabId, ev) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    
-    ev.target.classList.add('active');
-    document.getElementById(tabId).classList.add('active');
-
-    if (tabId === 'tab-portugues') renderTabela('portugues');
-    if (tabId === 'tab-direito') renderTabela('direito');
-    if (tabId === 'tab-rlm') renderTabela('rlm');
-    if (tabId === 'tab-evolucao') renderEvolucao();
-}
-
-function calcStatus(res1, res2) {
-    let r1 = res1 !== "" && res1 !== null ? parseFloat(res1) : null;
-    let r2 = res2 !== "" && res2 !== null ? parseFloat(res2) : null;
-
-    if (r1 === null && r2 === null) return { txt: "⚪ Não iniciado", cls: "status-nao-iniciado" };
-
-    let vals = [];
-    if (r1 !== null) vals.push(r1);
-    if (r2 !== null) vals.push(r2);
-
-    let minVal = Math.min(...vals);
-
-    if (minVal < 65) return { txt: "🔴 ATAQUE", cls: "status-ataque" };
-    if (minVal < 80) return { txt: "🟠 CONSOLIDAÇÃO", cls: "status-consolidacao" };
-    if (minVal < 90) return { txt: "🟢 MANUTENÇÃO", cls: "status-manutencao" };
-    return { txt: "⭐ CONGELAR", cls: "status-congelar" };
-}
-
-function editarAssunto(tipo, idx) {
-    let list = tipo === 'pt' ? appPt : tipo === 'dir' ? appDir : appRlm;
-    let novo = prompt("Editar Assunto:", list[idx].assunto);
-    if (novo !== null && novo.trim() !== "") {
-        list[idx].assunto = novo.trim();
-        salvarDados();
-        let aba = (tipo === 'pt') ? 'portugues' : (tipo === 'dir') ? 'direito' : 'rlm';
-        renderTabela(aba);
-    }
-}
-
-function renderTabela(tipo) {
-    let data, tbody, buscaVal, filtroVal;
-
-    if (tipo === 'portugues') {
-        data = appPt;
-        tbody = document.getElementById('tbody-portugues');
-        buscaVal = document.getElementById('busca-pt').value.toLowerCase().trim();
-    } else if (tipo === 'direito') {
-        data = appDir;
-        tbody = document.getElementById('tbody-direito');
-        buscaVal = document.getElementById('busca-dir').value.toLowerCase().trim();
-        filtroVal = document.getElementById('filtro-dir').value;
-    } else if (tipo === 'rlm') {
-        data = appRlm;
-        tbody = document.getElementById('tbody-rlm');
-        buscaVal = document.getElementById('busca-rlm').value.toLowerCase().trim();
-    }
-
-    tbody.innerHTML = '';
-
-    data.forEach((row, idx) => {
-        let matchBusca = !buscaVal || Object.values(row).some(v => String(v).toLowerCase().includes(buscaVal));
-        let matchFiltro = !filtroVal || filtroVal === "TODAS" || row.materia === filtroVal;
-
-        if (!matchBusca || !matchFiltro) return;
-
-        let statusObj = calcStatus(row.res1, row.res2);
-        let tr = document.createElement('tr');
-
-        if (tipo === 'portugues') {
-            tr.innerHTML = `
-                <td><span class="badge ${row.prioridade.includes('Altíssima') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td>
-                    <button onclick="editarAssunto('pt', ${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0; margin-right:5px;" title="Editar Assunto">✏️</button>
-                    <b>${row.assunto}</b>
-                </td>
-                <td><code>${row.recorrencia}</code></td>
-                <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
-                <td><input type="number" value="${row.res1}" onchange="updateRow('pt', ${idx}, 'res1', this.value)"> %</td>
-                <td><input type="number" value="${row.res2}" onchange="updateRow('pt', ${idx}, 'res2', this.value)"> %</td>
-                <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
-                <td><input type="text" value="${row.obs}" onchange="updateRow('pt', ${idx}, 'obs', this.value)"></td>
-                <td><button class="btn btn-danger btn-sm" onclick="limparRow('pt', ${idx})">❌</button></td>
-            `;
-        } else if (tipo === 'direito') {
-            tr.innerHTML = `
-                <td><b>${row.materia}</b></td>
-                <td><span class="badge ${row.prioridade.includes('Muito') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td>
-                    <button onclick="editarAssunto('dir', ${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0; margin-right:5px;" title="Editar Assunto">✏️</button>
-                    <b>${row.assunto}</b>
-                </td>
-                <td><code>${row.artigos}</code></td>
-                <td><b>${row.meta}</b></td>
-                <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
-                <td><input type="number" value="${row.res1}" onchange="updateRow('dir', ${idx}, 'res1', this.value)"> %</td>
-                <td><input type="number" value="${row.res2}" onchange="updateRow('dir', ${idx}, 'res2', this.value)"> %</td>
-                <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
-                <td><input type="text" value="${row.obs}" onchange="updateRow('dir', ${idx}, 'obs', this.value)"></td>
-                <td><button class="btn btn-danger btn-sm" onclick="limparRow('dir', ${idx})">❌</button></td>
-            `;
-        } else if (tipo === 'rlm') {
-            tr.innerHTML = `
-                <td><b>${row.area}</b></td>
-                <td><span class="badge ${row.prioridade.includes('Muito') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td>
-                    <button onclick="editarAssunto('rlm', ${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0; margin-right:5px;" title="Editar Assunto">✏️</button>
-                    <b>${row.assunto}</b>
-                </td>
-                <td><code>${row.foco}</code></td>
-                <td><b>${row.meta}</b></td>
-                <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
-                <td><input type="number" value="${row.res1}" onchange="updateRow('rlm', ${idx}, 'res1', this.value)"> %</td>
-                <td><input type="number" value="${row.res2}" onchange="updateRow('rlm', ${idx}, 'res2', this.value)"> %</td>
-                <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
-                <td><input type="text" value="${row.obs}" onchange="updateRow('rlm', ${idx}, 'obs', this.value)"></td>
-                <td><button class="btn btn-danger btn-sm" onclick="limparRow('rlm', ${idx})">❌</button></td>
-            `;
-        }
-        tbody.appendChild(tr);
-    });
-}
-
-function updateRow(tipo, idx, field, val) {
-    if (tipo === 'pt') appPt[idx][field] = val;
-    if (tipo === 'dir') appDir[idx][field] = val;
-    if (tipo === 'rlm') appRlm[idx][field] = val;
-    salvarDados();
-}
-
-function limparRow(tipo, idx) {
-    if (confirm("Zerar notas e observações desta linha?")) {
-        if (tipo === 'pt') { appPt[idx].res1 = ""; appPt[idx].res2 = ""; appPt[idx].obs = ""; renderTabela('portugues'); }
-        if (tipo === 'dir') { appDir[idx].res1 = ""; appDir[idx].res2 = ""; appDir[idx].obs = ""; renderTabela('direito'); }
-        if (tipo === 'rlm') { appRlm[idx].res1 = ""; appRlm[idx].res2 = ""; appRlm[idx].obs = ""; renderTabela('rlm'); }
-        salvarDados();
-    }
-}
-
-function salvarDados() {
-    localStorage.setItem('gps_tjsp_pt', JSON.stringify(appPt));
-    localStorage.setItem('gps_tjsp_dir', JSON.stringify(appDir));
-    localStorage.setItem('gps_tjsp_rlm', JSON.stringify(appRlm));
-    localStorage.setItem('gps_tjsp_evolucao', JSON.stringify(evolucaoData));
-    localStorage.setItem('gps_tjsp_red', JSON.stringify(redacaoSalva));
-}
-
-function gerarTemaRandomico() {
-    const sorted = temasVunesp[Math.floor(Math.random() * temasVunesp.length)];
-    document.getElementById('box-tema').innerHTML = `<b>Tema Sorteado:</b> ${sorted}`;
-    redacaoSalva.tema = sorted;
-    salvarDados();
-}
-
-function salvarRedacao() {
-    redacaoSalva.intro = document.getElementById('red-intro').value;
-    redacaoSalva.arg1 = document.getElementById('red-arg1').value;
-    redacaoSalva.arg2 = document.getElementById('red-arg2').value;
-    redacaoSalva.concl = document.getElementById('red-concl').value;
-    salvarDados();
-}
-
-function carregarRedacao() {
-    document.getElementById('red-intro').value = redacaoSalva.intro || "";
-    document.getElementById('red-arg1').value = redacaoSalva.arg1 || "";
-    document.getElementById('red-arg2').value = redacaoSalva.arg2 || "";
-    document.getElementById('red-concl').value = redacaoSalva.concl || "";
-    if (redacaoSalva.tema) {
-        document.getElementById('box-tema').innerHTML = `<b>Tema Sorteado:</b> ${redacaoSalva.tema}`;
-    }
-}
-
-function limparAlteracoes() {
-    if (confirm("Tem certeza de que deseja redefinir todas as alterações e apagar dados salvos?")) {
-        localStorage.clear();
-        appPt = JSON.parse(JSON.stringify(dadosPortugues));
-        appDir = JSON.parse(JSON.stringify(dadosDireito));
-        appRlm = JSON.parse(JSON.stringify(dadosRLM));
-        evolucaoData = [];
-        redacaoSalva = { intro: "", arg1: "", arg2: "", concl: "", tema: "" };
-        renderTabela('portugues');
-        carregarRedacao();
-        alert("Dados resetados!");
-    }
-}
-
-function exportarBackup() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ appPt, appDir, appRlm, evolucaoData, redacaoSalva }));
-    const a = document.createElement('a');
-    a.setAttribute("href", dataStr);
-    a.setAttribute("download", `gps_escrevente_backup_${new Date().toISOString().slice(0,10)}.json`);
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-}
-
-function importarBackup(event) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const imp = JSON.parse(e.target.result);
-            if (imp.appPt && imp.appDir) {
-                appPt = imp.appPt;
-                appDir = imp.appDir;
-                appRlm = imp.appRlm || appRlm;
-                evolucaoData = imp.evolucaoData || [];
-                redacaoSalva = imp.redacaoSalva || redacaoSalva;
-                salvarDados();
-                renderTabela('portugues');
-                carregarRedacao();
-                alert("Backup importado com sucesso!");
-            }
-        } catch (err) { alert("Arquivo inválido."); }
-    };
-    reader.readAsText(event.target.files[0]);
-}
-
-function addEvolucao() {
-    let sem = document.getElementById('sem-nome').value.trim();
-    let mat = document.getElementById('sem-materia').value;
-    let pct = parseFloat(document.getElementById('sem-pct').value);
-    let qtd = parseInt(document.getElementById('sem-qtd').value) || 0;
-
-    if (!sem || isNaN(pct)) { alert('Preencha os campos!'); return; }
-
-    evolucaoData.push({ semana: sem, materia: mat, pct: pct, qtd: qtd });
-    salvarDados();
-    renderEvolucao();
-}
-
-function deletarEvolucao(idx) {
-    if (confirm("Apagar registro?")) {
-        evolucaoData.splice(idx, 1);
-        salvarDados();
-        renderEvolucao();
-    }
-}
-
-function renderEvolucao() {
-    const tbody = document.getElementById('tbody-historico');
-    tbody.innerHTML = '';
-
-    evolucaoData.forEach((row, idx) => {
-        let tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><b>${row.semana}</b></td>
-            <td>${row.materia}</td>
-            <td><b>${row.pct}%</b></td>
-            <td>${row.qtd}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="deletarEvolucao(${idx})">🗑️</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
-
-    const semanas = [...new Set(evolucaoData.map(d => d.semana))];
-    const materias = ["Português", "Processo Penal", "Penal", "CPC", "Constitucional", "Administrativo", "Normas TJSP", "RLM", "Informática"];
-
-    let datasets = materias.map(mat => {
-        let dataVals = semanas.map(sem => {
-            let recs = evolucaoData.filter(d => d.semana === sem && d.materia === mat);
-            if (recs.length === 0) return null;
-            return (recs.reduce((a, r) => a + r.pct, 0) / recs.length).toFixed(1);
-        });
-
-        return {
-            label: mat,
-            data: dataVals,
-            spanGaps: true,
-            tension: 0.2
+    <script>
+        const dadosEstudo = {
+            portugues: [
+                { materia: "Português", prioridade: "alta", assunto: "Interpretação e Compreensão de Texto (Fatores de Textualidade e Inferências)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "alta", assunto: "Sinal Indicativo de Crase (Casos Obrigatórios, Proibidos e Facultativos)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "alta", assunto: "Regência Verbal e Nominal & Sintaxe de Regência", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "alta", assunto: "Concordância Verbal e Nominal", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "alta", assunto: "Pontuação (Emprego da Vírgula, Dois Pontos e Travessão)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "alta", assunto: "Colocação Pronomial (Próclise, Mesóclise e Êclise)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "alta", assunto: "Emprego dos Tempos e Modos Verbais (Correlação Verbal)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "media", assunto: "Classes de Palavras (Pronomes Relativos, Demonstrativos e Conjunções)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "media", assunto: "Significação Contextual das Palavras (Sinônimos, Antônimos e Sentido Figurado)", certo: 0, errado: 0 },
+                { materia: "Português", prioridade: "baixa", assunto: "Ortografia Oficial e Acentuação Gráfica", certo: 0, errado: 0 }
+            ],
+            direito: [
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Fé Pública — arts. 293–305", certo: 0, errado: 0 },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Falsa identidade — arts. 307–308", certo: 0, errado: 0 },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Fraudes em certames — art. 311-A", certo: 0, errado: 0 },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Administração Pública — arts. 312–333", certo: 0, errado: 0 },
+                { materia: "Direito Penal", prioridade: "media", assunto: "Administração Pública — arts. 335–337", certo: 0, errado: 0 },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Administração da Justiça — arts. 339–347", certo: 0, errado: 0 },
+                { materia: "Direito Penal", prioridade: "media", assunto: "Arts. 350, 357 e 359", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Sujeitos e auxiliares — arts. 251–258, 261–267 e 274", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Citações e intimações — arts. 351–372", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Procedimento comum — arts. 394–497", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "media", assunto: "Procedimento sumário — arts. 531–538", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "baixa", assunto: "Restauração de autos — arts. 541–548", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Recursos — arts. 574–667", certo: 0, errado: 0 },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Juizados Especiais Criminais", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Sujeitos/impedimento/suspeição — arts. 144–155", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Atos processuais — arts. 188–275", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Tutela provisória — arts. 294–311", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Procedimento comum — arts. 318–512", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Cumprimento de sentença — arts. 513–538", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "media", assunto: "Recursos — arts. 994–1026", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "JEC", certo: 0, errado: 0 },
+                { materia: "Direito Processual Civil", prioridade: "media", assunto: "Juizado da Fazenda Pública", certo: 0, errado: 0 },
+                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Direitos individuais e coletivos — art. 5º", certo: 0, errado: 0 },
+                { materia: "Direito Constitucional", prioridade: "media", assunto: "Direitos sociais — arts. 6º–11", certo: 0, errado: 0 },
+                { materia: "Direito Constitucional", prioridade: "media", assunto: "Nacionalidade — arts. 12–13", certo: 0, errado: 0 },
+                { materia: "Direito Constitucional", prioridade: "media", assunto: "Direitos políticos — arts. 14–16", certo: 0, errado: 0 },
+                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Administração Pública — arts. 37–41", certo: 0, errado: 0 },
+                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Poder Judiciário — art. 92", certo: 0, errado: 0 },
+                { materia: "Direito Administrativo", prioridade: "alta", assunto: "Estatuto — Lei 10.261/68, arts. 239–323", certo: 0, errado: 0 },
+                { materia: "Direito Administrativo", prioridade: "alta", assunto: "Improbidade — Lei 8.429/92", certo: 0, errado: 0 },
+                { materia: "Normas da Corregedoria", prioridade: "alta", assunto: "Tomo I - Cap. III - Seções I, II, V, VI, VII - Escrituração, Protocolo e Carga de Autos", certo: 0, errado: 0 },
+                { materia: "Normas da Corregedoria", prioridade: "alta", assunto: "Tomo I - Cap. III - Seções IX a XIV - Certidões, Mandados e Ofícios", certo: 0, errado: 0 },
+                { materia: "Normas da Corregedoria", prioridade: "media", assunto: "Tomo I - Cap. II - Seção I - Função Correcional (Correção Ordinária e Extraordinária)", certo: 0, errado: 0 }
+            ],
+            rlm: [
+                { materia: "RLM", prioridade: "alta", assunto: "Sequências Lógicas de Números, Letras, Palavras e Figuras", certo: 0, errado: 0 },
+                { materia: "RLM", prioridade: "alta", assunto: "Equivalências Lógicas e Negações de Proposições Compostas", certo: 0, errado: 0 },
+                { materia: "RLM", prioridade: "alta", assunto: "Tabelas-Verdade, Tautologia, Contradição e Contingência", certo: 0, errado: 0 },
+                { materia: "RLM", prioridade: "media", assunto: "Diagramas Lógicos, Conjuntos e Argumentação", certo: 0, errado: 0 },
+                { materia: "RLM", prioridade: "media", assunto: "Associações Lógicas e Verdades/Mentiras", certo: 0, errado: 0 }
+            ],
+            matematica: [
+                { materia: "Matemática", prioridade: "alta", assunto: "Regra de Três Simples e Composta & Porcentagem", certo: 0, errado: 0 },
+                { materia: "Matemática", prioridade: "alta", assunto: "Razão e Proporção & Divisão Proporcional", certo: 0, errado: 0 },
+                { materia: "Matemática", prioridade: "alta", assunto: "Média Aritmética Simples e Ponderada", certo: 0, errado: 0 },
+                { materia: "Matemática", prioridade: "alta", assunto: "Noções de Geometria Plana e Espacial (Área, Perímetro e Volume)", certo: 0, errado: 0 },
+                { materia: "Matemática", prioridade: "media", assunto: "Equações do 1º e 2º Grau & Sistemas de Equações", certo: 0, errado: 0 },
+                { materia: "Matemática", prioridade: "baixa", assunto: "MMC, MDC e Juros Simples", certo: 0, errado: 0 }
+            ],
+            informatica: [
+                { materia: "Informática", prioridade: "alta", assunto: "MS-Excel (Word/Office 365): Fórmulas SOMA, SE, PROCV, CONT.SE e Endereçamento Relativo/Absoluto ($)", certo: 0, errado: 0 },
+                { materia: "Informática", prioridade: "alta", assunto: "MS-Word: Formatação, Quebras de Página/Seção, Caixas de Texto e Tabelas", certo: 0, errado: 0 },
+                { materia: "Informática", prioridade: "alta", assunto: "MS-Windows 10/11: Gerenciamento de Arquivos, Atalhos de Teclado e Área de Transferência", certo: 0, errado: 0 },
+                { materia: "Informática", prioridade: "media", assunto: "MS-Teams: Reuniões, Canais, Compartilhamento e Chat", certo: 0, errado: 0 },
+                { materia: "Informática", prioridade: "media", assunto: "Correio Eletrônico (Campos Para, CC, CCO) e Protocolos de Internet", certo: 0, errado: 0 }
+            ],
+            atualidades: [
+                { materia: "Atualidades", prioridade: "alta", assunto: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/15 - Arts. 1º a 13 e 34 a 38)", certo: 0, errado: 0 },
+                { materia: "Atualidades", prioridade: "alta", assunto: "Fatos Políticos e Econômicos Nacionais Recentes (Últimos 6 Meses)", certo: 0, errado: 0 },
+                { materia: "Atualidades", prioridade: "media", assunto: "Meio Ambiente, Sociedade e Conflitos Internacionais Recentes", certo: 0, errado: 0 }
+            ]
         };
-    });
 
-    const ctx = document.getElementById('chartEvolucao').getContext('2d');
-    if (chartInstance) chartInstance.destroy();
+        let gradeCicloCustom = [
+            { id: 1, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Língua Portuguesa", desc: "" },
+            { id: 2, dia: "Segunda", tempo: 2, tipo: "questoes", materia: "Língua Portuguesa", desc: "" },
+            { id: 3, dia: "Segunda", tempo: 0, tipo: "descanso", materia: "DESCANSO", desc: "" },
+            { id: 4, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Direito Constitucional", desc: "" },
+            { id: 5, dia: "Segunda", tempo: 2, tipo: "questoes", materia: "Direito Constitucional", desc: "" },
+            { id: 6, dia: "Terça", tempo: 2, tipo: "teoria", materia: "Direito Administrativo", desc: "" },
+            { id: 7, dia: "Terça", tempo: 2, tipo: "questoes", materia: "Direito Administrativo", desc: "" },
+            { id: 8, dia: "Terça", tempo: 0, tipo: "descanso", materia: "DESCANSO", desc: "" },
+            { id: 9, dia: "Terça", tempo: 2, tipo: "teoria", materia: "Direito Processual Civil", desc: "" },
+            { id: 10, dia: "Terça", tempo: 2, tipo: "questoes", materia: "Direito Processual Civil", desc: "" },
+            { id: 11, dia: "Quarta", tempo: 2, tipo: "teoria", materia: "Direito Penal", desc: "" },
+            { id: 12, dia: "Quarta", tempo: 2, tipo: "questoes", materia: "Direito Penal", desc: "" },
+            { id: 13, dia: "Quarta", tempo: 0, tipo: "descanso", materia: "DESCANSO", desc: "" },
+            { id: 14, dia: "Quarta", tempo: 2, tipo: "teoria", materia: "Direito Processual Penal", desc: "" },
+            { id: 15, dia: "Quarta", tempo: 2, tipo: "questoes", materia: "Direito Processual Penal", desc: "" },
+            { id: 16, dia: "Quinta", tempo: 2, tipo: "teoria", materia: "Normas da Corregedoria", desc: "" },
+            { id: 17, dia: "Quinta", tempo: 2, tipo: "questoes", materia: "Normas da Corregedoria", desc: "" },
+            { id: 18, dia: "Quinta", tempo: 0, tipo: "descanso", materia: "DESCANSO", desc: "" },
+            { id: 19, dia: "Quinta", tempo: 2, tipo: "teoria", materia: "Informática", desc: "" },
+            { id: 20, dia: "Quinta", tempo: 2, tipo: "questoes", materia: "Informática", desc: "" },
+            { id: 21, dia: "Sexta", tempo: 2, tipo: "teoria", materia: "Matemática", desc: "" },
+            { id: 22, dia: "Sexta", tempo: 2, tipo: "questoes", materia: "Matemática", desc: "" },
+            { id: 23, dia: "Sexta", tempo: 0, tipo: "descanso", materia: "DESCANSO", desc: "" },
+            { id: 24, dia: "Sexta", tempo: 2, tipo: "teoria", materia: "R. Lógico", desc: "" },
+            { id: 25, dia: "Sexta", tempo: 2, tipo: "questoes", materia: "R. Lógico", desc: "" },
+            { id: 26, dia: "Sábado", tempo: 2, tipo: "teoria", materia: "Atualidades", desc: "" },
+            { id: 27, dia: "Sábado", tempo: 2, tipo: "questoes", materia: "Atualidades", desc: "" },
+            { id: 28, dia: "Sábado", tempo: 0, tipo: "descanso", materia: "DESCANSO", desc: "" },
+            { id: 29, dia: "Sábado", tempo: 2, tipo: "revisao-teorica", materia: "Revisão Geral", desc: "da teoria estudada na semana" },
+            { id: 30, dia: "Domingo", tempo: 4, tipo: "revisao-questoes", materia: "Revisão Objetiva", desc: "questões erradas da semana" },
+            { id: 31, dia: "Domingo", tempo: 0, tipo: "descanso", materia: "DESCANSO INTEGRAL", desc: "" }
+        ];
 
-    chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: { labels: semanas, datasets: datasets },
-        options: { responsive: true, scales: { y: { min: 0, max: 100 } } }
-    });
-}
+        let acervoTemasVunesp = [
+            "Desafios do trabalho na era da Inteligência Artificial",
+            "Limites da liberdade de expressão nas redes sociais",
+            "Envelhecimento da população e políticas públicas no Brasil",
+            "Impactos do uso excessivo de telas na saúde mental dos jovens",
+            "Mudanças climáticas e responsabilidade individual vs. estatal",
+            "O papel do esporte na inclusão social no Brasil",
+            "Sistema carcerário brasileiro e o desafio da ressocialização",
+            "Desafios da mobilidade urbana sustentável nas grandes metrópoles",
+            "Impacto das apostas virtuais (bets) na economia das famílias",
+            "Preservação da privacidade de dados no ambiente digital",
+            "A cultura do cancelamento e seus reflexos na vida pública",
+            "Cidadania e exclusão digital na sociedade contemporânea",
+            "O valor da leitura e da educação literária na formação do pensamento crítico",
+            "Impactos do trabalho remoto na dinâmica familiar e corporativa",
+            "A importância do saneamento básico para a dignidade humana no Brasil",
+            "Segurança pública e o combate à desinformação (fake news)",
+            "A sustentabilidade das cidades e a gestão de resíduos sólidos",
+            "O papel da arte e da cultura na transformação social",
+            "Desigualdade de gênero no mercado de trabalho brasileiro",
+            "A expansão do consumo consciente e os limites dos recursos naturais",
+            "Os desafios da inclusão escolar de crianças atípicas",
+            "A longevidade e o redesenho das relações de trabalho e previdência",
+            "Ética e responsabilidade no uso de algoritmos e redes sociais",
+            "O impacto da polarização política no diálogo democrático",
+            "Caminhos para combater a evasão escolar no ensino médio brasileiro",
+            "A valorização do patrimônio histórico e cultural nas metrópoles",
+            "O fenômeno do endividamento das famílias brasileiras",
+            "A escassez hídrica e os novos modelos de gestão da água",
+            "O papel da ciência e da inovação tecnológica no desenvolvimento nacional",
+            "A empatia e o altruísmo em tempos de individualismo digital"
+        ];
 
-window.onload = function() {
-    renderTabela('portugues');
-    carregarRedacao();
-};
-</script>
+        let myChart = null;
+        let chartEdital = null;
+        const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
 
+        async function verificarAcessoInicial() {
+            const inputEmail = document.getElementById('modal-input-email').value.trim();
+            if (!inputEmail || !inputEmail.includes('@')) {
+                alert("Por favor, digite um e-mail válido.");
+                return;
+            }
+
+            const btn = document.getElementById('btn-modal-acessar');
+            btn.innerText = "Verificando...";
+            btn.disabled = true;
+
+            try {
+                // Faz a chamada real para o Google Apps Script para checar autorização
+                const payload = { action: "load", email: inputEmail, sheet: "Dados" };
+                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
+                const parsed = await response.json();
+
+                if (parsed.status === "blocked") {
+                    alert(parsed.message || "Acesso negado: E-mail não autorizado.");
+                    btn.innerText = "Acessar GPS";
+                    btn.disabled = false;
+                } else {
+                    // E-mail válido e autorizado
+                    document.getElementById('email-aluno').value = inputEmail;
+                    localStorage.setItem('gps_email_usuario', inputEmail);
+                    document.getElementById('modal-acesso').style.display = 'none';
+                    
+                    // Se houver dados retornados da nuvem na checagem, já podemos aproveitar
+                    if (parsed.status === "success" && parsed.data) {
+                        const data = parsed.data;
+                        if (data.estudo) Object.assign(dadosEstudo, data.estudo);
+                        if (data.ciclo) gradeCicloCustom = data.ciclo;
+                        if (data.temas) acervoTemasVunesp = data.temas;
+                        if (data.redacao) {
+                            document.getElementById('red-intro').value = data.redacao.intro || "";
+                            document.getElementById('red-dev1').value = data.redacao.dev1 || "";
+                            document.getElementById('red-dev2').value = data.redacao.dev2 || "";
+                            document.getElementById('red-concl').value = data.redacao.concl || "";
+                            calcularPalavrasRedacao();
+                        }
+                        renderTabelas(); renderCicloTable(); salvarDados();
+                    }
+                }
+            } catch (e) {
+                alert("Erro de conexão ao verificar o e-mail com a nuvem. Verifique sua internet.");
+                btn.innerText = "Acessar GPS";
+                btn.disabled = false;
+            }
+        }
+
+        function calcularStatusEHora(certo, errado, customRev) {
+            const total = certo + errado;
+            let revText = "";
+            let badgeText = "";
+            let badgeClass = "";
+
+            if (total === 0) {
+                badgeText = "Ataque"; badgeClass = "status-ataque";
+                revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 1 dia';
+            } else {
+                const pct = Math.round((certo / total) * 100);
+                if (pct >= 80) { 
+                    badgeText = "Consolidado"; badgeClass = "status-consolidado"; 
+                    revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 15 dias'; 
+                }
+                else if (pct >= 60) { 
+                    badgeText = "Manutenção"; badgeClass = "status-manutencao"; 
+                    revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 7 dias'; 
+                }
+                else { 
+                    badgeText = "Ataque"; badgeClass = "status-ataque"; 
+                    revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 1 dia'; 
+                }
+            }
+            return { badge: `<span class="status-badge ${badgeClass}">${badgeText}</span>`, rev: `<span class="rev-tag">${revText}</span>` };
+        }
+
+        function editarNomeAssunto(mat, idx) {
+            let novoNome = prompt("Editar nome do assunto:", dadosEstudo[mat][idx].assunto);
+            if(novoNome && novoNome.trim() !== "") {
+                dadosEstudo[mat][idx].assunto = novoNome.trim();
+                salvarDados();
+                renderTabelas();
+            }
+        }
+
+        function editarRevisao(mat, idx) {
+            let dias = prompt("Digite o número de dias para a próxima revisão (de 1 a 30) ou deixe em branco para retorno ao modo automático:", dadosEstudo[mat][idx].revisaoCustom || "");
+            if (dias !== null) {
+                let d = parseInt(dias);
+                if (d >= 1 && d <= 30) {
+                    dadosEstudo[mat][idx].revisaoCustom = d;
+                } else if (dias.trim() === "") {
+                    delete dadosEstudo[mat][idx].revisaoCustom;
+                } else {
+                    alert("Por favor, insira um valor numérico entre 1 e 30.");
+                    return;
+                }
+                salvarDados();
+                renderTabelas();
+            }
+        }
+
+        function adicionarAssuntoRapido(mat) {
+            let ramo = mat === 'direito' ? prompt("Digite o Ramo do Direito (Ex: Direito Penal):", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
+            if(mat === 'direito' && !ramo) return;
+
+            let nome = prompt("Digite o nome do novo assunto:");
+            if(nome && nome.trim() !== "") {
+                dadosEstudo[mat].push({
+                    materia: ramo,
+                    prioridade: calcularPrioridadeAutomatica(nome),
+                    assunto: nome.trim(),
+                    certo: 0,
+                    errado: 0
+                });
+                salvarDados();
+                renderTabelas();
+            }
+        }
+
+        function renderTabelas() {
+            ['portugues', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
+                const container = document.getElementById(`table-${mat}`);
+                if (!container) return;
+                let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 140px;">Matéria</th><th>Assunto</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 160px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
+                dadosEstudo[mat].forEach((item, index) => {
+                    const totalQ = item.certo + item.errado;
+                    const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
+                    let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
+                    const statusObj = calcularStatusEHora(item.certo, item.errado, item.revisaoCustom);
+                    html += `<tr>
+                        <td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td>
+                        <td><span class="txt-materia-destaque">${item.materia}</span></td>
+                        <td><button onclick="editarNomeAssunto('${mat}', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 4px; font-size: 14px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b></td>
+                        <td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></td>
+                        <td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></td>
+                        <td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td>
+                        <td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td>
+                        <td><div class="status-container">${statusObj.badge} <div style="display: flex; gap: 4px; align-items: center;">${statusObj.rev} <button onclick="editarRevisao('${mat}', ${index})" style="background:transparent; border:none; cursor:pointer; font-size:14px;" title="Definir dias de revisão">📅</button></div></div></td>
+                        <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir Assunto">🗑️</button></td>
+                    </tr>`;
+                });
+                html += `</tbody></table><div style="padding: 10px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('${mat}')">➕ Adicionar Assunto</button></div>`;
+                container.innerHTML = html;
+            });
+            renderTabelaDireito();
+        }
+
+        function renderTabelaDireito() {
+            const container = document.getElementById('table-direito');
+            if (!container) return;
+            const filtroRamo = document.getElementById('select-ramo-direito')?.value || 'todos';
+            let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 190px;">Matéria</th><th>Assunto</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 160px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
+            dadosEstudo.direito.forEach((item, index) => {
+                if (filtroRamo !== 'todos' && item.materia !== filtroRamo) return;
+                const totalQ = item.certo + item.errado;
+                const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
+                let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
+                const statusObj = calcularStatusEHora(item.certo, item.errado, item.revisaoCustom);
+                html += `<tr>
+                    <td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td>
+                    <td><span class="txt-materia-destaque">${item.materia}</span></td>
+                    <td><button onclick="editarNomeAssunto('direito', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 4px; font-size: 14px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b></td>
+                    <td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('direito', ${index}, 'certo', this.value)"></td>
+                    <td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('direito', ${index}, 'errado', this.value)"></td>
+                    <td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td>
+                    <td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td>
+                    <td><div class="status-container">${statusObj.badge} <div style="display: flex; gap: 4px; align-items: center;">${statusObj.rev} <button onclick="editarRevisao('direito', ${index})" style="background:transparent; border:none; cursor:pointer; font-size:14px;" title="Definir dias de revisão">📅</button></div></div></td>
+                    <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('direito', ${index})" title="Excluir Assunto">🗑️</button></td>
+                </tr>`;
+            });
+            html += `</tbody></table><div style="padding: 10px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('direito')">➕ Adicionar Assunto</button></div>`;
+            container.innerHTML = html;
+        }
+
+        function excluirAssunto(materia, index) {
+            if (confirm("Deseja realmente excluir este assunto do edital?")) {
+                dadosEstudo[materia].splice(index, 1);
+                renderTabelas();
+                salvarDados();
+            }
+        }
+
+        function atualizarDado(materia, index, campo, valor) {
+            if (campo === 'certo' || campo === 'errado') {
+                dadosEstudo[materia][index][campo] = parseInt(valor) || 0;
+            } else {
+                dadosEstudo[materia][index][campo] = valor;
+            }
+            renderTabelas();
+            if (document.getElementById('evolucao').classList.contains('active')) {
+                renderGraficoEvolucao();
+                renderGraficoEdital();
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            const legendBox = document.getElementById('global-legend-box');
+            legendBox.style.display = ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].includes(tabId) ? 'block' : 'none';
+            if (tabId === 'evolucao') {
+                renderGraficoEvolucao();
+                renderGraficoEdital();
+                renderEvolucaoCards();
+            } else if (tabId === 'configuracoes') {
+                renderCicloTable();
+            }
+        }
+
+        function filtrarHoje() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date-end').value = today;
+            const lastWeek = new Date();
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            document.getElementById('date-start').value = lastWeek.toISOString().split('T')[0];
+            renderGraficoEvolucao();
+        }
+
+        function renderEvolucaoCards() {
+            const container = document.getElementById('evol-cards-container');
+            if (!container) return;
+            const selectedMateria = document.getElementById('select-materia-evol')?.value || 'todas';
+            const materiasMap = [
+                { id: 'portugues', nome: '📘 Português' },
+                { id: 'direito', nome: '⚖️ Direito' },
+                { id: 'rlm', nome: '📐 RLM' },
+                { id: 'matematica', nome: '🧮 Matemática' },
+                { id: 'informatica', nome: '💻 Informática' },
+                { id: 'atualidades', nome: '📰 Atualidades' }
+            ];
+            let html = '';
+            const materiasFiltradas = selectedMateria === 'todas' ? materiasMap : materiasMap.filter(m => m.id === selectedMateria);
+            materiasFiltradas.forEach(m => {
+                let c = 0, e = 0;
+                dadosEstudo[m.id].forEach(item => { c += item.certo; e += item.errado; });
+                const total = c + e;
+                const pct = total > 0 ? Math.round((c / total) * 100) : 0;
+                html += `<div class="evol-card"><h4>${m.nome}</h4><div style="font-size: 1.2rem; font-weight: 800; color: var(--primary-blue);">${pct}%</div><div class="evol-stats"><span>Acertos: ${c}</span><span>Erros: ${e}</span><span>Total: ${total}</span></div></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderGraficoEvolucao() {
+            const ctx = document.getElementById('chartEvolucao');
+            if (!ctx) return;
+            const selectedMateria = document.getElementById('select-materia-evol')?.value || 'todas';
+            let labels = [], dataPct = [];
+            if (selectedMateria === 'todas') {
+                labels = ['Português', 'Direito', 'RLM', 'Matematica', 'Informática', 'Atualidades'];
+                ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
+                    let c = 0, e = 0;
+                    dadosEstudo[mat].forEach(item => { c += item.certo; e += item.errado; });
+                    const total = c + e;
+                    dataPct.push(total > 0 ? Math.round((c / total) * 100) : 0);
+                });
+            } else {
+                dadosEstudo[selectedMateria].forEach(item => {
+                    const q = item.certo + item.errado;
+                    labels.push(item.assunto.length > 22 ? item.assunto.substring(0, 20) + '...' : item.assunto);
+                    dataPct.push(q > 0 ? Math.round((item.certo / q) * 100) : 0);
+                });
+            }
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ label: selectedMateria === 'todas' ? '% Acerto Global por Disciplina' : `% Acerto Detalhado (${selectedMateria.toUpperCase()})`, data: dataPct, backgroundColor: '#3b82f6' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+            renderEvolucaoCards();
+        }
+
+        function renderGraficoEdital() {
+            const ctx = document.getElementById('chartProgressoEdital');
+            if (!ctx) return;
+            const materias = ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'];
+            const labels = ['Português', 'Direito', 'RLM', 'Matemática', 'Informática', 'Atualidades'];
+            const dataProgresso = materias.map(mat => {
+                const totalAssuntos = dadosEstudo[mat].length;
+                if (totalAssuntos === 0) return 0;
+                const estudados = dadosEstudo[mat].filter(item => (item.certo + item.errado) > 0).length;
+                return Math.round((estudados / totalAssuntos) * 100);
+            });
+            if (chartEdital) chartEdital.destroy();
+            chartEdital = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ label: '% de Assuntos do Edital Já Praticados/Estudados', data: dataProgresso, backgroundColor: ['#93c5fd', '#fdba74', '#c4b5fd', '#f472b6', '#a5b4fc', '#bef264'] }] },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, max: 100 } } }
+            });
+        }
+
+        function getMateriaColorClass(materia) {
+            const m = materia.toLowerCase();
+            if (m.includes('português')) return 'bg-mat-portugues';
+            if (m.includes('processual penal')) return 'bg-mat-proc-penal';
+            if (m.includes('penal')) return 'bg-mat-penal';
+            if (m.includes('processual civil')) return 'bg-mat-proc-civil';
+            if (m.includes('constitucional')) return 'bg-mat-const';
+            if (m.includes('administrativo')) return 'bg-mat-admin';
+            if (m.includes('normas')) return 'bg-mat-normas';
+            if (m.includes('r. lógico') || m.includes('rlm')) return 'bg-mat-rlm';
+            if (m.includes('matemática')) return 'bg-mat-matematica';
+            if (m.includes('informática')) return 'bg-mat-info';
+            if (m.includes('atualidades')) return 'bg-mat-atualidades';
+            if (m.includes('revisão')) return 'bg-mat-revisao';
+            return 'bg-mat-descanso';
+        }
+
+        function getBadgeText(tipo, tempo) {
+            const hrsStr = tempo && tempo > 0 ? `${tempo}h ` : '';
+            switch(tipo) {
+                case 'teoria': return `${hrsStr}TEORIA`;
+                case 'questoes': return `${hrsStr}QUESTÕES`;
+                case 'revisao-teorica': return `${hrsStr}REVISÃO`;
+                case 'revisao-questoes': return `${hrsStr}REVISÃO`;
+                case 'descanso': return 'DESCANSO';
+                default: return tipo.toUpperCase();
+            }
+        }
+
+        function renderCicloTable() {
+            ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"].forEach(dia => {
+                const col = document.getElementById(`col-${dia}`);
+                if (!col) return;
+                const items = gradeCicloCustom.filter(x => x.dia === dia);
+                let html = '';
+                items.forEach(item => {
+                    const colorClass = getMateriaColorClass(item.materia);
+                    html += `<div class="ciclo-card-slot"><button class="btn-del-row" style="position: absolute; top: 1px; right: 2px;" onclick="removerSlotCiclo(${item.id})">🗑️</button><span class="badge-tipo-neutral">${getBadgeText(item.tipo, item.tempo)}</span><div class="slot-materia-destaque ${colorClass}">${item.materia}</div>${item.desc ? `<div class="slot-desc">${item.desc}</div>` : ''}</div>`;
+                });
+                col.innerHTML = html;
+            });
+        }
+
+        function adicionarSlotCiclo() {
+            const dia = document.getElementById('ciclo-dia').value;
+            const tempo = parseInt(document.getElementById('ciclo-tempo').value) || 0;
+            const tipo = document.getElementById('ciclo-tipo').value;
+            const materia = document.getElementById('ciclo-materia-select').value;
+            const desc = document.getElementById('ciclo-desc').value.trim();
+            gradeCicloCustom.push({ id: Date.now(), dia, tempo, tipo, materia, desc });
+            document.getElementById('ciclo-desc').value = '';
+            renderCicloTable();
+            salvarDados();
+        }
+
+        function removerSlotCiclo(id) {
+            gradeCicloCustom = gradeCicloCustom.filter(x => x.id !== id);
+            renderCicloTable();
+            salvarDados();
+        }
+
+        function calcularPrioridadeAutomatica(assunto) {
+            const txt = assunto.toLowerCase();
+            if (txt.includes('art.') || txt.includes('crase') || txt.includes('excel') || txt.includes('sintaxe') || txt.includes('concordancia') || txt.includes('regra de tres') || txt.includes('peculato')) return 'alta';
+            if (txt.includes('ortografia') || txt.includes('internet') || txt.includes('conceitos')) return 'baixa';
+            return 'media';
+        }
+
+        function adicionarNovoAssunto() {
+            const valSel = document.getElementById('add-materia-select').value;
+            const assunto = document.getElementById('add-assunto-input').value.trim();
+            if (!assunto) { alert("Por favor, preencha a descrição do assunto!"); return; }
+            let matKey = 'direito', nomeMateria = 'Direito Penal';
+            switch(valSel) {
+                case 'portugues': matKey = 'portugues'; nomeMateria = 'Português'; break;
+                case 'direito_penal': matKey = 'direito'; nomeMateria = 'Direito Penal'; break;
+                case 'direito_proc_penal': matKey = 'direito'; nomeMateria = 'Direito Processual Penal'; break;
+                case 'direito_proc_civil': matKey = 'direito'; nomeMateria = 'Direito Processual Civil'; break;
+                case 'direito_const': matKey = 'direito'; nomeMateria = 'Direito Constitucional'; break;
+                case 'direito_admin': matKey = 'direito'; nomeMateria = 'Direito Administrativo'; break;
+                case 'normas_corregedoria': matKey = 'direito'; nomeMateria = 'Normas da Corregedoria'; break;
+                case 'rlm': matKey = 'rlm'; nomeMateria = 'RLM'; break;
+                case 'matematica': matKey = 'matematica'; nomeMateria = 'Matemática'; break;
+                case 'informatica': matKey = 'informatica'; nomeMateria = 'Informática'; break;
+                case 'atualidades': matKey = 'atualidades'; nomeMateria = 'Atualidades'; break;
+            }
+            const prioridadeAuto = calcularPrioridadeAutomatica(assunto);
+            dadosEstudo[matKey].push({ materia: nomeMateria, prioridade: prioridadeAuto, assunto: assunto, certo: 0, errado: 0 });
+            document.getElementById('add-assunto-input').value = '';
+            renderTabelas();
+            salvarDados();
+            alert(`Assunto adicionado em ${nomeMateria} com prioridade ${prioridadeAuto.toUpperCase()}!`);
+        }
+
+        let temaAtualTexto = "";
+        function sortearTema() {
+            if (acervoTemasVunesp.length === 0) { document.getElementById('display-tema').innerHTML = `<b>Tema Atual:</b> Todos os temas foram excluídos.`; return; }
+            temaAtualTexto = acervoTemasVunesp[Math.floor(Math.random() * acervoTemasVunesp.length)];
+            document.getElementById('display-tema').innerHTML = `<b>Tema Atual:</b> ${temaAtualTexto}`;
+        }
+        function excluirTemaAtual() {
+            if (!temaAtualTexto) { alert("Sorteie um tema antes de excluir!"); return; }
+            acervoTemasVunesp = acervoTemasVunesp.filter(t => t !== temaAtualTexto);
+            temaAtualTexto = "";
+            document.getElementById('display-tema').innerHTML = `<b>Tema Atual:</b> Tema removido com sucesso.`;
+            alert("Tema removido do acervo!");
+        }
+
+        let timerInterval, seconds = 0, timerRunning = false;
+        function iniciarTimer() {
+            if (!timerRunning) {
+                timerRunning = true;
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+                    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+                    const secs = String(seconds % 60).padStart(2, '0');
+                    document.getElementById('timer').innerText = `${hrs}:${mins}:${secs}`;
+                }, 1000);
+            }
+        }
+        function pausarTimer() { timerRunning = false; clearInterval(timerInterval); }
+        function zerarTimer() { pausarTimer(); seconds = 0; document.getElementById('timer').innerText = "00:00:00"; }
+
+        function mudarModoGlobal(modo) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(bloco => {
+                const ta = document.getElementById(`red-${bloco}`);
+                if (modo === 'caderno') {
+                    ta.classList.remove('modo-digitacao');
+                    ta.classList.add('modo-caderno');
+                } else {
+                    ta.classList.remove('modo-caderno');
+                    ta.classList.add('modo-digitacao');
+                }
+            });
+        }
+
+        function mudarFonteGlobal(fonte) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(bloco => {
+                const ta = document.getElementById(`red-${bloco}`);
+                if (fonte === 'cursiva') {
+                    ta.classList.remove('fonte-forma');
+                    ta.classList.add('fonte-cursiva');
+                } else {
+                    ta.classList.remove('fonte-cursiva');
+                    ta.classList.add('fonte-forma');
+                }
+            });
+        }
+
+        function calcularPalavrasRedacao() {
+            const textoCompleto = `${document.getElementById('red-intro').value} ${document.getElementById('red-dev1').value} ${document.getElementById('red-dev2').value} ${document.getElementById('red-concl').value}`.trim();
+            const palavras = textoCompleto ? textoCompleto.split(/\s+/).length : 0;
+            document.getElementById('info-contagem').innerText = `Total: ${palavras} palavras (~${Math.round(palavras / 9)} linhas)`;
+        }
+        function salvarRedacao() {
+            localStorage.setItem('gps_redacao_blocos', JSON.stringify({
+                intro: document.getElementById('red-intro').value,
+                dev1: document.getElementById('red-dev1').value,
+                dev2: document.getElementById('red-dev2').value,
+                concl: document.getElementById('red-concl').value
+            }));
+        }
+        function exportarTXT() {
+            const blob = new Blob([`REDAÇÃO - ESCREVENTE TJSP\n\n1. INTRODUÇÃO:\n${document.getElementById('red-intro').value}\n\n2. DESENVOLVIMENTO 1:\n${document.getElementById('red-dev1').value}\n\n3. DESENVOLVIMENTO 2:\n${document.getElementById('red-dev2').value}\n\n4. CONCLUSÃO:\n${document.getElementById('red-concl').value}`], { type: "text/plain;charset=utf-8" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "Redacao_TJSP_Treino.txt";
+            a.click();
+        }
+        function copiarPromptGemini() {
+            const intro = document.getElementById('red-intro').value.trim();
+            const dev1 = document.getElementById('red-dev1').value.trim();
+            const dev2 = document.getElementById('red-dev2').value.trim();
+            const concl = document.getElementById('red-concl').value.trim();
+
+            if (!intro && !dev1 && !dev2 && !concl) {
+                alert("Escreva pelo menos um parágrafo da redação antes de copiar!");
+                return;
+            }
+
+            const promptFormatado = `Atue rigorosamente como um professor experiente e banca corretora da VUNESP para o concurso de Escrevente Técnico Judiciário do TJSP. 
+Avalie a redação abaixo com base nos critérios oficiais da banca (Tema/Argumentação, Estrutura Coesiva e Domínio da Norma Culta/Gramática).
+Forneça:
+1. Nota Final de 0 a 10 (seja realista e rigoroso, apontando desvios reais).
+2. Análise detalhada por critério.
+3. Principais desvios gramaticais ou estruturais encontrados (ortografia, concordância, crase, pontuação).
+4. Sugestões práticas de melhoria.
+
+Tema abordado: "${temaAtualTexto || 'Tema livre / Padrão VUNESP'}"
+
+Texto do Aluno:
+1. Introdução:
+${intro}
+
+2. Desenvolvimento 1:
+${dev1}
+
+3. Desenvolvimento 2:
+${dev2}
+
+4. Conclusão:
+${concl}`;
+
+            navigator.clipboard.writeText(promptFormatado).then(() => {
+                alert("Prompt copiado com sucesso! Agora basta colar (Ctrl + V) aqui no chat do Gemini para receber a correção detalhada.");
+            }).catch(err => {
+                alert("Erro ao copiar para a área de transferência.");
+            });
+        }
+
+        function toggleTema() { document.body.classList.toggle('dark-mode'); }
+        function salvarDados() {
+            localStorage.setItem('gps_escrevente_model_data_v7', JSON.stringify(dadosEstudo));
+            localStorage.setItem('gps_grade_ciclo_custom', JSON.stringify(gradeCicloCustom));
+            localStorage.setItem('gps_acervo_temas_data', JSON.stringify(acervoTemasVunesp));
+            salvarRedacao();
+        }
+        function exportarBackup() {
+            const a = document.createElement('a');
+            a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                estudo: dadosEstudo, ciclo: gradeCicloCustom, temas: acervoTemasVunesp,
+                redacao: { intro: document.getElementById('red-intro').value, dev1: document.getElementById('red-dev1').value, dev2: document.getElementById('red-dev2').value, concl: document.getElementById('red-concl').value }
+            }));
+            a.download = "GPS_Escrevente_Backup.json";
+            a.click();
+        }
+        function importarBackup(e) {
+            const fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                const parsed = JSON.parse(event.target.result);
+                if (parsed.estudo) Object.assign(dadosEstudo, parsed.estudo);
+                if (parsed.ciclo) gradeCicloCustom = parsed.ciclo;
+                if (parsed.temas) acervoTemasVunesp = parsed.temas;
+                if (parsed.redacao) {
+                    document.getElementById('red-intro').value = parsed.redacao.intro || "";
+                    document.getElementById('red-dev1').value = parsed.redacao.dev1 || "";
+                    document.getElementById('red-dev2').value = parsed.redacao.dev2 || "";
+                    document.getElementById('red-concl').value = parsed.redacao.concl || "";
+                    calcularPalavrasRedacao();
+                }
+                renderTabelas(); renderCicloTable(); salvarDados();
+                alert("Backup importado!");
+            };
+            fileReader.readAsText(e.target.files[0]);
+        }
+        function resetarDados() {
+            if (confirm("Tem certeza que deseja resetar?")) {
+                ['gps_escrevente_model_data_v7', 'gps_grade_ciclo_custom', 'gps_acervo_temas_data', 'gps_redacao_blocos', 'gps_email_usuario'].forEach(k => localStorage.removeItem(k));
+                location.reload();
+            }
+        }
+        function carregarDadosSalvos() {
+            const localEstudo = localStorage.getItem('gps_escrevente_model_data_v7');
+            if (localEstudo) {
+                try {
+                    const parsed = JSON.parse(localEstudo);
+                    ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(m => {
+                        if (parsed[m] && parsed[m].length > 0) dadosEstudo[m] = parsed[m];
+                    });
+                } catch(e) {}
+            }
+            const localCiclo = localStorage.getItem('gps_grade_ciclo_custom');
+            if (localCiclo) { try { const p = JSON.parse(localCiclo); if (p && p.length > 0) gradeCicloCustom = p; } catch(e) {} }
+            const localTemas = localStorage.getItem('gps_acervo_temas_data');
+            if (localTemas) { try { const p = JSON.parse(localTemas); if (p && p.length > 0) acervoTemasVunesp = p; } catch(e) {} }
+            const localRedacao = localStorage.getItem('gps_redacao_blocos');
+            if (localRedacao) {
+                try {
+                    const p = JSON.parse(localRedacao);
+                    if (p) {
+                        document.getElementById('red-intro').value = p.intro || "";
+                        document.getElementById('red-dev1').value = p.dev1 || "";
+                        document.getElementById('red-dev2').value = p.dev2 || "";
+                        document.getElementById('red-concl').value = p.concl || "";
+                        calcularPalavrasRedacao();
+                    }
+                } catch(e) {}
+            }
+
+            // Verifica se já existe um e-mail salvo na sessão anterior para pular o modal
+            const emailSalvo = localStorage.getItem('gps_email_usuario');
+            if (emailSalvo) {
+                document.getElementById('email-aluno').value = emailSalvo;
+                document.getElementById('modal-acesso').style.display = 'none';
+            }
+
+            renderTabelas(); renderCicloTable();
+        }
+
+        window.onload = () => { carregarDadosSalvos(); filtrarHoje(); };
+
+        async function salvarNuvemSheets() {
+            const email = document.getElementById('email-aluno').value.trim();
+            if (!email || !email.includes('@')) { alert("Por favor, digite um e-mail válido para salvar na nuvem."); return; }
+
+            const payload = {
+                email: email,
+                dados: {
+                    estudo: dadosEstudo,
+                    ciclo: gradeCicloCustom,
+                    temas: acervoTemasVunesp,
+                    redacao: {
+                        intro: document.getElementById('red-intro').value,
+                        dev1: document.getElementById('red-dev1').value,
+                        dev2: document.getElementById('red-dev2').value,
+                        concl: document.getElementById('red-concl').value
+                    }
+                }
+            };
+
+            const btn = document.querySelector('button[onclick="salvarNuvemSheets()"]');
+            if(btn) btn.innerText = "Salvando...";
+
+            try {
+                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
+                const parsed = await response.json();
+                
+                if (parsed.status === "blocked") {
+                    alert(parsed.message || "Acesso negado: E-mail não autorizado.");
+                } else {
+                    salvarDados();
+                    alert("Progresso salvo com sucesso na nuvem!");
+                }
+                if(btn) btn.innerText = "☁️ Salvar Nuvem";
+            } catch (e) {
+                if(btn) btn.innerText = "☁️ Salvar Nuvem";
+                alert("Erro de conexão ao salvar.");
+            }
+        }
+
+        async function carregarNuvemSheets() {
+            const email = document.getElementById('email-aluno').value.trim();
+            if (!email || !email.includes('@')) { alert("Por favor, digite seu e-mail para sincronizar os dados da nuvem."); return; }
+
+            const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]');
+            if(btn) btn.innerText = "Baixando...";
+
+            try {
+                const payload = { action: "load", email: email, sheet: "Dados" };
+                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
+                const parsed = await response.json();
+
+                if (parsed.status === "success") {
+                    const data = parsed.data;
+                    if (!data) {
+                        alert("Nenhum progresso encontrado na nuvem para este e-mail.");
+                    } else {
+                        if (data.estudo) Object.assign(dadosEstudo, data.estudo);
+                        if(data.ciclo) gradeCicloCustom = data.ciclo;
+                        if (data.temas) acervoTemasVunesp = data.temas;
+                        if (data.redacao) {
+                            document.getElementById('red-intro').value = data.redacao.intro || "";
+                            document.getElementById('red-dev1').value = data.redacao.dev1 || "";
+                            document.getElementById('red-dev2').value = data.redacao.dev2 || "";
+                            document.getElementById('red-concl').value = data.redacao.concl || "";
+                            calcularPalavrasRedacao();
+                        }
+                        renderTabelas(); renderCicloTable(); salvarDados();
+                        alert("Sincronização concluída! Dados atualizados.");
+                    }
+                } else if (parsed.status === "blocked") {
+                    alert(parsed.message || "Acesso negado: E-mail não autorizado.");
+                } else {
+                    alert("Erro: " + (parsed.message || "Desconhecido"));
+                }
+                if(btn) btn.innerText = "🔄 Sincronizar";
+            } catch (e) {
+                if(btn) btn.innerText = "🔄 Sincronizar";
+                alert("Erro de conexão ao baixar dados.");
+            }
+        }
+    </script>
 </body>
 </html>
