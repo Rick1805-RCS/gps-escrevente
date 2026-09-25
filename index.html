@@ -134,7 +134,7 @@
                         <th>Res. 1 (%)</th>
                         <th>Res. 2 (%)</th>
                         <th>Status Atual</th>
-                        <th>Revisão</th>
+                        <th>Revisão (Dias)</th>
                         <th>Observações</th>
                         <th>Ação</th>
                     </tr>
@@ -180,7 +180,7 @@
                         <th>Res. 1 (%)</th>
                         <th>Res. 2 (%)</th>
                         <th>Status Atual</th>
-                        <th>Revisão</th>
+                        <th>Revisão (Dias)</th>
                         <th>Observações</th>
                         <th>Ação</th>
                     </tr>
@@ -214,7 +214,7 @@
                         <th>Res. 1 (%)</th>
                         <th>Res. 2 (%)</th>
                         <th>Status Atual</th>
-                        <th>Revisão</th>
+                        <th>Revisão (Dias)</th>
                         <th>Observações</th>
                         <th>Ação</th>
                     </tr>
@@ -345,36 +345,36 @@
 <script>
 // DADOS INICIAIS BASEADOS NOS ÚLTIMOS CONCURSOS DO TJSP VUNESP
 const dadosPortugues = [
-    {"prioridade": "🔴 Altíssima", "assunto": "Interpretação e Compreensão de Texto", "recorrencia": "25% a 30% da prova", "proxima_acao": "Bateria diária de 5 textos VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Sintaxe: Regência (Verbal e Nominal) e Crase", "recorrencia": "Sempre cobrado (2-3 qst)", "proxima_acao": "Revisão dos verbos coringa + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Pontuação (Em especial uso da Vírgula)", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Treino de isolamento de adjunto adverbial", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🔴 Altíssima", "assunto": "Conjunções e Coesão Textual", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Mapeamento das conformativas/concessivas", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Colocação Pronominal (Próclise, Érclise, Mesóclise)", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Decorar palavras atrativas + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Concordância Verbal e Nominal", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Casos especiais (sujeito composto, verbo haver/fazer)", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟠 Alta", "assunto": "Substituição e Reescrita de Frases", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Treino de equivalência de sentido e correção", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟡 Média", "assunto": "Classes de Palavras (Substantivo, Adjetivo, Advérbio)", "recorrencia": "Recorrente", "proxima_acao": "Questões de valor semântico das palavras", "res1": "", "res2": "", "obs": ""},
-    {"prioridade": "🟡 Média", "assunto": "Sinônimos, Antônimos e Sentido Figurado", "recorrencia": "Recorrente", "proxima_acao": "Leitura e contexto em questões VUNESP", "res1": "", "res2": "", "obs": ""}
+    {"prioridade": "🔴 Altíssima", "assunto": "Interpretação e Compreensão de Texto", "recorrencia": "25% a 30% da prova", "proxima_acao": "Bateria diária de 5 textos VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🔴 Altíssima", "assunto": "Sintaxe: Regência (Verbal e Nominal) e Crase", "recorrencia": "Sempre cobrado (2-3 qst)", "proxima_acao": "Revisão dos verbos coringa + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🔴 Altíssima", "assunto": "Pontuação (Em especial uso da Vírgula)", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Treino de isolamento de adjunto adverbial", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🔴 Altíssima", "assunto": "Conjunções e Coesão Textual", "recorrencia": "Sempre cobrado (2 qst)", "proxima_acao": "Mapeamento das conformativas/concessivas", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🟠 Alta", "assunto": "Colocação Pronominal (Próclise, Érclise, Mesóclise)", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Decorar palavras atrativas + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🟠 Alta", "assunto": "Concordância Verbal e Nominal", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Casos especiais (sujeito composto, verbo haver/fazer)", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🟠 Alta", "assunto": "Substituição e Reescrita de Frases", "recorrencia": "Frequente (1-2 qst)", "proxima_acao": "Treino de equivalência de sentido e correção", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🟡 Média", "assunto": "Classes de Palavras (Substantivo, Adjetivo, Advérbio)", "recorrencia": "Recorrente", "proxima_acao": "Questões de valor semântico das palavras", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"prioridade": "🟡 Média", "assunto": "Sinônimos, Antônimos e Sentido Figurado", "recorrencia": "Recorrente", "proxima_acao": "Leitura e contexto em questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""}
 ];
 
 const dadosDireito = [
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Citação e intimação", "artigos": "351–372", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum", "artigos": "394–405", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Prisão e medidas cautelares", "artigos": "282–316", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes funcionais", "artigos": "312–317; 319–327", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes praticados por particular", "artigos": "329–333", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Prazos e Comunicação de Atos", "artigos": "212–275", "meta": "85%", "proxima_acao": "Lei + questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum e Tutelas", "artigos": "294–357", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Constitucional", "prioridade": "🔴 Muito alta", "assunto": "Direitos e garantias fundamentais", "artigos": "Art. 5º", "meta": "85%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Administrativo", "prioridade": "🔴 Muito alta", "assunto": "Atos e Sanções de Improbidade", "artigos": "Lei 8.429/92", "meta": "80%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "obs": ""},
-    {"materia": "Normas TJSP", "prioridade": "🔴 Muito alta", "assunto": "Função correicional e Ofícios", "artigos": "Arts. 1–11; 47–65", "meta": "80%", "proxima_acao": "Estudo direto das normas", "res1": "", "res2": "", "obs": ""}
+    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Citação e intimação", "artigos": "351–372", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum", "artigos": "394–405", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Processo Penal", "prioridade": "🔴 Muito alta", "assunto": "Prisão e medidas cautelares", "artigos": "282–316", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes funcionais", "artigos": "312–317; 319–327", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Penal", "prioridade": "🔴 Muito alta", "assunto": "Crimes praticados por particular", "artigos": "329–333", "meta": "80%", "proxima_acao": "Lei/PDF + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Prazos e Comunicação de Atos", "artigos": "212–275", "meta": "85%", "proxima_acao": "Lei + questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "CPC", "prioridade": "🔴 Muito alta", "assunto": "Procedimento comum e Tutelas", "artigos": "294–357", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Constitucional", "prioridade": "🔴 Muito alta", "assunto": "Direitos e garantias fundamentais", "artigos": "Art. 5º", "meta": "85%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Administrativo", "prioridade": "🔴 Muito alta", "assunto": "Atos e Sanções de Improbidade", "artigos": "Lei 8.429/92", "meta": "80%", "proxima_acao": "Lei + 15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"materia": "Normas TJSP", "prioridade": "🔴 Muito alta", "assunto": "Função correicional e Ofícios", "artigos": "Arts. 1–11; 47–65", "meta": "80%", "proxima_acao": "Estudo direto das normas", "res1": "", "res2": "", "revisao": "", "obs": ""}
 ];
 
 const dadosRLM = [
-    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Tabela Verdade e Equivalências Lógicas", "foco": "Se...então, Negações de conectivos", "meta": "80%", "proxima_acao": "Tabela de memorização + questões", "res1": "", "res2": "", "obs": ""},
-    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Sequências Lógicas e Diagramas Lógicos", "foco": "Conjuntos e identificação de padrões", "meta": "80%", "proxima_acao": "15 questões VUNESP", "res1": "", "res2": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Windows 11 e Gerenciamento de Arquivos", "foco": "Atalhos, pasta de arquivos, configurações", "meta": "85%", "proxima_acao": "Prática no sistema + questões", "res1": "", "res2": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Word e MS-Excel (Fórmulas)", "foco": "PROCV, SE, SOMASE, formatação", "meta": "85%", "proxima_acao": "Treino prático das fórmulas", "res1": "", "res2": "", "obs": ""},
-    {"area": "Informática", "prioridade": "🟠 Alta", "assunto": "Correio Eletrônico e Internet/Segurança", "foco": "Campos Cco, protocolos, phishing/malware", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "obs": ""}
+    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Tabela Verdade e Equivalências Lógicas", "foco": "Se...então, Negações de conectivos", "meta": "80%", "proxima_acao": "Tabela de memorização + questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"area": "RLM", "prioridade": "🔴 Muito alta", "assunto": "Sequências Lógicas e Diagramas Lógicos", "foco": "Conjuntos e identificação de padrões", "meta": "80%", "proxima_acao": "15 questões VUNESP", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Windows 11 e Gerenciamento de Arquivos", "foco": "Atalhos, pasta de arquivos, configurações", "meta": "85%", "proxima_acao": "Prática no sistema + questões", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"area": "Informática", "prioridade": "🔴 Muito alta", "assunto": "MS-Word e MS-Excel (Fórmulas)", "foco": "PROCV, SE, SOMASE, formatação", "meta": "85%", "proxima_acao": "Treino prático das fórmulas", "res1": "", "res2": "", "revisao": "", "obs": ""},
+    {"area": "Informática", "prioridade": "🟠 Alta", "assunto": "Correio Eletrônico e Internet/Segurança", "foco": "Campos Cco, protocolos, phishing/malware", "meta": "80%", "proxima_acao": "15 questões", "res1": "", "res2": "", "revisao": "", "obs": ""}
 ];
 
 const temasVunesp = [
@@ -487,7 +487,10 @@ function renderTabela(tipo) {
         if (tipo === 'portugues') {
             tr.innerHTML = `
                 <td><span class="badge ${row.prioridade.includes('Altíssima') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td><b>${row.assunto}</b></td>
+                <td>
+                    <b>${row.assunto}</b>
+                    <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('portugues', ${idx})" style="margin-left:5px;" title="Editar Assunto">✏️</button>
+                </td>
                 <td><code>${row.recorrencia}</code></td>
                 <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
                 <td><input type="number" value="${row.res1}" onchange="updateRow('pt', ${idx}, 'res1', this.value)"> %</td>
@@ -495,18 +498,16 @@ function renderTabela(tipo) {
                 <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
                 <td><input type="text" value="${revVal}" style="width: 55px; text-align:center;" onchange="updateRow('pt', ${idx}, 'revisao', this.value)"></td>
                 <td><input type="text" value="${row.obs}" onchange="updateRow('pt', ${idx}, 'obs', this.value)"></td>
-                <td>
-                    <div style="display:flex; gap:4px;">
-                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('portugues', ${idx})" title="Editar">✏️</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('pt', ${idx})" title="Excluir">🗑️</button>
-                    </div>
-                </td>
+                <td><button class="btn btn-danger btn-sm" onclick="deletarAssunto('pt', ${idx})" title="Excluir">🗑️</button></td>
             `;
         } else if (tipo === 'direito') {
             tr.innerHTML = `
                 <td><b>${row.materia}</b></td>
                 <td><span class="badge ${row.prioridade.includes('Muito') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td><b>${row.assunto}</b></td>
+                <td>
+                    <b>${row.assunto}</b>
+                    <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('direito', ${idx})" style="margin-left:5px;" title="Editar Assunto">✏️</button>
+                </td>
                 <td><code>${row.artigos}</code></td>
                 <td><b>${row.meta}</b></td>
                 <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
@@ -515,18 +516,16 @@ function renderTabela(tipo) {
                 <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
                 <td><input type="text" value="${revVal}" style="width: 55px; text-align:center;" onchange="updateRow('dir', ${idx}, 'revisao', this.value)"></td>
                 <td><input type="text" value="${row.obs}" onchange="updateRow('dir', ${idx}, 'obs', this.value)"></td>
-                <td>
-                    <div style="display:flex; gap:4px;">
-                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('direito', ${idx})" title="Editar">✏️</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('dir', ${idx})" title="Excluir">🗑️</button>
-                    </div>
-                </td>
+                <td><button class="btn btn-danger btn-sm" onclick="deletarAssunto('dir', ${idx})" title="Excluir">🗑️</button></td>
             `;
         } else if (tipo === 'rlm') {
             tr.innerHTML = `
                 <td><b>${row.area}</b></td>
                 <td><span class="badge ${row.prioridade.includes('Muito') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td><b>${row.assunto}</b></td>
+                <td>
+                    <b>${row.assunto}</b>
+                    <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('rlm', ${idx})" style="margin-left:5px;" title="Editar Assunto">✏️</button>
+                </td>
                 <td><code>${row.foco}</code></td>
                 <td><b>${row.meta}</b></td>
                 <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
@@ -535,12 +534,7 @@ function renderTabela(tipo) {
                 <td><span class="badge ${statusObj.cls}">${statusObj.txt}</span></td>
                 <td><input type="text" value="${revVal}" style="width: 55px; text-align:center;" onchange="updateRow('rlm', ${idx}, 'revisao', this.value)"></td>
                 <td><input type="text" value="${row.obs}" onchange="updateRow('rlm', ${idx}, 'obs', this.value)"></td>
-                <td>
-                    <div style="display:flex; gap:4px;">
-                        <button class="btn btn-secondary btn-sm" onclick="abrirModalEditar('rlm', ${idx})" title="Editar">✏️</button>
-                        <button class="btn btn-danger btn-sm" onclick="deletarAssunto('rlm', ${idx})" title="Excluir">🗑️</button>
-                    </div>
-                </td>
+                <td><button class="btn btn-danger btn-sm" onclick="deletarAssunto('rlm', ${idx})" title="Excluir">🗑️</button></td>
             `;
         }
         tbody.appendChild(tr);
@@ -555,13 +549,10 @@ function updateRow(tipo, idx, field, val) {
 }
 
 function deletarAssunto(tipo, idx) {
-    if (confirm("Tem certeza que deseja excluir este assunto?")) {
-        if (tipo === 'pt') appPt.splice(idx, 1);
-        if (tipo === 'dir') appDir.splice(idx, 1);
-        if (tipo === 'rlm') appRlm.splice(idx, 1);
-        
-        let aba = (tipo === 'pt') ? 'portugues' : (tipo === 'dir') ? 'direito' : 'rlm';
-        renderTabela(aba);
+    if (confirm("Tem certeza de que deseja excluir este assunto?")) {
+        if (tipo === 'pt') { appPt.splice(idx, 1); renderTabela('portugues'); }
+        if (tipo === 'dir') { appDir.splice(idx, 1); renderTabela('direito'); }
+        if (tipo === 'rlm') { appRlm.splice(idx, 1); renderTabela('rlm'); }
         salvarDados();
     }
 }
@@ -602,6 +593,7 @@ function gerarCamposHtml(tipo, item) {
                 <div style="flex:1"><label><b>Res. 1 (%):</b></label><br><input type="number" id="m-res1" value="${item.res1 !== undefined ? item.res1 : ''}" style="width:100%;"></div>
                 <div style="flex:1"><label><b>Res. 2 (%):</b></label><br><input type="number" id="m-res2" value="${item.res2 !== undefined ? item.res2 : ''}" style="width:100%;"></div>
             </div>
+            <div><label><b>Revisão (Dias):</b></label><br><input type="text" id="m-revisao" value="${item.revisao || ''}" style="width:100%;"></div>
             <div><label><b>Observações:</b></label><br><input type="text" id="m-obs" value="${item.obs || ''}" style="width:100%;"></div>
         `;
     } else if (tipo === 'direito') {
@@ -626,6 +618,7 @@ function gerarCamposHtml(tipo, item) {
                 <div style="flex:1"><label><b>Res. 1 (%):</b></label><br><input type="number" id="m-res1" value="${item.res1 !== undefined ? item.res1 : ''}" style="width:100%;"></div>
                 <div style="flex:1"><label><b>Res. 2 (%):</b></label><br><input type="number" id="m-res2" value="${item.res2 !== undefined ? item.res2 : ''}" style="width:100%;"></div>
             </div>
+            <div><label><b>Revisão (Dias):</b></label><br><input type="text" id="m-revisao" value="${item.revisao || ''}" style="width:100%;"></div>
             <div><label><b>Observações:</b></label><br><input type="text" id="m-obs" value="${item.obs || ''}" style="width:100%;"></div>
         `;
     } else if (tipo === 'rlm') {
@@ -640,6 +633,7 @@ function gerarCamposHtml(tipo, item) {
                 <div style="flex:1"><label><b>Res. 1 (%):</b></label><br><input type="number" id="m-res1" value="${item.res1 !== undefined ? item.res1 : ''}" style="width:100%;"></div>
                 <div style="flex:1"><label><b>Res. 2 (%):</b></label><br><input type="number" id="m-res2" value="${item.res2 !== undefined ? item.res2 : ''}" style="width:100%;"></div>
             </div>
+            <div><label><b>Revisão (Dias):</b></label><br><input type="text" id="m-revisao" value="${item.revisao || ''}" style="width:100%;"></div>
             <div><label><b>Observações:</b></label><br><input type="text" id="m-obs" value="${item.obs || ''}" style="width:100%;"></div>
         `;
     }
@@ -662,9 +656,11 @@ function salvarModalAssunto() {
             proxima_acao: document.getElementById('m-proxima_acao').value,
             res1: document.getElementById('m-res1').value,
             res2: document.getElementById('m-res2').value,
+            revisao: document.getElementById('m-revisao').value,
             obs: document.getElementById('m-obs').value
         };
-        if (idx === "") appPt.push(obj); else appPt[idx] = obj;
+        if (idx === "") appPt.push(obj);
+        else appPt[idx] = obj;
         renderTabela('portugues');
     } else if (tipo === 'direito') {
         obj = {
@@ -676,9 +672,11 @@ function salvarModalAssunto() {
             proxima_acao: document.getElementById('m-proxima_acao').value,
             res1: document.getElementById('m-res1').value,
             res2: document.getElementById('m-res2').value,
+            revisao: document.getElementById('m-revisao').value,
             obs: document.getElementById('m-obs').value
         };
-        if (idx === "") appDir.push(obj); else appDir[idx] = obj;
+        if (idx === "") appDir.push(obj);
+        else appDir[idx] = obj;
         renderTabela('direito');
     } else if (tipo === 'rlm') {
         obj = {
@@ -690,9 +688,11 @@ function salvarModalAssunto() {
             proxima_acao: document.getElementById('m-proxima_acao').value,
             res1: document.getElementById('m-res1').value,
             res2: document.getElementById('m-res2').value,
+            revisao: document.getElementById('m-revisao').value,
             obs: document.getElementById('m-obs').value
         };
-        if (idx === "") appRlm.push(obj); else appRlm[idx] = obj;
+        if (idx === "") appRlm.push(obj);
+        else appRlm[idx] = obj;
         renderTabela('rlm');
     }
 
