@@ -199,7 +199,7 @@
         .status-ataque { background: #fee2e2; color: #991b1b; }
         .status-consolidado { background: #dcfce7; color: #166534; }
         .status-manutencao { background: #fef3c7; color: #92400e; }
-        .rev-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+        .rev-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
 
         .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
         .redacao-col-left, .redacao-col-right { display: flex; flex-direction: column; gap: 15px; }
@@ -864,7 +864,6 @@
             btn.disabled = true;
 
             try {
-                // Faz a chamada real para o Google Apps Script para checar autorização
                 const payload = { action: "load", email: inputEmail, sheet: "Dados" };
                 const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
                 const parsed = await response.json();
@@ -874,12 +873,10 @@
                     btn.innerText = "Acessar GPS";
                     btn.disabled = false;
                 } else {
-                    // E-mail válido e autorizado
                     document.getElementById('email-aluno').value = inputEmail;
                     localStorage.setItem('gps_email_usuario', inputEmail);
                     document.getElementById('modal-acesso').style.display = 'none';
                     
-                    // Se houver dados retornados da nuvem na checagem, já podemos aproveitar
                     if (parsed.status === "success" && parsed.data) {
                         const data = parsed.data;
                         if (data.estudo) Object.assign(dadosEstudo, data.estudo);
@@ -939,7 +936,7 @@
         }
 
         function adicionarAssuntoRapido(mat) {
-            let ramo = mat === 'direito' ? prompt("Digite o Ramo do Direito (Ex: Direito Penal):", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
+            let ramo = mat === 'direito' ? prompt("Digite o Ramo do Direito (Direito Penal, Direito Processual Penal, Direito Processual Civil, Direito Constitucional, Direito Administrativo, Normas da Corregedoria):", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
             if(mat === 'direito' && !ramo) return;
 
             let nome = prompt("Digite o nome do novo assunto:");
@@ -1071,7 +1068,7 @@
                 { id: 'direito_proc_civil', nome: '⚖️ D. Processual Civil' },
                 { id: 'direito_const', nome: '⚖️ D. Constitucional' },
                 { id: 'direito_admin', nome: '⚖️ D. Administrativo' },
-                { id: 'normas_corregedoria', nome: '⚖️ Normas' },
+                { id: 'normas_corregedoria', nome: '⚖️ Normas Corregedoria' },
                 { id: 'rlm', nome: '📐 RLM' },
                 { id: 'matematica', nome: '🧮 Matemática' },
                 { id: 'informatica', nome: '💻 Informática' },
@@ -1455,7 +1452,6 @@ ${concl}`;
                 } catch(e) {}
             }
 
-            // Verifica se já existe um e-mail salvo na sessão anterior para pular o modal
             const emailSalvo = localStorage.getItem('gps_email_usuario');
             if (emailSalvo) {
                 document.getElementById('email-aluno').value = emailSalvo;
