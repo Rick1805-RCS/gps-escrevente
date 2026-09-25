@@ -140,6 +140,9 @@
                 </thead>
                 <tbody id="tbody-portugues"></tbody>
             </table>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-success" onclick="adicionarAssunto('pt')">➕ Incluir Assunto</button>
+            </div>
         </div>
     </div>
 
@@ -182,6 +185,9 @@
                 </thead>
                 <tbody id="tbody-direito"></tbody>
             </table>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-success" onclick="adicionarAssunto('dir')">➕ Incluir Assunto</button>
+            </div>
         </div>
     </div>
 
@@ -212,6 +218,9 @@
                 </thead>
                 <tbody id="tbody-rlm"></tbody>
             </table>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-success" onclick="adicionarAssunto('rlm')">➕ Incluir Assunto</button>
+            </div>
         </div>
     </div>
 
@@ -405,17 +414,6 @@ function calcStatus(res1, res2) {
     return { txt: "⭐ CONGELAR", cls: "status-congelar" };
 }
 
-function editarAssunto(tipo, idx) {
-    let list = tipo === 'pt' ? appPt : tipo === 'dir' ? appDir : appRlm;
-    let novo = prompt("Editar Assunto:", list[idx].assunto);
-    if (novo !== null && novo.trim() !== "") {
-        list[idx].assunto = novo.trim();
-        salvarDados();
-        let aba = (tipo === 'pt') ? 'portugues' : (tipo === 'dir') ? 'direito' : 'rlm';
-        renderTabela(aba);
-    }
-}
-
 function renderTabela(tipo) {
     let data, tbody, buscaVal, filtroVal;
 
@@ -448,10 +446,7 @@ function renderTabela(tipo) {
         if (tipo === 'portugues') {
             tr.innerHTML = `
                 <td><span class="badge ${row.prioridade.includes('Altíssima') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td>
-                    <button onclick="editarAssunto('pt', ${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0; margin-right:5px;" title="Editar Assunto">✏️</button>
-                    <b>${row.assunto}</b>
-                </td>
+                <td><button onclick="editarAssunto('pt', ${idx})" style="background: #64748b; color: white; border: none; cursor: pointer; font-size: 11px; padding: 3px 6px; border-radius: 4px; margin-right: 6px;" title="Editar Assunto">✏️</button><b>${row.assunto}</b></td>
                 <td><code>${row.recorrencia}</code></td>
                 <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
                 <td><input type="number" value="${row.res1}" onchange="updateRow('pt', ${idx}, 'res1', this.value)"> %</td>
@@ -464,10 +459,7 @@ function renderTabela(tipo) {
             tr.innerHTML = `
                 <td><b>${row.materia}</b></td>
                 <td><span class="badge ${row.prioridade.includes('Muito') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td>
-                    <button onclick="editarAssunto('dir', ${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0; margin-right:5px;" title="Editar Assunto">✏️</button>
-                    <b>${row.assunto}</b>
-                </td>
+                <td><button onclick="editarAssunto('dir', ${idx})" style="background: #64748b; color: white; border: none; cursor: pointer; font-size: 11px; padding: 3px 6px; border-radius: 4px; margin-right: 6px;" title="Editar Assunto">✏️</button><b>${row.assunto}</b></td>
                 <td><code>${row.artigos}</code></td>
                 <td><b>${row.meta}</b></td>
                 <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
@@ -481,10 +473,7 @@ function renderTabela(tipo) {
             tr.innerHTML = `
                 <td><b>${row.area}</b></td>
                 <td><span class="badge ${row.prioridade.includes('Muito') ? 'badge-alta' : 'badge-media'}">${row.prioridade}</span></td>
-                <td>
-                    <button onclick="editarAssunto('rlm', ${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; padding:0; margin-right:5px;" title="Editar Assunto">✏️</button>
-                    <b>${row.assunto}</b>
-                </td>
+                <td><button onclick="editarAssunto('rlm', ${idx})" style="background: #64748b; color: white; border: none; cursor: pointer; font-size: 11px; padding: 3px 6px; border-radius: 4px; margin-right: 6px;" title="Editar Assunto">✏️</button><b>${row.assunto}</b></td>
                 <td><code>${row.foco}</code></td>
                 <td><b>${row.meta}</b></td>
                 <td style="font-size:12px; opacity:0.8;">${row.proxima_acao}</td>
@@ -513,6 +502,36 @@ function limparRow(tipo, idx) {
         if (tipo === 'rlm') { appRlm[idx].res1 = ""; appRlm[idx].res2 = ""; appRlm[idx].obs = ""; renderTabela('rlm'); }
         salvarDados();
     }
+}
+
+function editarAssunto(tipo, idx) {
+    let list = tipo === 'pt' ? appPt : tipo === 'dir' ? appDir : appRlm;
+    let novo = prompt("Editar Assunto:", list[idx].assunto);
+    if (novo !== null && novo.trim() !== "") {
+        list[idx].assunto = novo.trim();
+        salvarDados();
+        let aba = (tipo === 'pt') ? 'portugues' : (tipo === 'dir') ? 'direito' : 'rlm';
+        renderTabela(aba);
+    }
+}
+
+function adicionarAssunto(tipo) {
+    let assunto = prompt("Digite o nome do novo assunto:");
+    if (!assunto || assunto.trim() === "") return;
+
+    if (tipo === 'pt') {
+        appPt.push({"prioridade": "🟡 Média", "assunto": assunto.trim(), "recorrencia": "-", "proxima_acao": "-", "res1": "", "res2": "", "obs": ""});
+        renderTabela('portugues');
+    } else if (tipo === 'dir') {
+        let materia = prompt("Digite a matéria (Ex: Penal, Processo Penal, CPC...):", "Penal");
+        appDir.push({"materia": materia || "-", "prioridade": "🟡 Média", "assunto": assunto.trim(), "artigos": "-", "meta": "80%", "proxima_acao": "-", "res1": "", "res2": "", "obs": ""});
+        renderTabela('direito');
+    } else if (tipo === 'rlm') {
+        let area = prompt("Digite a área (Ex: RLM, Informática):", "RLM");
+        appRlm.push({"area": area || "-", "prioridade": "🟡 Média", "assunto": assunto.trim(), "foco": "-", "meta": "80%", "proxima_acao": "-", "res1": "", "res2": "", "obs": ""});
+        renderTabela('rlm');
+    }
+    salvarDados();
 }
 
 function salvarDados() {
