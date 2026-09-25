@@ -510,7 +510,12 @@
                     <select id="select-materia-evol" onchange="renderGraficoEvolucao()">
                         <option value="todas">Todas as Matérias</option>
                         <option value="portugues">📘 Português</option>
-                        <option value="direito">⚖️ Direito</option>
+                        <option value="direito_penal">⚖️ Direito Penal</option>
+                        <option value="direito_proc_penal">⚖️ D. Processual Penal</option>
+                        <option value="direito_proc_civil">⚖️ D. Processual Civil</option>
+                        <option value="direito_const">⚖️ D. Constitucional</option>
+                        <option value="direito_admin">⚖️ D. Administrativo</option>
+                        <option value="normas_corregedoria">⚖️ Normas da Corregedoria</option>
                         <option value="rlm">📐 RLM</option>
                         <option value="matematica">🧮 Matemática</option>
                         <option value="informatica">💻 Informática</option>
@@ -692,79 +697,88 @@
     <script>
         const dadosEstudo = {
             portugues: [
-                { materia: "Português", prioridade: "alta", assunto: "Interpretação e Compreensão de Texto (Fatores de Textualidade e Inferências)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "alta", assunto: "Sinal Indicativo de Crase (Casos Obrigatórios, Proibidos e Facultativos)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "alta", assunto: "Regência Verbal e Nominal & Sintaxe de Regência", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "alta", assunto: "Concordância Verbal e Nominal", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "alta", assunto: "Pontuação (Emprego da Vírgula, Dois Pontos e Travessão)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "alta", assunto: "Colocação Pronomial (Próclise, Mesóclise e Êclise)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "alta", assunto: "Emprego dos Tempos e Modos Verbais (Correlação Verbal)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "media", assunto: "Classes de Palavras (Pronomes Relativos, Demonstrativos e Conjunções)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "media", assunto: "Significação Contextual das Palavras (Sinônimos, Antônimos e Sentido Figurado)", certo: 0, errado: 0 },
-                { materia: "Português", prioridade: "baixa", assunto: "Ortografia Oficial e Acentuação Gráfica", certo: 0, errado: 0 }
+                { materia: "Português", prioridade: "alta", assunto: "Interpretação e Compreensão de Texto (Fatores de Textualidade e Inferências)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "alta", assunto: "Sinal Indicativo de Crase (Casos Obrigatórios, Proibidos e Facultativos)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "alta", assunto: "Regência Verbal e Nominal & Sintaxe de Regência", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "alta", assunto: "Concordância Verbal e Nominal", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "alta", assunto: "Pontuação (Emprego da Vírgula, Dois Pontos e Travessão)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "alta", assunto: "Colocação Pronomial (Próclise, Mesóclise e Êclise)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "alta", assunto: "Emprego dos Tempos e Modos Verbais (Correlação Verbal)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "media", assunto: "Classes de Palavras (Pronomes Relativos, Demonstrativos e Conjunções)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "media", assunto: "Significação Contextual das Palavras (Sinônimos, Antônimos e Sentido Figurado)", certo: 0, errado: 0, obs: "" },
+                { materia: "Português", prioridade: "baixa", assunto: "Ortografia Oficial e Acentuação Gráfica", certo: 0, errado: 0, obs: "" }
             ],
             direito: [
-                { materia: "Direito Penal", prioridade: "alta", assunto: "Fé Pública — arts. 293–305", certo: 0, errado: 0 },
-                { materia: "Direito Penal", prioridade: "alta", assunto: "Falsa identidade — arts. 307–308", certo: 0, errado: 0 },
-                { materia: "Direito Penal", prioridade: "alta", assunto: "Fraudes em certames — art. 311-A", certo: 0, errado: 0 },
-                { materia: "Direito Penal", prioridade: "alta", assunto: "Administração Pública — arts. 312–333", certo: 0, errado: 0 },
-                { materia: "Direito Penal", prioridade: "media", assunto: "Administração Pública — arts. 335–337", certo: 0, errado: 0 },
-                { materia: "Direito Penal", prioridade: "alta", assunto: "Administração da Justiça — arts. 339–347", certo: 0, errado: 0 },
-                { materia: "Direito Penal", prioridade: "media", assunto: "Arts. 350, 357 e 359", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Sujeitos e auxiliares — arts. 251–258, 261–267 e 274", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Citações e intimações — arts. 351–372", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Procedimento comum — arts. 394–497", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "media", assunto: "Procedimento sumário — arts. 531–538", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "baixa", assunto: "Restauração de autos — arts. 541–548", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Recursos — arts. 574–667", certo: 0, errado: 0 },
-                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Juizados Especiais Criminais", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Sujeitos/impedimento/suspeição — arts. 144–155", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Atos processuais — arts. 188–275", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Tutela provisória — arts. 294–311", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Procedimento comum — arts. 318–512", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Cumprimento de sentença — arts. 513–538", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "media", assunto: "Recursos — arts. 994–1026", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "JEC", certo: 0, errado: 0 },
-                { materia: "Direito Processual Civil", prioridade: "media", assunto: "Juizado da Fazenda Pública", certo: 0, errado: 0 },
-                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Direitos individuais e coletivos — art. 5º", certo: 0, errado: 0 },
-                { materia: "Direito Constitucional", prioridade: "media", assunto: "Direitos sociais — arts. 6º–11", certo: 0, errado: 0 },
-                { materia: "Direito Constitucional", prioridade: "media", assunto: "Nacionalidade — arts. 12–13", certo: 0, errado: 0 },
-                { materia: "Direito Constitucional", prioridade: "media", assunto: "Direitos políticos — arts. 14–16", certo: 0, errado: 0 },
-                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Administração Pública — arts. 37–41", certo: 0, errado: 0 },
-                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Poder Judiciário — art. 92", certo: 0, errado: 0 },
-                { materia: "Direito Administrativo", prioridade: "alta", assunto: "Estatuto — Lei 10.261/68, arts. 239–323", certo: 0, errado: 0 },
-                { materia: "Direito Administrativo", prioridade: "alta", assunto: "Improbidade — Lei 8.429/92", certo: 0, errado: 0 },
-                { materia: "Normas da Corregedoria", prioridade: "alta", assunto: "Tomo I - Cap. III - Seções I, II, V, VI, VII - Escrituração, Protocolo e Carga de Autos", certo: 0, errado: 0 },
-                { materia: "Normas da Corregedoria", prioridade: "alta", assunto: "Tomo I - Cap. III - Seções IX a XIV - Certidões, Mandados e Ofícios", certo: 0, errado: 0 },
-                { materia: "Normas da Corregedoria", prioridade: "media", assunto: "Tomo I - Cap. II - Seção I - Função Correcional (Correção Ordinária e Extraordinária)", certo: 0, errado: 0 }
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Fé Pública — arts. 293–305", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Falsa identidade — arts. 307–308", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Fraudes em certames — art. 311-A", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Administração Pública — arts. 312–333", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Penal", prioridade: "media", assunto: "Administração Pública — arts. 335–337", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Penal", prioridade: "alta", assunto: "Administração da Justiça — arts. 339–347", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Penal", prioridade: "media", assunto: "Arts. 350, 357 e 359", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Sujeitos e auxiliares — arts. 251–258, 261–267 e 274", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Citações e intimações — arts. 351–372", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Procedimento comum — arts. 394–497", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "media", assunto: "Procedimento sumário — arts. 531–538", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "baixa", assunto: "Restauração de autos — arts. 541–548", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Recursos — arts. 574–667", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Penal", prioridade: "alta", assunto: "Juizados Especiais Criminais", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Sujeitos/impedimento/suspeição — arts. 144–155", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Atos processuais — arts. 188–275", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Tutela provisória — arts. 294–311", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Procedimento comum — arts. 318–512", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "Cumprimento de sentença — arts. 513–538", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "media", assunto: "Recursos — arts. 994–1026", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "alta", assunto: "JEC", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Processual Civil", prioridade: "media", assunto: "Juizado da Fazenda Pública", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Direitos individuais e coletivos — art. 5º", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Constitucional", prioridade: "media", assunto: "Direitos sociais — arts. 6º–11", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Constitucional", prioridade: "media", assunto: "Nacionalidade — arts. 12–13", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Constitucional", prioridade: "media", assunto: "Direitos políticos — arts. 14–16", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Administração Pública — arts. 37–41", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Constitucional", prioridade: "alta", assunto: "Poder Judiciário — art. 92", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Administrativo", prioridade: "alta", assunto: "Estatuto — Lei 10.261/68, arts. 239–323", certo: 0, errado: 0, obs: "" },
+                { materia: "Direito Administrativo", prioridade: "alta", assunto: "Improbidade — Lei 8.429/92", certo: 0, errado: 0, obs: "" },
+                { materia: "Normas da Corregedoria", prioridade: "alta", assunto: "Tomo I - Cap. III - Seções I, II, V, VI, VII - Escrituração, Protocolo e Carga de Autos", certo: 0, errado: 0, obs: "" },
+                { materia: "Normas da Corregedoria", prioridade: "alta", assunto: "Tomo I - Cap. III - Seções IX a XIV - Certidões, Mandados e Ofícios", certo: 0, errado: 0, obs: "" },
+                { materia: "Normas da Corregedoria", prioridade: "media", assunto: "Tomo I - Cap. II - Seção I - Função Correcional (Correção Ordinária e Extraordinária)", certo: 0, errado: 0, obs: "" }
             ],
             rlm: [
-                { materia: "RLM", prioridade: "alta", assunto: "Sequências Lógicas de Números, Letras, Palavras e Figuras", certo: 0, errado: 0 },
-                { materia: "RLM", prioridade: "alta", assunto: "Equivalências Lógicas e Negações de Proposições Compostas", certo: 0, errado: 0 },
-                { materia: "RLM", prioridade: "alta", assunto: "Tabelas-Verdade, Tautologia, Contradição e Contingência", certo: 0, errado: 0 },
-                { materia: "RLM", prioridade: "media", assunto: "Diagramas Lógicos, Conjuntos e Argumentação", certo: 0, errado: 0 },
-                { materia: "RLM", prioridade: "media", assunto: "Associações Lógicas e Verdades/Mentiras", certo: 0, errado: 0 }
+                { materia: "RLM", prioridade: "alta", assunto: "Sequências Lógicas de Números, Letras, Palavras e Figuras", certo: 0, errado: 0, obs: "" },
+                { materia: "RLM", prioridade: "alta", assunto: "Equivalências Lógicas e Negações de Proposições Compostas", certo: 0, errado: 0, obs: "" },
+                { materia: "RLM", prioridade: "alta", assunto: "Tabelas-Verdade, Tautologia, Contradição e Contingência", certo: 0, errado: 0, obs: "" },
+                { materia: "RLM", prioridade: "media", assunto: "Diagramas Lógicos, Conjuntos e Argumentação", certo: 0, errado: 0, obs: "" },
+                { materia: "RLM", prioridade: "media", assunto: "Associações Lógicas e Verdades/Mentiras", certo: 0, errado: 0, obs: "" }
             ],
             matematica: [
-                { materia: "Matemática", prioridade: "alta", assunto: "Regra de Três Simples e Composta & Porcentagem", certo: 0, errado: 0 },
-                { materia: "Matemática", prioridade: "alta", assunto: "Razão e Proporção & Divisão Proporcional", certo: 0, errado: 0 },
-                { materia: "Matemática", prioridade: "alta", assunto: "Média Aritmética Simples e Ponderada", certo: 0, errado: 0 },
-                { materia: "Matemática", prioridade: "alta", assunto: "Noções de Geometria Plana e Espacial (Área, Perímetro e Volume)", certo: 0, errado: 0 },
-                { materia: "Matemática", prioridade: "media", assunto: "Equações do 1º e 2º Grau & Sistemas de Equações", certo: 0, errado: 0 },
-                { materia: "Matemática", prioridade: "baixa", assunto: "MMC, MDC e Juros Simples", certo: 0, errado: 0 }
+                { materia: "Matemática", prioridade: "alta", assunto: "Regra de Três Simples e Composta & Porcentagem", certo: 0, errado: 0, obs: "" },
+                { materia: "Matemática", prioridade: "alta", assunto: "Razão e Proporção & Divisão Proporcional", certo: 0, errado: 0, obs: "" },
+                { materia: "Matemática", prioridade: "alta", assunto: "Média Aritmética Simples e Ponderada", certo: 0, errado: 0, obs: "" },
+                { materia: "Matemática", prioridade: "alta", assunto: "Noções de Geometria Plana e Espacial (Área, Perímetro e Volume)", certo: 0, errado: 0, obs: "" },
+                { materia: "Matemática", prioridade: "media", assunto: "Equações do 1º e 2º Grau & Sistemas de Equações", certo: 0, errado: 0, obs: "" },
+                { materia: "Matemática", prioridade: "baixa", assunto: "MMC, MDC e Juros Simples", certo: 0, errado: 0, obs: "" }
             ],
             informatica: [
-                { materia: "Informática", prioridade: "alta", assunto: "MS-Excel (Word/Office 365): Fórmulas SOMA, SE, PROCV, CONT.SE e Endereçamento Relativo/Absoluto ($)", certo: 0, errado: 0 },
-                { materia: "Informática", prioridade: "alta", assunto: "MS-Word: Formatação, Quebras de Página/Seção, Caixas de Texto e Tabelas", certo: 0, errado: 0 },
-                { materia: "Informática", prioridade: "alta", assunto: "MS-Windows 10/11: Gerenciamento de Arquivos, Atalhos de Teclado e Área de Transferência", certo: 0, errado: 0 },
-                { materia: "Informática", prioridade: "media", assunto: "MS-Teams: Reuniões, Canais, Compartilhamento e Chat", certo: 0, errado: 0 },
-                { materia: "Informática", prioridade: "media", assunto: "Correio Eletrônico (Campos Para, CC, CCO) e Protocolos de Internet", certo: 0, errado: 0 }
+                { materia: "Informática", prioridade: "alta", assunto: "MS-Excel (Word/Office 365): Fórmulas SOMA, SE, PROCV, CONT.SE e Endereçamento Relativo/Absoluto ($)", certo: 0, errado: 0, obs: "" },
+                { materia: "Informática", prioridade: "alta", assunto: "MS-Word: Formatação, Quebras de Página/Seção, Caixas de Texto e Tabelas", certo: 0, errado: 0, obs: "" },
+                { materia: "Informática", prioridade: "alta", assunto: "MS-Windows 10/11: Gerenciamento de Arquivos, Atalhos de Teclado e Área de Transferência", certo: 0, errado: 0, obs: "" },
+                { materia: "Informática", prioridade: "media", assunto: "MS-Teams: Reuniões, Canais, Compartilhamento e Chat", certo: 0, errado: 0, obs: "" },
+                { materia: "Informática", prioridade: "media", assunto: "Correio Eletrônico (Campos Para, CC, CCO) e Protocolos de Internet", certo: 0, errado: 0, obs: "" }
             ],
             atualidades: [
-                { materia: "Atualidades", prioridade: "alta", assunto: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/15 - Arts. 1º a 13 e 34 a 38)", certo: 0, errado: 0 },
-                { materia: "Atualidades", prioridade: "alta", assunto: "Fatos Políticos e Econômicos Nacionais Recentes (Últimos 6 Meses)", certo: 0, errado: 0 },
-                { materia: "Atualidades", prioridade: "media", assunto: "Meio Ambiente, Sociedade e Conflitos Internacionais Recentes", certo: 0, errado: 0 }
+                { materia: "Atualidades", prioridade: "alta", assunto: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/15 - Arts. 1º a 13 e 34 a 38)", certo: 0, errado: 0, obs: "" },
+                { materia: "Atualidades", prioridade: "alta", assunto: "Fatos Políticos e Econômicos Nacionais Recentes (Últimos 6 Meses)", certo: 0, errado: 0, obs: "" },
+                { materia: "Atualidades", prioridade: "media", assunto: "Meio Ambiente, Sociedade e Conflitos Internacionais Recentes", certo: 0, errado: 0, obs: "" }
             ]
+        };
+
+        const mapDireitoEvolucao = {
+            'direito_penal': 'Direito Penal',
+            'direito_proc_penal': 'Direito Processual Penal',
+            'direito_proc_civil': 'Direito Processual Civil',
+            'direito_const': 'Direito Constitucional',
+            'direito_admin': 'Direito Administrativo',
+            'normas_corregedoria': 'Normas da Corregedoria'
         };
 
         let gradeCicloCustom = [
@@ -888,7 +902,7 @@
             }
         }
 
-        function calcularStatusEHora(certo, errado, customRev) {
+        function calcularStatusEHora(certo, errado) {
             const total = certo + errado;
             let revText = "";
             let badgeText = "";
@@ -896,20 +910,20 @@
 
             if (total === 0) {
                 badgeText = "Ataque"; badgeClass = "status-ataque";
-                revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 1 dia';
+                revText = "Revisão em 1 dia";
             } else {
                 const pct = Math.round((certo / total) * 100);
                 if (pct >= 80) { 
                     badgeText = "Consolidado"; badgeClass = "status-consolidado"; 
-                    revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 15 dias'; 
+                    revText = "Revisão em 15 dias"; 
                 }
                 else if (pct >= 60) { 
                     badgeText = "Manutenção"; badgeClass = "status-manutencao"; 
-                    revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 7 dias'; 
+                    revText = "Revisão em 7 dias"; 
                 }
                 else { 
                     badgeText = "Ataque"; badgeClass = "status-ataque"; 
-                    revText = customRev ? `Revisão em ${customRev} dias` : 'Revisão em 1 dia'; 
+                    revText = "Revisão em 1 dia"; 
                 }
             }
             return { badge: `<span class="status-badge ${badgeClass}">${badgeText}</span>`, rev: `<span class="rev-tag">${revText}</span>` };
@@ -919,23 +933,6 @@
             let novoNome = prompt("Editar nome do assunto:", dadosEstudo[mat][idx].assunto);
             if(novoNome && novoNome.trim() !== "") {
                 dadosEstudo[mat][idx].assunto = novoNome.trim();
-                salvarDados();
-                renderTabelas();
-            }
-        }
-
-        function editarRevisao(mat, idx) {
-            let dias = prompt("Digite o número de dias para a próxima revisão (de 1 a 30) ou deixe em branco para retorno ao modo automático:", dadosEstudo[mat][idx].revisaoCustom || "");
-            if (dias !== null) {
-                let d = parseInt(dias);
-                if (d >= 1 && d <= 30) {
-                    dadosEstudo[mat][idx].revisaoCustom = d;
-                } else if (dias.trim() === "") {
-                    delete dadosEstudo[mat][idx].revisaoCustom;
-                } else {
-                    alert("Por favor, insira um valor numérico entre 1 e 30.");
-                    return;
-                }
                 salvarDados();
                 renderTabelas();
             }
@@ -952,7 +949,8 @@
                     prioridade: calcularPrioridadeAutomatica(nome),
                     assunto: nome.trim(),
                     certo: 0,
-                    errado: 0
+                    errado: 0,
+                    obs: ""
                 });
                 salvarDados();
                 renderTabelas();
@@ -963,21 +961,22 @@
             ['portugues', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
                 const container = document.getElementById(`table-${mat}`);
                 if (!container) return;
-                let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 140px;">Matéria</th><th>Assunto</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 160px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
+                let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 140px;">Matéria</th><th>Assunto</th><th style="width: 150px;">Observações</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 140px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
                 dadosEstudo[mat].forEach((item, index) => {
                     const totalQ = item.certo + item.errado;
                     const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
                     let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
-                    const statusObj = calcularStatusEHora(item.certo, item.errado, item.revisaoCustom);
+                    const statusObj = calcularStatusEHora(item.certo, item.errado);
                     html += `<tr>
                         <td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td>
                         <td><span class="txt-materia-destaque">${item.materia}</span></td>
                         <td><button onclick="editarNomeAssunto('${mat}', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 4px; font-size: 14px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b></td>
+                        <td><input type="text" value="${item.obs || ''}" onchange="atualizarDado('${mat}', ${index}, 'obs', this.value)" style="width: 100%; border: 1px solid var(--border-color); border-radius: 4px; padding: 4px; font-size: 0.78rem;" placeholder="Obs..."></td>
                         <td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></td>
                         <td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></td>
                         <td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td>
                         <td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td>
-                        <td><div class="status-container">${statusObj.badge} <div style="display: flex; gap: 4px; align-items: center;">${statusObj.rev} <button onclick="editarRevisao('${mat}', ${index})" style="background:transparent; border:none; cursor:pointer; font-size:14px;" title="Definir dias de revisão">📅</button></div></div></td>
+                        <td><div class="status-container">${statusObj.badge} ${statusObj.rev}</div></td>
                         <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir Assunto">🗑️</button></td>
                     </tr>`;
                 });
@@ -991,22 +990,23 @@
             const container = document.getElementById('table-direito');
             if (!container) return;
             const filtroRamo = document.getElementById('select-ramo-direito')?.value || 'todos';
-            let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 190px;">Matéria</th><th>Assunto</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 160px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
+            let html = `<table><thead><tr><th style="width: 35px; text-align: center;">Prioridade</th><th style="width: 190px;">Matéria</th><th>Assunto</th><th style="width: 150px;">Observações</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 140px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
             dadosEstudo.direito.forEach((item, index) => {
                 if (filtroRamo !== 'todos' && item.materia !== filtroRamo) return;
                 const totalQ = item.certo + item.errado;
                 const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
                 let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
-                const statusObj = calcularStatusEHora(item.certo, item.errado, item.revisaoCustom);
+                const statusObj = calcularStatusEHora(item.certo, item.errado);
                 html += `<tr>
                     <td style="text-align: center;"><span class="dot dot-${item.prioridade}"></span></td>
                     <td><span class="txt-materia-destaque">${item.materia}</span></td>
                     <td><button onclick="editarNomeAssunto('direito', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 4px; font-size: 14px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b></td>
+                    <td><input type="text" value="${item.obs || ''}" onchange="atualizarDado('direito', ${index}, 'obs', this.value)" style="width: 100%; border: 1px solid var(--border-color); border-radius: 4px; padding: 4px; font-size: 0.78rem;" placeholder="Obs..."></td>
                     <td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('direito', ${index}, 'certo', this.value)"></td>
                     <td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('direito', ${index}, 'errado', this.value)"></td>
                     <td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td>
                     <td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td>
-                    <td><div class="status-container">${statusObj.badge} <div style="display: flex; gap: 4px; align-items: center;">${statusObj.rev} <button onclick="editarRevisao('direito', ${index})" style="background:transparent; border:none; cursor:pointer; font-size:14px;" title="Definir dias de revisão">📅</button></div></div></td>
+                    <td><div class="status-container">${statusObj.badge} ${statusObj.rev}</div></td>
                     <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('direito', ${index})" title="Excluir Assunto">🗑️</button></td>
                 </tr>`;
             });
@@ -1066,7 +1066,12 @@
             const selectedMateria = document.getElementById('select-materia-evol')?.value || 'todas';
             const materiasMap = [
                 { id: 'portugues', nome: '📘 Português' },
-                { id: 'direito', nome: '⚖️ Direito' },
+                { id: 'direito_penal', nome: '⚖️ Direito Penal' },
+                { id: 'direito_proc_penal', nome: '⚖️ D. Processual Penal' },
+                { id: 'direito_proc_civil', nome: '⚖️ D. Processual Civil' },
+                { id: 'direito_const', nome: '⚖️ D. Constitucional' },
+                { id: 'direito_admin', nome: '⚖️ D. Administrativo' },
+                { id: 'normas_corregedoria', nome: '⚖️ Normas' },
                 { id: 'rlm', nome: '📐 RLM' },
                 { id: 'matematica', nome: '🧮 Matemática' },
                 { id: 'informatica', nome: '💻 Informática' },
@@ -1074,9 +1079,14 @@
             ];
             let html = '';
             const materiasFiltradas = selectedMateria === 'todas' ? materiasMap : materiasMap.filter(m => m.id === selectedMateria);
+            
             materiasFiltradas.forEach(m => {
                 let c = 0, e = 0;
-                dadosEstudo[m.id].forEach(item => { c += item.certo; e += item.errado; });
+                if (mapDireitoEvolucao[m.id]) {
+                    dadosEstudo.direito.filter(d => d.materia === mapDireitoEvolucao[m.id]).forEach(item => { c += item.certo; e += item.errado; });
+                } else {
+                    dadosEstudo[m.id].forEach(item => { c += item.certo; e += item.errado; });
+                }
                 const total = c + e;
                 const pct = total > 0 ? Math.round((c / total) * 100) : 0;
                 html += `<div class="evol-card"><h4>${m.nome}</h4><div style="font-size: 1.2rem; font-weight: 800; color: var(--primary-blue);">${pct}%</div><div class="evol-stats"><span>Acertos: ${c}</span><span>Erros: ${e}</span><span>Total: ${total}</span></div></div>`;
@@ -1089,16 +1099,31 @@
             if (!ctx) return;
             const selectedMateria = document.getElementById('select-materia-evol')?.value || 'todas';
             let labels = [], dataPct = [];
+            
             if (selectedMateria === 'todas') {
-                labels = ['Português', 'Direito', 'RLM', 'Matematica', 'Informática', 'Atualidades'];
-                ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
+                labels = ['Português', 'D. Penal', 'D. Proc. Penal', 'D. Proc. Civil', 'D. Const.', 'D. Admin.', 'Normas', 'RLM', 'Matemática', 'Informática', 'Atualidades'];
+                const categorias = [
+                    { key: 'portugues' }, { key: 'direito_penal' }, { key: 'direito_proc_penal' }, { key: 'direito_proc_civil' },
+                    { key: 'direito_const' }, { key: 'direito_admin' }, { key: 'normas_corregedoria' },
+                    { key: 'rlm' }, { key: 'matematica' }, { key: 'informatica' }, { key: 'atualidades' }
+                ];
+                
+                categorias.forEach(cat => {
                     let c = 0, e = 0;
-                    dadosEstudo[mat].forEach(item => { c += item.certo; e += item.errado; });
+                    if(mapDireitoEvolucao[cat.key]) {
+                        dadosEstudo.direito.filter(d => d.materia === mapDireitoEvolucao[cat.key]).forEach(item => { c += item.certo; e += item.errado; });
+                    } else {
+                        dadosEstudo[cat.key].forEach(item => { c += item.certo; e += item.errado; });
+                    }
                     const total = c + e;
                     dataPct.push(total > 0 ? Math.round((c / total) * 100) : 0);
                 });
             } else {
-                dadosEstudo[selectedMateria].forEach(item => {
+                let datasetAlvo = mapDireitoEvolucao[selectedMateria] 
+                    ? dadosEstudo.direito.filter(d => d.materia === mapDireitoEvolucao[selectedMateria]) 
+                    : dadosEstudo[selectedMateria];
+                    
+                datasetAlvo.forEach(item => {
                     const q = item.certo + item.errado;
                     labels.push(item.assunto.length > 22 ? item.assunto.substring(0, 20) + '...' : item.assunto);
                     dataPct.push(q > 0 ? Math.round((item.certo / q) * 100) : 0);
@@ -1107,7 +1132,7 @@
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: labels, datasets: [{ label: selectedMateria === 'todas' ? '% Acerto Global por Disciplina' : `% Acerto Detalhado (${selectedMateria.toUpperCase()})`, data: dataPct, backgroundColor: '#3b82f6' }] },
+                data: { labels: labels, datasets: [{ label: selectedMateria === 'todas' ? '% Acerto Global por Disciplina' : `% Acerto Detalhado`, data: dataPct, backgroundColor: '#3b82f6' }] },
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
             });
             renderEvolucaoCards();
@@ -1116,18 +1141,36 @@
         function renderGraficoEdital() {
             const ctx = document.getElementById('chartProgressoEdital');
             if (!ctx) return;
-            const materias = ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'];
-            const labels = ['Português', 'Direito', 'RLM', 'Matemática', 'Informática', 'Atualidades'];
-            const dataProgresso = materias.map(mat => {
-                const totalAssuntos = dadosEstudo[mat].length;
+            
+            const labels = ['Português', 'D. Penal', 'D. Proc. Penal', 'D. Proc. Civil', 'D. Const.', 'D. Admin.', 'Normas', 'RLM', 'Matemática', 'Informática', 'Atualidades'];
+            const categorias = [
+                { key: 'portugues' }, { key: 'direito_penal' }, { key: 'direito_proc_penal' }, { key: 'direito_proc_civil' },
+                { key: 'direito_const' }, { key: 'direito_admin' }, { key: 'normas_corregedoria' },
+                { key: 'rlm' }, { key: 'matematica' }, { key: 'informatica' }, { key: 'atualidades' }
+            ];
+
+            const dataProgresso = categorias.map(cat => {
+                let itemsAlvo = mapDireitoEvolucao[cat.key] 
+                    ? dadosEstudo.direito.filter(d => d.materia === mapDireitoEvolucao[cat.key])
+                    : dadosEstudo[cat.key];
+                    
+                const totalAssuntos = itemsAlvo.length;
                 if (totalAssuntos === 0) return 0;
-                const estudados = dadosEstudo[mat].filter(item => (item.certo + item.errado) > 0).length;
+                const estudados = itemsAlvo.filter(item => (item.certo + item.errado) > 0).length;
                 return Math.round((estudados / totalAssuntos) * 100);
             });
+            
             if (chartEdital) chartEdital.destroy();
             chartEdital = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: labels, datasets: [{ label: '% de Assuntos do Edital Já Praticados/Estudados', data: dataProgresso, backgroundColor: ['#93c5fd', '#fdba74', '#c4b5fd', '#f472b6', '#a5b4fc', '#bef264'] }] },
+                data: { 
+                    labels: labels, 
+                    datasets: [{ 
+                        label: '% de Assuntos do Edital Já Praticados/Estudados', 
+                        data: dataProgresso, 
+                        backgroundColor: ['#93c5fd', '#fca5a5', '#fdba74', '#fde047', '#86efac', '#67e8f9', '#7dd3fc', '#c4b5fd', '#f472b6', '#a5b4fc', '#bef264'] 
+                    }] 
+                },
                 options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, max: 100 } } }
             });
         }
@@ -1219,7 +1262,7 @@
                 case 'atualidades': matKey = 'atualidades'; nomeMateria = 'Atualidades'; break;
             }
             const prioridadeAuto = calcularPrioridadeAutomatica(assunto);
-            dadosEstudo[matKey].push({ materia: nomeMateria, prioridade: prioridadeAuto, assunto: assunto, certo: 0, errado: 0 });
+            dadosEstudo[matKey].push({ materia: nomeMateria, prioridade: prioridadeAuto, assunto: assunto, certo: 0, errado: 0, obs: "" });
             document.getElementById('add-assunto-input').value = '';
             renderTabelas();
             salvarDados();
