@@ -14,7 +14,7 @@
             --accent-red: #ef4444; --accent-yellow: #f59e0b; --accent-green: #10b981;
             --border-color: #cbd5e1;
             
-            /* Cores Matérias */
+            /* Cores Matérias - Restauradas para o Ciclo */
             --materia-portugues: #93c5fd; --materia-penal: #fca5a5; --materia-proc-penal: #fdba74;
             --materia-proc-civil: #fde047; --materia-const: #86efac; --materia-admin: #67e8f9;
             --materia-normas: #7dd3fc; --materia-rlm: #c4b5fd; --materia-matematica: #f472b6;
@@ -29,55 +29,39 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-page); color: var(--text-main); padding-bottom: 20px; }
 
-        /* Toast de Sincronização */
-        .toast {
-            position: fixed; bottom: 20px; right: 20px; background: var(--bg-header); color: white;
-            padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;
-            opacity: 0; transition: opacity 0.3s, transform 0.3s; transform: translateY(20px);
-            pointer-events: none; z-index: 10000; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-        }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--bg-header); color: white; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s, transform 0.3s; transform: translateY(20px); pointer-events: none; z-index: 10000; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
         .toast.show { opacity: 1; transform: translateY(0); }
 
-        /* Modal Original */
-        #modal-acesso {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px);
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
-        }
+        #modal-acesso { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); z-index: 9999; display: flex; justify-content: center; align-items: center; }
         .modal-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; }
         .modal-card h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
-        .modal-card input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 700; margin-bottom: 15px; text-align: center; }
+        .modal-card input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 700; margin-bottom: 15px; text-align: center; background: var(--bg-page); color: var(--text-main);}
         .modal-card button { width: 100%; padding: 10px; border: none; background: var(--btn-salvar); color: white; font-weight: 800; border-radius: 6px; cursor: pointer; }
 
-        /* Header & Nav */
         .header-bar { background-color: var(--bg-header); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .brand { display: flex; align-items: center; gap: 10px; }
         .brand h1 { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
         .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         
         .btn-hdr { border: none; padding: 6px 12px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
-        .btn-tema { background: #475569; }
-        .btn-salvar { background: var(--btn-salvar); }
-        .btn-exportar { background: var(--btn-exportar); }
-        .btn-importar { background: var(--btn-importar); }
-        .btn-resetar { background: var(--btn-resetar); }
+        .btn-tema { background: #475569; } .btn-salvar { background: var(--btn-salvar); } .btn-exportar { background: var(--btn-exportar); } .btn-resetar { background: var(--btn-resetar); }
 
         .nav-container { padding: 0 15px; margin-top: 10px; }
         .nav-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border-color); overflow-x: auto; scrollbar-width: none; }
         .nav-tabs::-webkit-scrollbar { display: none; }
         .tab-btn { background: transparent; border: none; padding: 8px 10px; font-size: 0.82rem; font-weight: 800; color: #334155; cursor: pointer; border-radius: 6px 6px 0 0; white-space: nowrap; flex: 1; text-align: center; }
         body.dark-mode .tab-btn { color: #f1f5f9; }
-        .tab-btn.active { background: var(--primary-blue); color: #ffffff; }
+        .tab-btn.active { background: var(--primary-blue); color: #ffffff !important; }
 
         .main-container { padding: 15px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .table-card { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 15px; }
+        .table-card { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 15px; overflow-x: auto;}
         .subfilter-bar { background: #f1f5f9; padding: 10px 15px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
         body.dark-mode .subfilter-bar { background: #0f172a; }
 
-        /* Tabelas Compactas Restauradas */
-        table { width: 100%; border-collapse: collapse; text-align: left; }
+        /* Tabelas Principais */
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px;}
         th { background: #e2e8f0; color: #0f172a; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 8px 10px; border-bottom: 2px solid var(--border-color); }
         body.dark-mode th { background: #0f172a; color: #f8fafc; }
         td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
@@ -86,46 +70,39 @@
         .txt-artigos { font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 2px; }
         
         .badge-recorrencia { font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; text-align: center; }
-        .rec-alta { background-color: #fee2e2; color: #991b1b; }
-        .rec-media { background-color: #fef3c7; color: #92400e; }
-        .rec-baixa { background-color: #dcfce7; color: #166534; }
+        .rec-alta { background-color: #fee2e2; color: #991b1b; } .rec-media { background-color: #fef3c7; color: #92400e; } .rec-baixa { background-color: #dcfce7; color: #166534; }
 
-        input[type="number"] { width: 45px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); }
-        input[type="date"] { padding: 2px 4px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.7rem; background: var(--bg-page); color: var(--text-main); }
+        /* Inputs de Desempenho e Revisões */
+        input[type="number"], .input-dt { border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); }
+        input[type="number"] { width: 45px; padding: 4px; }
         .input-total-readonly { background: #e2e8f0; color: #475569; border: 1px solid var(--border-color); font-weight: 800; width: 45px; text-align: center; border-radius: 4px; padding: 4px; }
+        body.dark-mode .input-total-readonly { background: #334155; color: #cbd5e1; }
         
-        .pct-badge { font-weight: 800; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; min-width: 45px; text-align: center; display: inline-block; }
-        .pct-good { background: rgba(16,185,129,0.2); color: #047857; }
-        .pct-mid { background: rgba(245,158,11,0.2); color: #b45309; }
-        .pct-bad { background: rgba(239,68,68,0.2); color: #b91c1c; }
+        .pct-badge { font-weight: 800; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; min-width: 50px; text-align: center; display: inline-block; }
+        .pct-good { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;} 
+        .pct-mid { background: #fef3c7; color: #92400e; border: 1px solid #fde68a;} 
+        .pct-bad { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca;}
 
         .btn-del-row { background: transparent; border: none; font-size: 0.9rem; cursor: pointer; opacity: 0.7; }
         .btn-del-row:hover { opacity: 1; }
 
-        /* Revisão Compacta */
-        .revisao-celula { display: flex; flex-direction: column; gap: 6px; }
-        .revisao-linha { display: flex; gap: 8px; font-size: 0.75rem; align-items: center; }
-        .check-fin { accent-color: var(--btn-salvar); transform: scale(1.1); }
-        .check-rev { accent-color: var(--primary-blue); }
+        /* NOVA ESTRUTURA DE REVISÕES COMPACTA */
+        .rev-container { display: flex; flex-direction: column; gap: 4px; }
+        .estudo-fin { font-weight: 800; font-size: 0.75rem; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .estudo-fin input { transform: scale(1.2); accent-color: var(--btn-salvar); cursor: pointer; }
+        
+        .rev-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; background: var(--bg-page); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); }
+        .rev-item label { font-weight: 800; display: flex; align-items: center; gap: 4px; width: 40px;}
+        .rev-item input[type="checkbox"] { accent-color: var(--primary-blue); cursor: pointer; }
+        .input-dt { width: 70px; padding: 3px; font-size: 0.7rem; }
+        .input-num-sm { width: 35px !important; padding: 3px !important; font-size: 0.7rem; }
+        .rev-lbl { font-weight: 700; color: var(--text-muted); margin-left: 2px;}
+        .rev-total { font-weight: 800; color: var(--primary-blue); display: inline-block; width: 20px; text-align: center; }
 
-        /* Responsividade Tablets/Telemóveis */
-        @media (max-width: 768px) {
-            table thead { display: none; }
-            table, tbody, tr, td { display: block; width: 100%; }
-            tr { margin-bottom: 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; }
-            td { text-align: left; padding: 8px 0; border-bottom: 1px dashed var(--border-color); display: flex; flex-direction: column; gap: 4px; }
-            td:last-child { border-bottom: none; align-items: flex-end; }
-            td::before { content: attr(data-label); font-weight: 800; color: var(--primary-blue); text-transform: uppercase; font-size: 0.7rem; margin-bottom: 2px; }
-            
-            .header-actions input { width: 100% !important; margin-bottom: 5px; }
-            .nav-tabs { justify-content: flex-start; }
-            .tab-btn { flex: 0 0 auto; }
-            .revisao-linha { flex-wrap: wrap; }
-        }
-
-        /* Funcionalidades Restantes (Redação, Ciclo, Evolução) */
+        /* MÓDULOS RESTAURADOS: Redação */
         .panel-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
         .panel-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 800; margin-bottom: 8px; }
+        
         .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
         @media (max-width: 768px) { .redacao-grid { grid-template-columns: 1fr; } }
         
@@ -133,27 +110,54 @@
         .timer-display { font-size: 1.2rem; font-weight: 800; border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 4px; background: var(--bg-page); }
         .btn-sm { border: none; padding: 6px 10px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
         
-        .caixa-redacao { border: 1px solid var(--border-color); border-radius: 4px; padding: 8px 10px; width: 100%; height: 110px; resize: vertical; background: var(--bg-page); color: var(--text-main); }
         .tema-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 10px; margin-top: 8px; font-size: 0.85rem; color: #1e40af; }
+        body.dark-mode .tema-box { background: #1e3a8a; border-color: #1e40af; color: #bfdbfe; }
+        
+        .bloco-redacao { margin-top: 10px; }
+        .bloco-redacao label { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); display: block; margin-bottom: 3px; }
+        
+        .caixa-redacao { border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 10px; width: 100%; height: 110px; resize: vertical; outline: none; }
+        .modo-caderno { background-color: #fffdf9; background-image: linear-gradient(#e5e7eb 1px, transparent 1px); background-size: 100% 32px; line-height: 32px; }
+        body.dark-mode .modo-caderno { background-color: #1a2234; background-image: linear-gradient(#334155 1px, transparent 1px); color: #f8fafc;}
+        .modo-digitacao { background-color: var(--bg-page); background-image: none; line-height: normal; color: var(--text-main);}
+        .fonte-forma { font-family: 'Inter', sans-serif; font-size: 0.9rem; }
+        .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.45rem; }
+        .btn-purple { background: #7c3aed; }
 
+        .info-card-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 4px; padding: 8px; margin-top: 8px; font-size: 0.78rem; }
+        body.dark-mode .info-card-item { background: #0f172a; }
+        .info-card-item h4 { font-size: 0.82rem; color: var(--text-main); margin-bottom: 2px; font-weight: 700; }
+
+        /* MÓDULOS RESTAURADOS: Configurações & Ciclo */
+        .form-ciclo-inline { display: flex; gap: 8px; background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
+        .field-group { display: flex; flex-direction: column; gap: 3px; }
+        .field-group label { font-size: 0.72rem; font-weight: 800; color: var(--primary-blue); text-transform: uppercase; }
+        .field-group select, .field-group input { padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); font-weight: 700; font-size: 0.8rem;}
+        
         .ciclo-grid-container { overflow-x: auto; margin-top: 8px; }
         .ciclo-table { width: 100%; border-collapse: separate; border-spacing: 3px; min-width: 650px; }
         .ciclo-table th { background: #475569; color: #ffffff; text-align: center; padding: 5px 3px; font-size: 0.72rem; font-weight: 800; border-radius: 4px; text-transform: uppercase; }
-        .ciclo-table td { background: var(--bg-page); vertical-align: top; padding: 3px; border-radius: 4px; border: 1px solid var(--border-color); width: 14%; }
-        
+        .ciclo-table td { background: #f1f5f9; vertical-align: top; padding: 3px; border-radius: 4px; border: 1px solid var(--border-color); width: 14%; }
+        body.dark-mode .ciclo-table td { background: #0f172a; }
+
         .ciclo-card-slot { background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border-color); padding: 3px 5px; margin-bottom: 3px; display: flex; flex-direction: column; gap: 2px; position: relative; }
-        .slot-materia-destaque { color: #0f172a; font-weight: 800; font-size: 0.72rem; text-align: center; padding: 3px 4px; border-radius: 3px; margin-top: 1px; text-transform: uppercase; }
-        
-        .etiquetas-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; font-size: 0.72rem; }
+        .badge-tipo-neutral { background-color: #e2e8f0; color: #1e293b; font-size: 0.6rem; font-weight: 800; padding: 1px 4px; border-radius: 6px; text-align: center; text-transform: uppercase; display: inline-block; border: 1px solid var(--border-color); }
+        body.dark-mode .badge-tipo-neutral { background-color: #334155; color: #f8fafc; }
+        .slot-materia-destaque { color: #0f172a; font-weight: 800; font-size: 0.72rem; text-align: center; padding: 3px 4px; border-radius: 3px; margin-top: 1px; text-transform: uppercase; line-height: 1.1; }
+        .slot-desc { font-size: 0.62rem; color: var(--text-muted); text-align: center; margin-top: 1px; line-height: 1; }
+
+        .etiquetas-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .etiqueta-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; }
         .etiqueta-box { width: 12px; height: 12px; border-radius: 3px; }
-        
-        /* Helpers de Cores Restorados */
+
         .bg-mat-portugues { background-color: var(--materia-portugues); } .bg-mat-penal { background-color: var(--materia-penal); }
         .bg-mat-proc-penal { background-color: var(--materia-proc-penal); } .bg-mat-proc-civil { background-color: var(--materia-proc-civil); }
         .bg-mat-const { background-color: var(--materia-const); } .bg-mat-admin { background-color: var(--materia-admin); }
         .bg-mat-normas { background-color: var(--materia-normas); } .bg-mat-rlm { background-color: var(--materia-rlm); }
         .bg-mat-matematica { background-color: var(--materia-matematica); } .bg-mat-info { background-color: var(--materia-info); }
-        .bg-mat-atualidades { background-color: var(--materia-atualidades); } .bg-mat-descanso { background-color: var(--materia-descanso); }
+        .bg-mat-atualidades { background-color: var(--materia-atualidades); } .bg-mat-revisao { background-color: var(--materia-revisao); }
+        .bg-mat-descanso { background-color: var(--materia-descanso); }
+
     </style>
 </head>
 <body>
@@ -188,7 +192,6 @@
         </div>
     </header>
 
-    <!-- Restauração completa de todos os 9 separadores originais -->
     <nav class="nav-container">
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('portugues')">📘 Português</button>
@@ -230,10 +233,10 @@
         <div id="informatica" class="tab-content"><div class="table-card"><div id="table-informatica"></div></div></div>
         <div id="atualidades" class="tab-content"><div class="table-card"><div id="table-atualidades"></div></div></div>
 
-        <!-- Módulo de Redação Restaurado -->
+        <!-- REDAÇÃO (EXATAMENTE COMO ORIGINAL) -->
         <div id="redacao" class="tab-content">
             <div class="redacao-grid">
-                <div>
+                <div class="redacao-col-left">
                     <div class="panel-card">
                         <h3>⏱️ Cronômetro</h3>
                         <div class="timer-row">
@@ -243,29 +246,60 @@
                             <button class="btn-sm" style="background: #ef4444;" onclick="zerarTimer()">⏹ Zerar</button>
                         </div>
                     </div>
+
                     <div class="panel-card">
-                        <h3>🎲 Sorteador de Temas VUNESP</h3>
-                        <button class="btn-sm" style="background: #8b5cf6;" onclick="sortearTema()">Gerar Tema Aleatório</button>
-                        <div class="tema-box" id="display-tema"><b>Tema Atual:</b> Clique no botão acima para sortear.</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>🎲 Sorteador de Temas VUNESP</h3>
+                            <button class="btn-sm" style="background: #ef4444;" onclick="excluirTemaAtual()" title="Excluir Tema">🗑️ Excluir Tema</button>
+                        </div>
+                        <button class="btn-sm" style="background: #10b981; margin-top: 6px;" onclick="sortearTema()">🎲 Gerar Tema Aleatório</button>
+                        <div class="tema-box" id="display-tema">
+                            <b>Tema Atual:</b> Clique no botão acima para sortear.
+                        </div>
                     </div>
+
                     <div class="panel-card">
-                        <h3>📝 Treino de Redação</h3>
-                        <label style="font-size: 0.8rem; font-weight: 800; color: var(--primary-blue);">1. Introdução</label>
-                        <textarea id="red-intro" class="caixa-redacao"></textarea>
-                        <label style="font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); margin-top: 10px; display: block;">2. Desenvolvimento 1</label>
-                        <textarea id="red-dev1" class="caixa-redacao"></textarea>
-                        <label style="font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); margin-top: 10px; display: block;">3. Desenvolvimento 2</label>
-                        <textarea id="red-dev2" class="caixa-redacao"></textarea>
-                        <label style="font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); margin-top: 10px; display: block;">4. Conclusão</label>
-                        <textarea id="red-concl" class="caixa-redacao"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 5px;">
+                            <h3 style="margin-bottom: 0;">📝 Treino de Redação</h3>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <select id="modo-global" onchange="mudarModoGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main);">
+                                    <option value="caderno">Modo: Caderno</option>
+                                    <option value="digitacao">Modo: Digitação</option>
+                                </select>
+                                <select id="fonte-global" onchange="mudarFonteGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main);">
+                                    <option value="forma">Forma</option>
+                                    <option value="cursiva">Cursiva</option>
+                                </select>
+                                <span style="font-size: 0.78rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">Total: 0 palavras (~0 linhas)</span>
+                            </div>
+                        </div>
+
+                        <div class="bloco-redacao"><label>1. Introdução</label><textarea id="red-intro" class="caixa-redacao modo-caderno fonte-forma" placeholder="Apresentação do tema + Tese..." oninput="calcularPalavrasRedacao(); agendarSalvamentoNuvem();"></textarea></div>
+                        <div class="bloco-redacao"><label>2. Desenvolvimento 1</label><textarea id="red-dev1" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do primeiro argumento..." oninput="calcularPalavrasRedacao(); agendarSalvamentoNuvem();"></textarea></div>
+                        <div class="bloco-redacao"><label>3. Desenvolvimento 2</label><textarea id="red-dev2" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do segundo argumento..." oninput="calcularPalavrasRedacao(); agendarSalvamentoNuvem();"></textarea></div>
+                        <div class="bloco-redacao"><label>4. Conclusão</label><textarea id="red-concl" class="caixa-redacao modo-caderno fonte-forma" placeholder="Fechamento do texto..." oninput="calcularPalavrasRedacao(); agendarSalvamentoNuvem();"></textarea></div>
+
+                        <div style="display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap;">
+                            <button class="btn-hdr btn-salvar" onclick="salvarNuvemManual()">💾 Salvar</button>
+                            <button class="btn-hdr btn-purple" onclick="copiarPromptGemini()">📋 Copie e cole no Gemini</button>
+                            <button class="btn-hdr btn-exportar" onclick="exportarTXT()">📄 Exportar TXT</button>
+                        </div>
                     </div>
                 </div>
-                <div>
+
+                <div class="redacao-col-right">
                     <div class="panel-card">
                         <h3>💡 Dicas VUNESP</h3>
-                        <p style="font-size:0.8rem; margin-bottom:8px;"><b>1. Estrutura:</b> Sem proposta de intervenção obrigatória.</p>
-                        <p style="font-size:0.8rem; margin-bottom:8px;"><b>2. Tese:</b> Clara no 1º parágrafo.</p>
-                        <p style="font-size:0.8rem; margin-bottom:8px;"><b>3. Coesão:</b> Use conectivos entre parágrafos.</p>
+                        <div class="info-card-item"><h4>1. Estrutura sem Proposta</h4><p>Sintetize a tese na conclusão sem exigência de intervenção.</p></div>
+                        <div class="info-card-item"><h4>2. Tese Clara</h4><p>Defina o posicionamento no 1º parágrafo.</p></div>
+                        <div class="info-card-item"><h4>3. Conectivos</h4><p>Use elementos coesivos no início dos parágrafos.</p></div>
+                        <div class="info-card-item"><h4>4. Foco Temático</h4><p>Use as palavras-chave ao longo do texto.</p></div>
+                    </div>
+                    <div class="panel-card">
+                        <h3>📚 Repertório</h3>
+                        <div class="info-card-item"><h4>Machado de Assis</h4><p>Fragilidade da razão e aparências sociais.</p></div>
+                        <div class="info-card-item"><h4>Zygmunt Bauman</h4><p>Relações fluidas, consumo e trabalho.</p></div>
+                        <div class="info-card-item"><h4>Sérgio Buarque de Holanda</h4><p>O Homem Cordial e o público vs. privado.</p></div>
                     </div>
                 </div>
             </div>
@@ -278,15 +312,55 @@
             </div>
         </div>
 
-        <!-- Módulo de Configurações e Ciclo Restaurado -->
+        <!-- CONFIGURAÇÕES (EXATAMENTE COMO ORIGINAL) -->
         <div id="configuracoes" class="tab-content">
+            
             <div class="panel-card">
-                <h3>🗓️ Ciclo de Estudos Semanal</h3>
+                <h3>🗓️ Ciclo de Estudos Semanal (Grade Personalizável)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Monte e organize sua rotina semanal configurando a matéria e o tempo de estudo:</p>
+                
+                <div class="form-ciclo-inline">
+                    <div class="field-group">
+                        <label>Dia</label>
+                        <select id="ciclo-dia">
+                            <option value="Segunda">Segunda</option><option value="Terça">Terça</option>
+                            <option value="Quarta">Quarta</option><option value="Quinta">Quinta</option>
+                            <option value="Sexta">Sexta</option><option value="Sábado">Sábado</option><option value="Domingo">Domingo</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>hrs</label>
+                        <input type="number" id="ciclo-tempo" min="1" max="12" value="2" style="width: 50px;">
+                    </div>
+                    <div class="field-group">
+                        <label>Tipo</label>
+                        <select id="ciclo-tipo">
+                            <option value="teoria">TEORIA</option><option value="questoes">QUESTÕES</option>
+                            <option value="revisao-teorica">REVISÃO TEÓRICA</option><option value="revisao-questoes">REVISÃO QUESTÕES</option>
+                            <option value="descanso">DESCANSO</option>
+                        </select>
+                    </div>
+                    <div class="field-group" style="flex: 1;">
+                        <label>Matéria</label>
+                        <select id="ciclo-materia-select">
+                            <option value="Língua Portuguesa">Língua Portuguesa</option><option value="Direito Penal">Direito Penal</option>
+                            <option value="Direito Processual Penal">Direito Processual Penal</option><option value="Direito Processual Civil">Direito Processual Civil</option>
+                            <option value="Direito Constitucional">Direito Constitucional</option><option value="Direito Administrativo">Direito Administrativo</option>
+                            <option value="Normas da Corregedoria">Normas da Corregedoria</option><option value="R. Lógico">R. Lógico</option>
+                            <option value="Matemática">Matemática</option><option value="Informática">Informática</option>
+                            <option value="Atualidades">Atualidades</option><option value="Revisão Geral">Revisão Geral</option><option value="DESCANSO">DESCANSO</option>
+                        </select>
+                    </div>
+                    <div class="field-group" style="flex: 1;">
+                        <label>Detalhe / Obs</label>
+                        <input type="text" id="ciclo-desc" placeholder="Opcional">
+                    </div>
+                    <button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarSlotCiclo()">➕ Adicionar</button>
+                </div>
+
                 <div class="ciclo-grid-container">
                     <table class="ciclo-table">
-                        <thead>
-                            <tr><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th><th>SÁB</th><th>DOM</th></tr>
-                        </thead>
+                        <thead><tr><th>SEGUNDA</th><th>TERÇA</th><th>QUARTA</th><th>QUINTA</th><th>SEXTA</th><th>SÁBADO</th><th>DOMINGO</th></tr></thead>
                         <tbody>
                             <tr>
                                 <td id="col-Segunda"></td><td id="col-Terça"></td><td id="col-Quarta"></td>
@@ -294,6 +368,23 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="etiquetas-container">
+                    <div style="font-size: 0.75rem; font-weight: 800; width: 100%; margin-bottom: 2px;">CORES DE DESTAQUE POR MATÉRIA:</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-portugues"></div> Português</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-penal"></div> D. Penal</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-penal"></div> D. Proc. Penal</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-civil"></div> D. Proc. Civil</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-const"></div> D. Constitucional</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-admin"></div> D. Administrativo</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-normas"></div> Normas Corregedoria</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-rlm"></div> RLM</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-matematica"></div> Matemática</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-info"></div> Informática</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-atualidades"></div> Atualidades</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-revisao"></div> Revisões</div>
+                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-descanso"></div> Descanso</div>
                 </div>
             </div>
         </div>
@@ -303,10 +394,13 @@
     <script>
         const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
 
-        // Helper de Base de Revisões
-        const revBase = () => ({ rev1: { concluida: false, data: "" }, rev2: { concluida: false, data: "" }, rev3: { concluida: false, data: "" } });
+        // Helper de Base de Revisões com Certo e Errado integrados
+        const revBase = () => ({ 
+            rev1: { concluida: false, data: "", certo: 0, errado: 0 }, 
+            rev2: { concluida: false, data: "", certo: 0, errado: 0 }, 
+            rev3: { concluida: false, data: "", certo: 0, errado: 0 } 
+        });
 
-        // Base de Dados Completa Original Convertida para a Nova Estrutura
         let dadosEstudo = {
             portugues: [
                 { id: "pt1", materia: "Português", assunto: "Interpretação e Compreensão de Texto", tema_artigos: "Fatores de Textualidade e Inferências", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
@@ -314,83 +408,55 @@
                 { id: "pt3", materia: "Português", assunto: "Regência Verbal e Nominal", tema_artigos: "Sintaxe de Regência", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
                 { id: "pt4", materia: "Português", assunto: "Concordância Verbal e Nominal", tema_artigos: "Regras Gerais e Especiais", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
                 { id: "pt5", materia: "Português", assunto: "Pontuação", tema_artigos: "Vírgula, Dois Pontos e Travessão", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "pt6", materia: "Português", assunto: "Colocação Pronominal", tema_artigos: "Próclise, Mesóclise e Ênclise", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "pt7", materia: "Português", assunto: "Verbos", tema_artigos: "Tempos, Modos e Correlação Verbal", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "pt8", materia: "Português", assunto: "Classes de Palavras", tema_artigos: "Pronomes Relativos, Demonstrativos e Conjunções", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "pt9", materia: "Português", assunto: "Significação Contextual", tema_artigos: "Sinônimos, Antônimos e Sentido Figurado", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "pt10", materia: "Português", assunto: "Ortografia e Acentuação Gráfica", tema_artigos: "Regras Oficiais", recorrencia: "Baixa", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
+                { id: "pt6", materia: "Português", assunto: "Colocação Pronominal", tema_artigos: "Próclise, Mesóclise e Ênclise", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
             ],
             direito: [
                 { id: "dp1", materia: "Direito Penal", assunto: "Crimes Contra a Fé Pública", tema_artigos: "Arts. 293 a 305", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
                 { id: "dp2", materia: "Direito Penal", assunto: "Falsa Identidade", tema_artigos: "Arts. 307 e 308", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dp3", materia: "Direito Penal", assunto: "Fraudes em Certames", tema_artigos: "Art. 311-A", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dp4", materia: "Direito Penal", assunto: "Crimes Praticados por Func. Público", tema_artigos: "Arts. 312 a 333 (Administração Pública)", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dp5", materia: "Direito Penal", assunto: "Crimes Praticados por Particular", tema_artigos: "Arts. 335 a 337 (Administração Pública)", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dp6", materia: "Direito Penal", assunto: "Crimes Contra a Administração da Justiça", tema_artigos: "Arts. 339 a 347", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                
                 { id: "dpp1", materia: "Direito Processual Penal", assunto: "Sujeitos e Auxiliares", tema_artigos: "Arts. 251 a 258, 261 a 267 e 274", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpp2", materia: "Direito Processual Penal", assunto: "Citações e Intimações", tema_artigos: "Arts. 351 a 372", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpp3", materia: "Direito Processual Penal", assunto: "Procedimento Comum", tema_artigos: "Arts. 394 a 497", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpp4", materia: "Direito Processual Penal", assunto: "Procedimento Sumário", tema_artigos: "Arts. 531 a 538", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpp5", materia: "Direito Processual Penal", assunto: "Recursos", tema_artigos: "Arts. 574 a 667", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpp6", materia: "Direito Processual Penal", assunto: "JECRIM (Juizados Especiais Criminais)", tema_artigos: "Lei 9.099/95", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-
                 { id: "dpc1", materia: "Direito Processual Civil", assunto: "Impedimento e Suspeição", tema_artigos: "Arts. 144 a 155", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpc2", materia: "Direito Processual Civil", assunto: "Atos Processuais", tema_artigos: "Arts. 188 a 275", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpc3", materia: "Direito Processual Civil", assunto: "Tutela Provisória", tema_artigos: "Arts. 294 a 311", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpc4", materia: "Direito Processual Civil", assunto: "Procedimento Comum", tema_artigos: "Arts. 318 a 512", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpc5", materia: "Direito Processual Civil", assunto: "Cumprimento de Sentença", tema_artigos: "Arts. 513 a 538", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dpc6", materia: "Direito Processual Civil", assunto: "Recursos e JEC", tema_artigos: "Arts. 994 a 1026 / JEC e Fazenda Pública", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-
                 { id: "dco1", materia: "Direito Constitucional", assunto: "Direitos e Deveres Individuais e Coletivos", tema_artigos: "Art. 5º", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dco2", materia: "Direito Constitucional", assunto: "Direitos Sociais, Nacionalidade e Políticos", tema_artigos: "Arts. 6º a 16", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dco3", materia: "Direito Constitucional", assunto: "Administração Pública", tema_artigos: "Arts. 37 a 41", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dco4", materia: "Direito Constitucional", assunto: "Poder Judiciário", tema_artigos: "Art. 92", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-
                 { id: "dad1", materia: "Direito Administrativo", assunto: "Estatuto dos Funcionários Públicos (SP)", tema_artigos: "Lei 10.261/68, Arts. 239 a 323", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "dad2", materia: "Direito Administrativo", assunto: "Improbidade Administrativa", tema_artigos: "Lei 8.429/92", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-
-                { id: "nco1", materia: "Normas da Corregedoria", assunto: "Escrituração, Protocolo e Carga de Autos", tema_artigos: "Tomo I - Cap. III - Seções I, II, V, VI, VII", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "nco2", materia: "Normas da Corregedoria", assunto: "Certidões, Mandados e Ofícios", tema_artigos: "Tomo I - Cap. III - Seções IX a XIV", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
+                { id: "nco1", materia: "Normas da Corregedoria", assunto: "Escrituração, Protocolo e Carga de Autos", tema_artigos: "Tomo I - Cap. III - Seções I, II, V, VI, VII", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
             ],
             rlm: [
                 { id: "rlm1", materia: "RLM", assunto: "Sequências Lógicas", tema_artigos: "Números, Letras, Palavras e Figuras", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "rlm2", materia: "RLM", assunto: "Equivalências Lógicas e Negações", tema_artigos: "Proposições Compostas", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "rlm3", materia: "RLM", assunto: "Tabelas-Verdade", tema_artigos: "Tautologia, Contradição e Contingência", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "rlm4", materia: "RLM", assunto: "Diagramas Lógicos", tema_artigos: "Conjuntos e Argumentação", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
+                { id: "rlm2", materia: "RLM", assunto: "Equivalências Lógicas e Negações", tema_artigos: "Proposições Compostas", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
             ],
             matematica: [
                 { id: "mat1", materia: "Matemática", assunto: "Proporcionalidade", tema_artigos: "Regra de Três Simples/Composta e Porcentagem", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "mat2", materia: "Matemática", assunto: "Razão, Proporção e Divisão", tema_artigos: "Divisão Proporcional", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "mat3", materia: "Matemática", assunto: "Estatística Básica", tema_artigos: "Média Aritmética Simples e Ponderada", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "mat4", materia: "Matemática", assunto: "Geometria", tema_artigos: "Área, Perímetro e Volume", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "mat5", materia: "Matemática", assunto: "Equações", tema_artigos: "1º/2º Grau e Sistemas", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
+                { id: "mat2", materia: "Matemática", assunto: "Razão, Proporção e Divisão", tema_artigos: "Divisão Proporcional", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
             ],
             informatica: [
                 { id: "inf1", materia: "Informática", assunto: "MS-Excel", tema_artigos: "SOMA, SE, PROCV, CONT.SE e Endereçamento", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "inf2", materia: "Informática", assunto: "MS-Word", tema_artigos: "Formatação, Quebras, Tabelas", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "inf3", materia: "Informática", assunto: "MS-Windows 10/11", tema_artigos: "Arquivos e Atalhos", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "inf4", materia: "Informática", assunto: "Comunicações", tema_artigos: "MS-Teams e Correio Eletrônico (Para, CC, CCO)", recorrencia: "Média", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
+                { id: "inf2", materia: "Informática", assunto: "MS-Word", tema_artigos: "Formatação, Quebras, Tabelas", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
             ],
             atualidades: [
-                { id: "atu1", materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema_artigos: "Lei 13.146/15 - Arts. 1º a 13 e 34 a 38", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
-                { id: "atu2", materia: "Atualidades", assunto: "Fatos Políticos e Econômicos", tema_artigos: "Últimos 6 Meses", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
+                { id: "atu1", materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema_artigos: "Lei 13.146/15 - Arts. 1º a 13 e 34 a 38", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" }
             ]
         };
 
+        // Dados originais do Ciclo e Redação
         let gradeCicloCustom = [
-            { id: 1, dia: "Segunda", materia: "Língua Portuguesa" }, { id: 2, dia: "Segunda", materia: "Direito Constitucional" },
-            { id: 3, dia: "Terça", materia: "Direito Administrativo" }, { id: 4, dia: "Terça", materia: "Direito Processual Civil" },
-            { id: 5, dia: "Quarta", materia: "Direito Penal" }, { id: 6, dia: "Quarta", materia: "Direito Processual Penal" },
-            { id: 7, dia: "Quinta", materia: "Normas da Corregedoria" }, { id: 8, dia: "Quinta", materia: "Informática" },
-            { id: 9, dia: "Sexta", materia: "Matemática" }, { id: 10, dia: "Sexta", materia: "R. Lógico" },
-            { id: 11, dia: "Sábado", materia: "Atualidades" }, { id: 12, dia: "Sábado", materia: "Revisão Geral" },
-            { id: 13, dia: "Domingo", materia: "Questões" }
+            { id: 1, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Língua Portuguesa", desc: "" },
+            { id: 2, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Direito Constitucional", desc: "" },
+            { id: 6, dia: "Terça", tempo: 2, tipo: "teoria", materia: "Direito Administrativo", desc: "" },
+            { id: 9, dia: "Terça", tempo: 2, tipo: "teoria", materia: "Direito Processual Civil", desc: "" },
+            { id: 11, dia: "Quarta", tempo: 2, tipo: "teoria", materia: "Direito Penal", desc: "" },
+            { id: 14, dia: "Quarta", tempo: 2, tipo: "teoria", materia: "Direito Processual Penal", desc: "" },
+            { id: 16, dia: "Quinta", tempo: 2, tipo: "teoria", materia: "Normas da Corregedoria", desc: "" },
+            { id: 19, dia: "Quinta", tempo: 2, tipo: "teoria", materia: "Informática", desc: "" },
+            { id: 21, dia: "Sexta", tempo: 2, tipo: "teoria", materia: "Matemática", desc: "" },
+            { id: 24, dia: "Sexta", tempo: 2, tipo: "teoria", materia: "R. Lógico", desc: "" },
+            { id: 26, dia: "Sábado", tempo: 2, tipo: "teoria", materia: "Atualidades", desc: "" },
+            { id: 29, dia: "Sábado", tempo: 2, tipo: "revisao-teorica", materia: "Revisão Geral", desc: "da teoria estudada na semana" },
+            { id: 30, dia: "Domingo", tempo: 4, tipo: "revisao-questoes", materia: "Revisão Objetiva", desc: "questões erradas da semana" }
         ];
 
-        let acervoTemasVunesp = ["Inteligência Artificial no Trabalho", "Limites da liberdade de expressão", "Envelhecimento da população", "Mobilidade Urbana Sustentável"];
+        let acervoTemasVunesp = ["Desafios do trabalho na era da IA", "Limites da liberdade de expressão", "Envelhecimento da população", "Mobilidade Urbana Sustentável"];
+        let redacaoData = { intro: "", dev1: "", dev2: "", concl: "" };
 
-        // --- SISTEMA UI E TOAST ---
+        // --- UI E TOAST ---
         function showToast(msg) {
             const toast = document.getElementById('toast-msg');
             toast.innerText = msg; toast.classList.add('show');
@@ -406,7 +472,7 @@
             if (tabId === 'evolucao') renderGraficoEvolucao();
         }
 
-        // --- MOTOR DE TABELAS (Design Compacto e Original) ---
+        // --- GERAÇÃO DE TABELAS (Design com Inputs de Data Minimalistas e C/E/T por Revisão) ---
         function getCorRecorrencia(rec) {
             const r = rec.toLowerCase();
             if(r.includes('alta')) return 'rec-alta';
@@ -419,16 +485,16 @@
             
             let html = `<table><thead><tr>
                 <th>Assunto e Artigos</th>
-                <th style="width: 100px; text-align: center;">Recorrência</th>
-                <th style="width: 120px; text-align: center;">Desempenho</th>
-                <th style="width: 280px;">Acompanhamento / Revisões</th>
-                <th style="width: 40px;"></th>
+                <th style="width: 90px; text-align: center;">Recorrência</th>
+                <th style="width: 200px; text-align: center;">Desempenho Geral</th>
+                <th style="width: 320px;">Acompanhamento / Revisões</th>
+                <th style="width: 30px;"></th>
             </tr></thead><tbody>`;
 
             dadosArray.forEach((item) => {
-                const totalQ = item.certo + item.errado;
-                const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
-                const pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
+                const totalGeral = item.certo + item.errado;
+                const pctGeral = totalGeral > 0 ? Math.round((item.certo / totalGeral) * 100) : 0;
+                let pctClassG = pctGeral >= 80 ? 'pct-good' : (pctGeral < 60 && totalGeral > 0 ? 'pct-bad' : 'pct-mid');
                 const recClass = getCorRecorrencia(item.recorrencia);
 
                 html += `<tr id="row-${materiaKey}-${item.id}">
@@ -439,28 +505,32 @@
                     <td data-label="Recorrência" style="text-align: center;">
                         <span class="badge-recorrencia ${recClass}" onclick="editarTexto('${materiaKey}', '${item.id}', 'recorrencia')" style="cursor:pointer;">${item.recorrencia}</span>
                     </td>
-                    <td data-label="Desempenho">
+                    <td data-label="Desempenho Geral">
                         <div style="display:flex; gap:6px; justify-content:center; align-items:center;">
-                            <input type="number" value="${item.certo}" onchange="atualizarCampo('${materiaKey}', '${item.id}', 'certo', this.value)" title="Acertos">
-                            <input type="number" value="${item.errado}" onchange="atualizarCampo('${materiaKey}', '${item.id}', 'errado', this.value)" title="Erros">
-                            <span class="pct-badge ${pctClass}" id="pct-${item.id}">${pct}%</span>
+                            <div style="text-align:center; font-size:0.7rem; font-weight:800; color:var(--text-muted);">C<br><input type="number" value="${item.certo}" onchange="atualizarCampo('${materiaKey}', '${item.id}', 'certo', this.value)"></div>
+                            <div style="text-align:center; font-size:0.7rem; font-weight:800; color:var(--text-muted);">E<br><input type="number" value="${item.errado}" onchange="atualizarCampo('${materiaKey}', '${item.id}', 'errado', this.value)"></div>
+                            <div style="text-align:center; font-size:0.7rem; font-weight:800; color:var(--text-muted);">Total<br><input type="text" class="input-total-readonly" readonly value="${totalGeral}" id="totalGeral-${item.id}"></div>
+                            <div style="margin-left: 5px;"><span class="pct-badge ${pctClassG}" id="pctGeral-${item.id}">${pctGeral}%</span></div>
                         </div>
                     </td>
                     <td data-label="Revisões">
-                        <div class="revisao-celula">
-                            <label style="font-weight: 800; font-size: 0.8rem; color: ${item.finalizado ? 'var(--btn-salvar)' : 'inherit'};">
-                                <input type="checkbox" class="check-fin" ${item.finalizado ? 'checked' : ''} onchange="atualizarCampo('${materiaKey}', '${item.id}', 'finalizado', this.checked)"> ESTUDO FINALIZADO
+                        <div class="rev-container">
+                            <label class="estudo-fin" style="color: ${item.finalizado ? 'var(--btn-salvar)' : 'inherit'};">
+                                <input type="checkbox" ${item.finalizado ? 'checked' : ''} onchange="atualizarCampo('${materiaKey}', '${item.id}', 'finalizado', this.checked)"> ESTUDO FINALIZADO
                             </label>
-                            <div class="revisao-linha">
-                                <label>R1 <input type="checkbox" class="check-rev" ${item.revisoes.rev1.concluida ? 'checked' : ''} onchange="atualizarRevisao('${materiaKey}', '${item.id}', 'rev1', 'concluida', this.checked)">
-                                <input type="date" value="${item.revisoes.rev1.data}" onchange="atualizarRevisao('${materiaKey}', '${item.id}', 'rev1', 'data', this.value)"></label>
-                                
-                                <label>R2 <input type="checkbox" class="check-rev" ${item.revisoes.rev2.concluida ? 'checked' : ''} onchange="atualizarRevisao('${materiaKey}', '${item.id}', 'rev2', 'concluida', this.checked)">
-                                <input type="date" value="${item.revisoes.rev2.data}" onchange="atualizarRevisao('${materiaKey}', '${item.id}', 'rev2', 'data', this.value)"></label>
-                                
-                                <label>R3 <input type="checkbox" class="check-rev" ${item.revisoes.rev3.concluida ? 'checked' : ''} onchange="atualizarRevisao('${materiaKey}', '${item.id}', 'rev3', 'concluida', this.checked)">
-                                <input type="date" value="${item.revisoes.rev3.data}" onchange="atualizarRevisao('${materiaKey}', '${item.id}', 'rev3', 'data', this.value)"></label>
-                            </div>
+                            ${['rev1', 'rev2', 'rev3'].map((r, i) => {
+                                const rev = item.revisoes[r] || {concluida: false, data: "", certo: 0, errado: 0};
+                                const revTotal = (rev.certo || 0) + (rev.errado || 0);
+                                return `
+                                <div class="rev-item">
+                                    <label><input type="checkbox" ${rev.concluida ? 'checked' : ''} onchange="atualizarRevisao('${materiaKey}', '${item.id}', '${r}', 'concluida', this.checked)"> R${i+1}</label>
+                                    <input type="text" class="input-dt" placeholder="DD/MM/AA" value="${rev.data}" onchange="atualizarRevisao('${materiaKey}', '${item.id}', '${r}', 'data', this.value)">
+                                    <span class="rev-lbl">C:</span> <input type="number" class="input-num-sm" value="${rev.certo \vert{}\vert{} 0}" onchange="atualizarRevisao('${materiaKey}', '${item.id}', '${r}', 'certo', this.value)">
+                                    <span class="rev-lbl">E:</span> <input type="number" class="input-num-sm" value="${rev.errado \vert{}\vert{} 0}" onchange="atualizarRevisao('${materiaKey}', '${item.id}', '${r}', 'errado', this.value)">
+                                    <span class="rev-lbl">T:</span> <span class="rev-total" id="total-${r}-${item.id}">${revTotal}</span>
+                                </div>
+                                `;
+                            }).join('')}
                         </div>
                     </td>
                     <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${materiaKey}', '${item.id}')">🗑️</button></td>
@@ -488,11 +558,21 @@
         // --- LÓGICA DE DADOS (AUTO-SAVE) ---
         let debounceTimer;
         function agendarSalvamentoNuvem() {
-            localStorage.setItem('gps_escrevente_data', JSON.stringify(dadosEstudo));
+            // Guardar o estado da redação antes de salvar
+            redacaoData = {
+                intro: document.getElementById('red-intro')?.value || "",
+                dev1: document.getElementById('red-dev1')?.value || "",
+                dev2: document.getElementById('red-dev2')?.value || "",
+                concl: document.getElementById('red-concl')?.value || ""
+            };
+
+            const backupLocal = { estudo: dadosEstudo, ciclo: gradeCicloCustom, temas: acervoTemasVunesp, redacao: redacaoData };
+            localStorage.setItem('gps_escrevente_data_v2', JSON.stringify(backupLocal));
+            
             const btn = document.getElementById('btn-status-nuvem');
             btn.innerText = "Sincronizando..."; btn.style.background = "#f59e0b";
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => { executarSalvamentoNuvem(); }, 3000);
+            debounceTimer = setTimeout(() => { executarSalvamentoNuvem(backupLocal); }, 3000);
         }
 
         function atualizarCampo(materia, id, campo, valor) {
@@ -502,7 +582,10 @@
                 item[campo] = parseInt(valor) || 0;
                 const total = item.certo + item.errado;
                 const pct = total > 0 ? Math.round((item.certo / total) * 100) : 0;
-                const badge = document.getElementById(`pct-${id}`);
+                
+                const boxTotal = document.getElementById(`totalGeral-${id}`);
+                const badge = document.getElementById(`pctGeral-${id}`);
+                if(boxTotal) boxTotal.value = total;
                 if(badge) {
                     badge.innerText = `${pct}%`;
                     badge.className = `pct-badge ${pct >= 80 ? 'pct-good' : (pct < 60 && total > 0 ? 'pct-bad' : 'pct-mid')}`;
@@ -511,7 +594,7 @@
                 item[campo] = valor;
                 if(campo === 'finalizado') {
                     const row = document.getElementById(`row-${materia}-${id}`);
-                    if(row) row.querySelector('.check-fin').parentElement.style.color = valor ? 'var(--btn-salvar)' : 'inherit';
+                    if(row) row.querySelector('.estudo-fin').style.color = valor ? 'var(--btn-salvar)' : 'inherit';
                 }
             }
             agendarSalvamentoNuvem();
@@ -520,7 +603,15 @@
         function atualizarRevisao(materia, id, revKey, campo, valor) {
             const item = dadosEstudo[materia].find(i => i.id === id);
             if(item && item.revisoes[revKey]) {
-                item.revisoes[revKey][campo] = valor;
+                if(campo === 'certo' || campo === 'errado') {
+                    item.revisoes[revKey][campo] = parseInt(valor) || 0;
+                    const c = item.revisoes[revKey].certo || 0;
+                    const e = item.revisoes[revKey].errado || 0;
+                    const spanTot = document.getElementById(`total-${revKey}-${id}`);
+                    if(spanTot) spanTot.innerText = c + e;
+                } else {
+                    item.revisoes[revKey][campo] = valor;
+                }
                 agendarSalvamentoNuvem();
             }
         }
@@ -528,31 +619,40 @@
         function editarTexto(mat, id, campo) {
             const item = dadosEstudo[mat].find(i => i.id === id);
             let novo = prompt(`Editar:`, item[campo]);
-            if (novo !== null && novo.trim() !== "") {
-                item[campo] = novo.trim();
-                renderTodasTabelas(); agendarSalvamentoNuvem();
-            }
+            if (novo !== null && novo.trim() !== "") { item[campo] = novo.trim(); renderTodasTabelas(); agendarSalvamentoNuvem(); }
         }
         function excluirAssunto(mat, id) {
-            if (confirm("Excluir este assunto?")) {
-                dadosEstudo[mat] = dadosEstudo[mat].filter(i => i.id !== id);
-                renderTodasTabelas(); agendarSalvamentoNuvem(); showToast("Excluído!");
-            }
+            if (confirm("Excluir este assunto?")) { dadosEstudo[mat] = dadosEstudo[mat].filter(i => i.id !== id); renderTodasTabelas(); agendarSalvamentoNuvem(); showToast("Excluído!"); }
         }
 
         // --- NUVEM ---
-        async function executarSalvamentoNuvem() {
+        async function executarSalvamentoNuvem(dadosParaSalvar) {
             const email = document.getElementById('email-aluno').value.trim();
             const btn = document.getElementById('btn-status-nuvem');
             if (!email || !email.includes('@')) { btn.innerText = "⚠️ E-mail ausente"; return; }
             try {
-                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify({ email: email, dados: { estudo: dadosEstudo } }) });
+                const payload = { email: email, dados: dadosParaSalvar || { estudo: dadosEstudo, ciclo: gradeCicloCustom, temas: acervoTemasVunesp, redacao: redacaoData } };
+                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
                 const parsed = await response.json();
                 if (parsed.status === "success") { btn.innerText = "☁️ Nuvem Sincronizada"; btn.style.background = "var(--btn-salvar)"; }
             } catch (e) { btn.innerText = "⚠️ Erro Sincronização"; btn.style.background = "var(--accent-red)"; }
         }
 
         function salvarNuvemManual() { clearTimeout(debounceTimer); executarSalvamentoNuvem(); showToast("Forçando Sincronização..."); }
+
+        function preencherDadosMemoria(data) {
+            if (data.estudo) dadosEstudo = data.estudo;
+            if (data.ciclo) gradeCicloCustom = data.ciclo;
+            if (data.temas) acervoTemasVunesp = data.temas;
+            if (data.redacao) {
+                redacaoData = data.redacao;
+                document.getElementById('red-intro').value = redacaoData.intro || "";
+                document.getElementById('red-dev1').value = redacaoData.dev1 || "";
+                document.getElementById('red-dev2').value = redacaoData.dev2 || "";
+                document.getElementById('red-concl').value = redacaoData.concl || "";
+                calcularPalavrasRedacao();
+            }
+        }
 
         async function iniciarSessao() {
             const email = document.getElementById('modal-input-email').value.trim();
@@ -561,10 +661,12 @@
             try {
                 const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify({ action: "load", email: email, sheet: "Dados" }) });
                 const parsed = await response.json();
-                if (parsed.status === "success" && parsed.data && parsed.data.estudo) dadosEstudo = parsed.data.estudo;
+                if (parsed.status === "success" && parsed.data) {
+                    preencherDadosMemoria(parsed.data);
+                }
             } catch (e) {
-                const local = localStorage.getItem('gps_escrevente_data');
-                if (local) dadosEstudo = JSON.parse(local);
+                const local = localStorage.getItem('gps_escrevente_data_v2');
+                if (local) preencherDadosMemoria(JSON.parse(local));
             }
             localStorage.setItem('gps_email_usuario', email);
             document.getElementById('email-aluno').value = email;
@@ -577,29 +679,86 @@
             if (emailSalvo) { document.getElementById('modal-input-email').value = emailSalvo; iniciarSessao(); }
         };
 
-        // --- FUNÇÕES EXTRAS (Ciclo, Redação, Evolução) ---
+        // --- FUNÇÕES DOS MÓDULOS RESTAURADOS (Redação, Ciclo, Evolução) ---
+
+        // Ciclo Original
+        function getMateriaColorClass(materia) {
+            const m = materia.toLowerCase();
+            if (m.includes('português')) return 'bg-mat-portugues'; if (m.includes('processual penal')) return 'bg-mat-proc-penal';
+            if (m.includes('penal')) return 'bg-mat-penal'; if (m.includes('processual civil')) return 'bg-mat-proc-civil';
+            if (m.includes('constitucional')) return 'bg-mat-const'; if (m.includes('administrativo')) return 'bg-mat-admin';
+            if (m.includes('normas')) return 'bg-mat-normas'; if (m.includes('r. lógico') || m.includes('rlm')) return 'bg-mat-rlm';
+            if (m.includes('matemática')) return 'bg-mat-matematica'; if (m.includes('informática')) return 'bg-mat-info';
+            if (m.includes('atualidades')) return 'bg-mat-atualidades'; if (m.includes('revisão')) return 'bg-mat-revisao';
+            return 'bg-mat-descanso';
+        }
+        function getBadgeText(tipo, tempo) {
+            const hrsStr = tempo && tempo > 0 ? `${tempo}h ` : '';
+            switch(tipo) { case 'teoria': return `${hrsStr}TEORIA`; case 'questoes': return `${hrsStr}QUESTÕES`; case 'revisao-teorica': return `${hrsStr}REVISÃO`; case 'revisao-questoes': return `${hrsStr}REVISÃO`; case 'descanso': return 'DESCANSO'; default: return tipo.toUpperCase(); }
+        }
         function renderCicloTable() {
             ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"].forEach(dia => {
                 const col = document.getElementById(`col-${dia}`);
                 if (!col) return;
                 let html = '';
                 gradeCicloCustom.filter(x => x.dia === dia).forEach(item => {
-                    let cClass = 'bg-mat-descanso';
-                    if (item.materia.includes('Penal')) cClass = 'bg-mat-penal';
-                    if (item.materia.includes('Português')) cClass = 'bg-mat-portugues';
-                    html += `<div class="ciclo-card-slot ${cClass}"><div class="slot-materia-destaque">${item.materia}</div></div>`;
+                    const colorClass = getMateriaColorClass(item.materia);
+                    html += `<div class="ciclo-card-slot"><button class="btn-del-row" style="position: absolute; top: 1px; right: 2px; font-size: 0.6rem;" onclick="removerSlotCiclo(${item.id})">🗑️</button><span class="badge-tipo-neutral">${getBadgeText(item.tipo, item.tempo)}</span><div class="slot-materia-destaque ${colorClass}">${item.materia}</div>${item.desc ? `<div class="slot-desc">${item.desc}</div>` : ''}</div>`;
                 });
                 col.innerHTML = html;
             });
         }
-        
+        function adicionarSlotCiclo() {
+            gradeCicloCustom.push({ id: Date.now(), dia: document.getElementById('ciclo-dia').value, tempo: parseInt(document.getElementById('ciclo-tempo').value) || 0, tipo: document.getElementById('ciclo-tipo').value, materia: document.getElementById('ciclo-materia-select').value, desc: document.getElementById('ciclo-desc').value.trim() });
+            document.getElementById('ciclo-desc').value = ''; renderCicloTable(); agendarSalvamentoNuvem();
+        }
+        function removerSlotCiclo(id) { gradeCicloCustom = gradeCicloCustom.filter(x => x.id !== id); renderCicloTable(); agendarSalvamentoNuvem(); }
+
+        // Redação Original
         let timerInterval, seconds = 0, timerRunning = false;
         function iniciarTimer() { if (!timerRunning) { timerRunning = true; timerInterval = setInterval(() => { seconds++; document.getElementById('timer').innerText = new Date(seconds * 1000).toISOString().substr(11, 8); }, 1000); } }
         function pausarTimer() { timerRunning = false; clearInterval(timerInterval); }
         function zerarTimer() { pausarTimer(); seconds = 0; document.getElementById('timer').innerText = "00:00:00"; }
         
-        function sortearTema() { document.getElementById('display-tema').innerHTML = `<b>Tema Atual:</b> ${acervoTemasVunesp[Math.floor(Math.random() * acervoTemasVunesp.length)]}`; }
+        let temaAtualTexto = "";
+        function sortearTema() { 
+            if(acervoTemasVunesp.length === 0) return;
+            temaAtualTexto = acervoTemasVunesp[Math.floor(Math.random() * acervoTemasVunesp.length)];
+            document.getElementById('display-tema').innerHTML = `<b>Tema Atual:</b> ${temaAtualTexto}`; 
+        }
+        function excluirTemaAtual() {
+            if(!temaAtualTexto) return;
+            acervoTemasVunesp = acervoTemasVunesp.filter(t => t !== temaAtualTexto);
+            temaAtualTexto = ""; document.getElementById('display-tema').innerHTML = `<b>Tema Atual:</b> Tema removido.`; agendarSalvamentoNuvem();
+        }
 
+        function mudarModoGlobal(modo) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(b => {
+                const ta = document.getElementById(`red-${b}`);
+                if (modo === 'caderno') { ta.classList.remove('modo-digitacao'); ta.classList.add('modo-caderno'); } else { ta.classList.remove('modo-caderno'); ta.classList.add('modo-digitacao'); }
+            });
+        }
+        function mudarFonteGlobal(fonte) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(b => {
+                const ta = document.getElementById(`red-${b}`);
+                if (fonte === 'cursiva') { ta.classList.remove('fonte-forma'); ta.classList.add('fonte-cursiva'); } else { ta.classList.remove('fonte-cursiva'); ta.classList.add('fonte-forma'); }
+            });
+        }
+        function calcularPalavrasRedacao() {
+            const textoCompleto = `${document.getElementById('red-intro').value} ${document.getElementById('red-dev1').value} ${document.getElementById('red-dev2').value} ${document.getElementById('red-concl').value}`.trim();
+            const palavras = textoCompleto ? textoCompleto.split(/\s+/).length : 0;
+            document.getElementById('info-contagem').innerText = `Total: ${palavras} palavras (~${Math.round(palavras / 9)} linhas)`;
+        }
+        function exportarTXT() {
+            const blob = new Blob([`REDAÇÃO - TJSP\n\n1. INTRODUÇÃO:\n${document.getElementById('red-intro').value}\n\n2. DESENVOLVIMENTO 1:\n${document.getElementById('red-dev1').value}\n\n3. DESENVOLVIMENTO 2:\n${document.getElementById('red-dev2').value}\n\n4. CONCLUSÃO:\n${document.getElementById('red-concl').value}`], { type: "text/plain;charset=utf-8" });
+            const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "Redacao_Treino.txt"; a.click();
+        }
+        function copiarPromptGemini() {
+            const p = `Avalie a redação abaixo com rigor da VUNESP para Escrevente Técnico Judiciário.\nTema: "${temaAtualTexto || 'Livre'}"\n\nTexto:\n1. Intro:\n${document.getElementById('red-intro').value}\n\n2. Dev 1:\n${document.getElementById('red-dev1').value}\n\n3. Dev 2:\n${document.getElementById('red-dev2').value}\n\n4. Conclusão:\n${document.getElementById('red-concl').value}`;
+            navigator.clipboard.writeText(p).then(() => alert("Copiado! Cole no Gemini."));
+        }
+
+        // Evolução (Soma)
         let chartObj = null;
         function renderGraficoEvolucao() {
             const ctx = document.getElementById('chartEvolucao');
