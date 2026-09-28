@@ -130,16 +130,17 @@
         .status-manutencao { background: #fef3c7; color: #92400e; }
         .rev-tag { font-size: 0.7rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
 
-        /* Acompanhamento e Revisões */
-        .bloco-acompanhamento { display: flex; flex-direction: column; gap: 5px; }
-        .chk-estudo-finalizado { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 800; color: var(--btn-salvar); cursor: pointer; }
+        /* Acompanhamento e Revisões na Horizontal */
+        .bloco-acompanhamento { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .chk-estudo-finalizado { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 800; color: var(--btn-salvar); cursor: pointer; white-space: nowrap; }
         .chk-estudo-finalizado input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: var(--btn-salvar); }
         
-        .rev-add-box { display: flex; gap: 5px; align-items: center; margin-top: 2px; }
-        .rev-add-box input[type="text"] { font-size: 0.75rem; padding: 3px 6px; width: 105px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); }
-        .rev-select { font-size: 0.75rem; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); width: 145px; font-weight: 600; }
+        .rev-hz-container { display: flex; align-items: center; gap: 6px; }
+        .rev-add-box { display: flex; gap: 4px; align-items: center; }
+        .rev-add-box input[type="text"] { font-size: 0.75rem; padding: 3px 6px; width: 95px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); }
+        .rev-select { font-size: 0.75rem; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); width: 135px; font-weight: 600; }
 
-        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.85rem; padding: 0 4px; opacity: 0.7; transition: opacity 0.2s; }
+        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.8rem; padding: 0 2px; opacity: 0.7; transition: opacity 0.2s; }
         .btn-edit-item:hover { opacity: 1; }
 
         .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
@@ -466,8 +467,8 @@
                         <select id="add-materia-select">
                             <option value="portugues">📘 Português</option>
                             <option value="direito_penal">⚖️ Direito Penal</option>
-                            <option value="direito_proc_penal">⚖️ Direito Processual Penal</option>
-                            <option value="direito_proc_civil">⚖️ Direito Processual Civil</option>
+                            <option value="direito_proc_penal">⚖️ D. Processual Penal</option>
+                            <option value="direito_proc_civil">⚖️ D. Processual Civil</option>
                             <option value="direito_const">⚖️ Direito Constitucional</option>
                             <option value="direito_admin">⚖️ Direito Administrativo</option>
                             <option value="normas_corregedoria">⚖️ Normas da Corregedoria</option>
@@ -596,7 +597,7 @@
             <div class="legend-title">LEGENDAS DO PAINEL</div>
             <div class="legend-grid">
                 <div>
-                    <div class="legend-group-title">Legenda REC (Clique na bolinha para alternar)</div>
+                    <div class="legend-group-title">Legenda R (Clique na bolinha para alternar)</div>
                     <div class="legend-item"><span class="dot dot-alta"></span> <span class="text"><b>Vermelho:</b> Muito Alta / Alta</span></div>
                     <div class="legend-item"><span class="dot dot-media"></span> <span class="text"><b>Amarelo:</b> Média</span></div>
                     <div class="legend-item"><span class="dot dot-baixa"></span> <span class="text"><b>Verde:</b> Baixa</span></div>
@@ -615,23 +616,60 @@
         const dadosEstudo = {
             portugues: [
                 { materia: "Português", assunto: "Interpretação e Compreensão de Texto", tema: "Fatores de Textualidade e Inferências", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Português", assunto: "Sinal Indicativo de Crase", tema: "Casos Obrigatórios, Proibidos e Facultativos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Português", assunto: "Sinal Indicativo de Crase", tema: "Casos Obrigatórios, Proibidos e Facultativos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Regência Verbal e Nominal", tema: "Sintaxe de Regência", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Concordância Verbal e Nominal", tema: "Regras Gerais e Especiais", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Pontuação", tema: "Emprego da Vírgula, Dois Pontos e Travessão", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Colocação Pronomial", tema: "Próclise, Mesóclise e Êclise", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Temas e Modos Verbais", tema: "Correlação Verbal", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Classes de Palavras", tema: "Pronomes e Conjunções", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Significação Contextual", tema: "Sinônimos e Sentido Figurado", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Ortografia e Acentuação", tema: "Ortografia Oficial e Acentuação Gráfica", recorrencia: "baixa", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             direito: [
                 { materia: "Direito Penal", assunto: "Fé Pública", tema: "arts. 293–305", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Direito Penal", assunto: "Falsa identidade", tema: "arts. 307–308", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Direito Penal", assunto: "Falsa identidade", tema: "arts. 307–308", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Penal", assunto: "Fraudes em certames", tema: "art. 311-A", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Penal", assunto: "Administração Pública", tema: "arts. 312–333", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Penal", assunto: "Administração da Justiça", tema: "arts. 339–347", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Penal", assunto: "Sujeitos e auxiliares", tema: "arts. 251–258, 261–267 e 274", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Penal", assunto: "Citações e intimações", tema: "arts. 351–372", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Penal", assunto: "Procedimento comum", tema: "arts. 394–497", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Penal", assunto: "Recursos", tema: "arts. 574–667", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Penal", assunto: "Juizados Especiais Criminais", tema: "JECrim", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Civil", assunto: "Sujeitos/impedimento/suspeição", tema: "arts. 144–155", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Civil", assunto: "Atos processuais", tema: "arts. 188–275", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Civil", assunto: "Tutela provisória", tema: "arts. 294–311", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Civil", assunto: "Procedimento comum", tema: "arts. 318–512", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Processual Civil", assunto: "Cumprimento de sentença", tema: "arts. 513–538", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Constitucional", assunto: "Direitos individuais e coletivos", tema: "art. 5º", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Constitucional", assunto: "Administração Pública", tema: "arts. 37–41", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Constitucional", assunto: "Poder Judiciário", tema: "art. 92", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Administrativo", assunto: "Estatuto dos Funcionários Públicos", tema: "Lei 10.261/68, arts. 239–323", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Administrativo", assunto: "Improbidade Administrativa", tema: "Lei 8.429/92", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Normas da Corregedoria", assunto: "Tomo I - Cap. III", tema: "Escrituração, Protocolo e Carga de Autos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             rlm: [
-                { materia: "RLM", assunto: "Sequências Lógicas", tema: "Números, Letras, Palavras e Figuras", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "RLM", assunto: "Sequências Lógicas", tema: "Números, Letras, Palavras e Figuras", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "RLM", assunto: "Equivalências Lógicas", tema: "Negações de Proposições Compostas", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "RLM", assunto: "Tabelas-Verdade", tema: "Tautologia, Contradição e Contingência", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "RLM", assunto: "Diagramas Lógicos", tema: "Conjuntos e Argumentação", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             matematica: [
-                { materia: "Matemática", assunto: "Regra de Três", tema: "Simples e Composta & Porcentagem", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Matemática", assunto: "Regra de Três", tema: "Simples e Composta & Porcentagem", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Matemática", assunto: "Razão e Proporção", tema: "Divisão Proporcional", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Matemática", assunto: "Média Aritmética", tema: "Simples e Ponderada", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Matemática", assunto: "Geometria", tema: "Área, Perímetro e Volume", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             informatica: [
-                { materia: "Informática", assunto: "MS-Excel", tema: "Fórmulas SOMA, SE, PROCV", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Informática", assunto: "MS-Excel", tema: "Fórmulas SOMA, SE, PROCV, CONT.SE", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Informática", assunto: "MS-Word", tema: "Formatação, Quebras e Tabelas", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Informática", assunto: "MS-Windows 10/11", tema: "Gerenciamento de Arquivos e Atalhos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Informática", assunto: "MS-Teams", tema: "Reuniões, Canais e Chat", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             atualidades: [
-                { materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema: "Lei nº 13.146/15 - Arts. 1º a 13", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema: "Lei nº 13.146/15 - Arts. 1º a 13", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Atualidades", assunto: "Fatos Nacionais", tema: "Fatos Políticos e Econômicos Recentes", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ]
         };
 
@@ -789,9 +827,9 @@
                 if (!container) return;
                 
                 let html = `<table><thead><tr>
-                    <th style="width: 50px; text-align: center;">REC</th>
+                    <th style="width: 45px; text-align: center;">R</th>
                     <th>Matéria / Assunto / Tema</th>
-                    <th style="width: 290px;">Acompanhamento / Revisões</th>
+                    <th style="width: 330px;">Acompanhamento / Revisões</th>
                     <th style="width: 175px; text-align: center;">Desempenho & Status</th>
                     <th style="width: 35px; text-align: center;"></th>
                 </tr></thead><tbody>`;
@@ -808,13 +846,13 @@
                     const statusObj = calcularStatusEHora(item.certo, item.errado);
                     const dotCls = getDotClass(item.recorrencia);
 
-                    let optionsRevisoes = `<option value="">Nenhuma revisão registrada</option>`;
+                    let optionsRevisoes = `<option value="">Nenhuma revisão</option>`;
                     if (item.revisoes && item.revisoes.length > 0) {
                         optionsRevisoes = item.revisoes.map(r => `<option>${r}</option>`).join('');
                     }
 
                     html += `<tr>
-                        <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Clique para alterar recorrência (REC)"></span></td>
+                        <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Clique para alterar recorrência (R)"></span></td>
                         <td>
                             <div style="display: flex; gap: 4px; align-items: center; margin-bottom: 2px;">
                                 <b style="font-size: 0.82rem; color: var(--text-main);">${item.materia}</b>
@@ -834,10 +872,12 @@
                                     <input type="checkbox" ${item.finalizado ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'finalizado', this.checked)">
                                     ESTUDO FINALIZADO
                                 </label>
-                                <div class="rev-add-box">
+                                <div class="rev-hz-container">
                                     <select class="rev-select">${optionsRevisoes}</select>
-                                    <input type="text" id="rev-input-${mat}-${index}" placeholder="dd/mm/aaaa">
-                                    <button class="btn-sm btn-iniciar" onclick="adicionarRevisao('${mat}', ${index})">➕</button>
+                                    <div class="rev-add-box">
+                                        <input type="text" id="rev-input-${mat}-${index}" placeholder="dd/mm/aaaa">
+                                        <button class="btn-sm btn-iniciar" onclick="adicionarRevisao('${mat}', ${index})">➕</button>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -894,7 +934,7 @@
 
         function toggleTema() { document.body.classList.toggle('dark-mode'); }
         function salvarDados() {
-            localStorage.setItem('gps_escrevente_model_data_v11', JSON.stringify(dadosEstudo));
+            localStorage.setItem('gps_escrevente_model_data_v12', JSON.stringify(dadosEstudo));
         }
         function exportarBackup() {
             const a = document.createElement('a');
@@ -919,7 +959,7 @@
             }
         }
         function carregarDadosSalvos() {
-            const local = localStorage.getItem('gps_escrevente_model_data_v11');
+            const local = localStorage.getItem('gps_escrevente_model_data_v12');
             if (local) {
                 try {
                     const parsed = JSON.parse(local);
