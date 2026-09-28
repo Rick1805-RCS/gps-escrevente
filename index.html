@@ -113,7 +113,7 @@
         
         input[type="number"] { width: 42px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); font-size: 0.8rem; }
         
-        .dot { height: 14px; width: 14px; border-radius: 50%; display: inline-block; cursor: pointer; }
+        .dot { height: 14px; width: 14px; border-radius: 50%; display: inline-block; cursor: pointer; margin: 0 auto; }
         .dot-alta { background-color: var(--accent-red); }
         .dot-media { background-color: var(--accent-yellow); }
         .dot-baixa { background-color: var(--accent-green); }
@@ -123,22 +123,24 @@
         .pct-mid { background: rgba(245,158,11,0.2); color: #b45309; }
         .pct-bad { background: rgba(239,68,68,0.2); color: #b91c1c; }
 
-        .status-container { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
-        .status-badge { font-weight: 800; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; display: inline-block; }
+        .status-container { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .status-badge { font-weight: 800; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; text-transform: uppercase; display: inline-block; }
         .status-ataque { background: #fee2e2; color: #991b1b; }
         .status-consolidado { background: #dcfce7; color: #166534; }
         .status-manutencao { background: #fef3c7; color: #92400e; }
-        .rev-tag { font-size: 0.72rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
+        .rev-tag { font-size: 0.7rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
 
-        /* Acompanhamento e Revisões na horizontal */
-        .bloco-acompanhamento { display: flex; flex-direction: column; gap: 6px; }
+        /* Acompanhamento e Revisões */
+        .bloco-acompanhamento { display: flex; flex-direction: column; gap: 5px; }
         .chk-estudo-finalizado { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 800; color: var(--btn-salvar); cursor: pointer; }
         .chk-estudo-finalizado input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: var(--btn-salvar); }
         
-        .rev-horizontal-row { display: flex; align-items: center; gap: 12px; font-size: 0.75rem; font-weight: 700; flex-wrap: wrap; }
-        .rev-item-hz { display: flex; align-items: center; gap: 4px; }
-        .rev-item-hz input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: var(--primary-blue); }
-        .rev-item-hz input[type="text"] { font-size: 0.72rem; padding: 2px 4px; width: 85px; text-align: center; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); }
+        .rev-add-box { display: flex; gap: 5px; align-items: center; margin-top: 2px; }
+        .rev-add-box input[type="text"] { font-size: 0.75rem; padding: 3px 6px; width: 105px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); }
+        .rev-select { font-size: 0.75rem; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); width: 145px; font-weight: 600; }
+
+        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.85rem; padding: 0 4px; opacity: 0.7; transition: opacity 0.2s; }
+        .btn-edit-item:hover { opacity: 1; }
 
         .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
         .redacao-col-left, .redacao-col-right { display: flex; flex-direction: column; gap: 15px; }
@@ -149,7 +151,7 @@
         .timer-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
         .timer-display { font-size: 1.2rem; font-weight: 800; border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 4px; background: var(--bg-page); }
         
-        .btn-sm { border: none; padding: 6px 10px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-sm { border: none; padding: 5px 8px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
         .btn-iniciar { background: #10b981; }
         .btn-pausar { background: #2563eb; }
         .btn-zerar { background: #ef4444; }
@@ -594,7 +596,7 @@
             <div class="legend-title">LEGENDAS DO PAINEL</div>
             <div class="legend-grid">
                 <div>
-                    <div class="legend-group-title">Recorrência (Clique na bolinha para alternar)</div>
+                    <div class="legend-group-title">Legenda REC (Clique na bolinha para alternar)</div>
                     <div class="legend-item"><span class="dot dot-alta"></span> <span class="text"><b>Vermelho:</b> Muito Alta / Alta</span></div>
                     <div class="legend-item"><span class="dot dot-media"></span> <span class="text"><b>Amarelo:</b> Média</span></div>
                     <div class="legend-item"><span class="dot dot-baixa"></span> <span class="text"><b>Verde:</b> Baixa</span></div>
@@ -612,31 +614,24 @@
     <script>
         const dadosEstudo = {
             portugues: [
-                { materia: "Português", assunto: "Interpretação e Compreensão de Texto", tema: "Fatores de Textualidade e Inferências", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Português", assunto: "Sinal Indicativo de Crase", tema: "Casos Obrigatórios, Proibidos e Facultativos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Português", assunto: "Regência Verbal e Nominal", tema: "Sintaxe de Regência", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Português", assunto: "Concordância Verbal e Nominal", tema: "Regras Gerais e Especiais", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Português", assunto: "Pontuação", tema: "Emprego da Vírgula, Dois Pontos e Travessão", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
+                { materia: "Português", assunto: "Interpretação e Compreensão de Texto", tema: "Fatores de Textualidade e Inferências", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Sinal Indicativo de Crase", tema: "Casos Obrigatórios, Proibidos e Facultativos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             direito: [
-                { materia: "Direito Penal", assunto: "Fé Pública", tema: "arts. 293–305", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Direito Penal", assunto: "Falsa identidade", tema: "arts. 307–308", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Direito Penal", assunto: "Fraudes em certames", tema: "art. 311-A", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Direito Processual Penal", assunto: "Sujeitos e auxiliares", tema: "arts. 251–258, 261–267 e 274", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "Direito Processual Civil", assunto: "Atos processuais", tema: "arts. 188–275", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
+                { materia: "Direito Penal", assunto: "Fé Pública", tema: "arts. 293–305", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Direito Penal", assunto: "Falsa identidade", tema: "arts. 307–308", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             rlm: [
-                { materia: "RLM", assunto: "Sequências Lógicas", tema: "Números, Letras, Palavras e Figuras", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
-                { materia: "RLM", assunto: "Equivalências Lógicas", tema: "Negações de Proposições Compostas", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
+                { materia: "RLM", assunto: "Sequências Lógicas", tema: "Números, Letras, Palavras e Figuras", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             matematica: [
-                { materia: "Matemática", assunto: "Regra de Três", tema: "Simples e Composta & Porcentagem", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
+                { materia: "Matemática", assunto: "Regra de Três", tema: "Simples e Composta & Porcentagem", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             informatica: [
-                { materia: "Informática", assunto: "MS-Excel", tema: "Fórmulas SOMA, SE, PROCV, CONT.SE", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
+                { materia: "Informática", assunto: "MS-Excel", tema: "Fórmulas SOMA, SE, PROCV", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             atualidades: [
-                { materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema: "Lei nº 13.146/15 - Arts. 1º a 13", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
+                { materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema: "Lei nº 13.146/15 - Arts. 1º a 13", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ]
         };
 
@@ -650,13 +645,11 @@
         };
 
         let gradeCicloCustom = [
-            { id: 1, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Língua Portuguesa", desc: "" },
-            { id: 2, dia: "Segunda", tempo: 2, tipo: "questoes", materia: "Língua Portuguesa", desc: "" }
+            { id: 1, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Língua Portuguesa", desc: "" }
         ];
 
         let acervoTemasVunesp = [
-            "Desafios do trabalho na era da Inteligência Artificial",
-            "Limites da liberdade de expressão nas redes sociais"
+            "Desafios do trabalho na era da Inteligência Artificial"
         ];
 
         let myChart = null;
@@ -740,8 +733,36 @@
             return 'dot-alta';
         }
 
+        function editarCampoTexto(mat, idx, campo) {
+            const item = dadosEstudo[mat][idx];
+            let atual = item[campo] || '';
+            let novo = prompt(`Editar ${campo.toUpperCase()}:`, atual);
+            if (novo !== null) {
+                item[campo] = novo.trim();
+                renderTabelas();
+                salvarDados();
+            }
+        }
+
+        function adicionarRevisao(mat, idx) {
+            const inputEl = document.getElementById(`rev-input-${mat}-${idx}`);
+            const dataVal = inputEl.value.trim();
+            if (!dataVal) {
+                alert("Digite uma data válida para a revisão!");
+                return;
+            }
+            if (!dadosEstudo[mat][idx].revisoes) {
+                dadosEstudo[mat][idx].revisoes = [];
+            }
+            const numRev = dadosEstudo[mat][idx].revisoes.length + 1;
+            dadosEstudo[mat][idx].revisoes.push(`Rev ${numRev} - ${dataVal}`);
+            inputEl.value = '';
+            renderTabelas();
+            salvarDados();
+        }
+
         function adicionarAssuntoRapido(mat) {
-            let ramo = mat === 'direito' ? prompt("Digite o Ramo do Direito (Direito Penal, Direito Processual Penal, Direito Processual Civil, Direito Constitucional, Direito Administrativo, Normas da Corregedoria):", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
+            let ramo = mat === 'direito' ? prompt("Digite o Ramo do Direito:", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
             if(mat === 'direito' && !ramo) return;
 
             let assunto = prompt("Digite o nome do Assunto:");
@@ -756,9 +777,7 @@
                 certo: 0,
                 errado: 0,
                 finalizado: false,
-                r1Chk: false, r1Val: "",
-                r2Chk: false, r2Val: "",
-                r3Chk: false, r3Val: ""
+                revisoes: []
             });
             renderTabelas();
             salvarDados();
@@ -770,7 +789,7 @@
                 if (!container) return;
                 
                 let html = `<table><thead><tr>
-                    <th style="width: 50px; text-align: center;">Recorrência</th>
+                    <th style="width: 50px; text-align: center;">REC</th>
                     <th>Matéria / Assunto / Tema</th>
                     <th style="width: 290px;">Acompanhamento / Revisões</th>
                     <th style="width: 175px; text-align: center;">Desempenho & Status</th>
@@ -789,14 +808,25 @@
                     const statusObj = calcularStatusEHora(item.certo, item.errado);
                     const dotCls = getDotClass(item.recorrencia);
 
+                    let optionsRevisoes = `<option value="">Nenhuma revisão registrada</option>`;
+                    if (item.revisoes && item.revisoes.length > 0) {
+                        optionsRevisoes = item.revisoes.map(r => `<option>${r}</option>`).join('');
+                    }
+
                     html += `<tr>
-                        <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Clique para alterar recorrência"></span></td>
+                        <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Clique para alterar recorrência (REC)"></span></td>
                         <td>
-                            <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 2px;">
-                                <input type="text" value="${item.materia}" onchange="atualizarCampo('${mat}', ${index}, 'materia', this.value)" style="font-weight: 800; width: 130px; font-size: 0.78rem;">
-                                <input type="text" value="${item.assunto}" onchange="atualizarCampo('${mat}', ${index}, 'assunto', this.value)" style="font-weight: 700; flex: 1; font-size: 0.8rem;" placeholder="Assunto...">
+                            <div style="display: flex; gap: 4px; align-items: center; margin-bottom: 2px;">
+                                <b style="font-size: 0.82rem; color: var(--text-main);">${item.materia}</b>
+                                <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'materia')" title="Editar Matéria">✏️</button>
+                                <span style="color: var(--border-color);">|</span>
+                                <b style="font-size: 0.82rem; color: var(--primary-blue);">${item.assunto}</b>
+                                <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'assunto')" title="Editar Assunto">✏️</button>
                             </div>
-                            <input type="text" value="${item.tema || ''}" onchange="atualizarCampo('${mat}', ${index}, 'tema', this.value)" style="width: 100%; font-size: 0.75rem; color: var(--text-muted);" placeholder="Tema / Artigos...">
+                            <div style="display: flex; gap: 4px; align-items: center;">
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">${item.tema || 'Sem tema definido'}</span>
+                                <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'tema')" title="Editar Tema">✏️</button>
+                            </div>
                         </td>
                         <td>
                             <div class="bloco-acompanhamento">
@@ -804,19 +834,10 @@
                                     <input type="checkbox" ${item.finalizado ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'finalizado', this.checked)">
                                     ESTUDO FINALIZADO
                                 </label>
-                                <div class="rev-horizontal-row">
-                                    <div class="rev-item-hz">
-                                        <label><input type="checkbox" ${item.r1Chk ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'r1Chk', this.checked)"> R1</label>
-                                        <input type="text" placeholder="__/__/__" value="${item.r1Val || ''}" onchange="atualizarExtra('${mat}', ${index}, 'r1Val', this.value)">
-                                    </div>
-                                    <div class="rev-item-hz">
-                                        <label><input type="checkbox" ${item.r2Chk ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'r2Chk', this.checked)"> R2</label>
-                                        <input type="text" placeholder="__/__/__" value="${item.r2Val || ''}" onchange="atualizarExtra('${mat}', ${index}, 'r2Val', this.value)">
-                                    </div>
-                                    <div class="rev-item-hz">
-                                        <label><input type="checkbox" ${item.r3Chk ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'r3Chk', this.checked)"> R3</label>
-                                        <input type="text" placeholder="__/__/__" value="${item.r3Val || ''}" onchange="atualizarExtra('${mat}', ${index}, 'r3Val', this.value)">
-                                    </div>
+                                <div class="rev-add-box">
+                                    <select class="rev-select">${optionsRevisoes}</select>
+                                    <input type="text" id="rev-input-${mat}-${index}" placeholder="dd/mm/aaaa">
+                                    <button class="btn-sm btn-iniciar" onclick="adicionarRevisao('${mat}', ${index})">➕</button>
                                 </div>
                             </div>
                         </td>
@@ -834,11 +855,6 @@
                 html += `</tbody></table><div style="padding: 10px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('${mat}')">➕ Adicionar Assunto</button></div>`;
                 container.innerHTML = html;
             });
-        }
-
-        function atualizarCampo(materia, index, campo, valor) {
-            dadosEstudo[materia][index][campo] = valor.trim();
-            salvarDados();
         }
 
         function atualizarExtra(materia, index, campo, valor) {
@@ -878,7 +894,7 @@
 
         function toggleTema() { document.body.classList.toggle('dark-mode'); }
         function salvarDados() {
-            localStorage.setItem('gps_escrevente_model_data_v10', JSON.stringify(dadosEstudo));
+            localStorage.setItem('gps_escrevente_model_data_v11', JSON.stringify(dadosEstudo));
         }
         function exportarBackup() {
             const a = document.createElement('a');
@@ -903,7 +919,7 @@
             }
         }
         function carregarDadosSalvos() {
-            const local = localStorage.getItem('gps_escrevente_model_data_v10');
+            const local = localStorage.getItem('gps_escrevente_model_data_v11');
             if (local) {
                 try {
                     const parsed = JSON.parse(local);
