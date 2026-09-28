@@ -1,47 +1,53 @@
-function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
+<div class="tabela-linha">
+  <!-- Coluna R -->
+  <div class="coluna-r">
+    <span class="indicador-vermelho"></span>
+  </div>
+
+  <!-- Coluna Matéria/Assunto -->
+  <div class="coluna-materia">
+    <div class="bloco-disciplina">
+      <div class="texto-com-icone">
+        <span class="titulo-materia">DIREITO PENAL</span>
+        <i class="icone-editar">✏️</i>
+      </div>
+      <div class="texto-com-icone">
+        <span class="subtitulo-artigos">arts. 293–305</span>
+        <i class="icone-editar">✏️</i>
+      </div>
+    </div>
     
-    // 1. Se for solicitação de carregamento do GPS Principal
-    if (data.action === "load") {
-      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Dados");
-      var cell = sheet.getRange("A1").getValue();
-      return ContentService.createTextOutput(JSON.stringify({"status": "success", "data": JSON.parse(cell)}))
-                           .setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // 2. Se for o envio silencioso de redação do novo módulo separado
-    if (data.action === "redacao") {
-      var emailDestino = data.email;
-      var dados = data.dados;
-      if (emailDestino && emailDestino.indexOf("@") !== -1 && dados && dados.redacao) {
-        var assunto = "📝 Nova Redação Enviada - " + (dados.tema || "Treino VUNESP");
-        var corpo = "Uma nova redação foi gerada/salva pela aluna!\n\n" +
-                    "Tema: " + dados.tema + "\n\n" +
-                    "=== 1. INTRODUÇÃO ===\n" + dados.redacao.intro + "\n\n" +
-                    "=== 2. DESENVOLVIMENTO 1 ===\n" + dados.redacao.dev1 + "\n\n" +
-                    "=== 3. DESENVOLVIMENTO 2 ===\n" + dados.redacao.dev2 + "\n\n" +
-                    "=== 4. CONCLUSÃO ===\n" + dados.redacao.concl;
-                    
-        MailApp.sendEmail(emailDestino, assunto, corpo);
-      }
-      return ContentService.createTextOutput(JSON.stringify({"status": "success"}))
-                           .setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // 3. Comportamento padrão para salvar o seu GPS principal
-    if (data.email && data.dados) {
-      var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Dados");
-      sheet.getRange("A1").setValue(JSON.stringify(data.dados));
-      return ContentService.createTextOutput(JSON.stringify({"status": "success"}))
-                           .setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify({"status": "success"}))
-                         .setMimeType(ContentService.MimeType.JSON);
-                         
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({"status": "error", "message": error.toString()}))
-                         .setMimeType(ContentService.MimeType.JSON);
-  }
-}
+    <div class="bloco-tema texto-com-icone">
+      <a href="#" class="link-tema">Fé Pública</a>
+      <i class="icone-editar">✏️</i>
+    </div>
+  </div>
+
+  <!-- Coluna Acompanhamento -->
+  <div class="coluna-acompanhamento">
+    <label class="checkbox-container">
+      <input type="checkbox" checked> ESTUDO FINALIZADO
+    </label>
+    <div class="controles-revisao">
+      <select><option>Nenhuma revisão</option></select>
+      <input type="date">
+      <button class="btn-adicionar">+</button>
+    </div>
+  </div>
+
+  <!-- Coluna Desempenho -->
+  <div class="coluna-desempenho">
+    <div class="inputs-ce">
+      <div class="input-grupo"><label>C</label><input type="number" value="0"></div>
+      <div class="input-grupo"><label>E</label><input type="number" value="0"></div>
+      <span class="percentagem">0%</span>
+    </div>
+    <span class="badge-ataque">ATAQUE</span>
+    <span class="texto-revisao">Revisão em 1 dia</span>
+  </div>
+
+  <!-- Coluna Lixo -->
+  <div class="coluna-acoes">
+    <i class="icone-lixo">🗑️</i>
+  </div>
+</div>
