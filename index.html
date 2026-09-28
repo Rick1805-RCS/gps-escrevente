@@ -51,7 +51,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-page); color: var(--text-main); padding-bottom: 20px; }
 
-        /* Modal de Acesso Bloqueado / Identificação */
         #modal-acesso {
             position: fixed;
             top: 0;
@@ -108,9 +107,6 @@
             font-size: 0.9rem;
             border-radius: 6px;
             cursor: pointer;
-        }
-        .modal-card button:hover {
-            opacity: 0.9;
         }
 
         .header-bar {
@@ -171,18 +167,14 @@
         .subfilter-bar label { font-size: 0.82rem; font-weight: 800; color: var(--primary-blue); }
 
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { background: #e2e8f0; color: #0f172a; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 8px 10px; border-bottom: 2px solid var(--border-color); }
+        th { background: #e2e8f0; color: #0f172a; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 10px; border-bottom: 2px solid var(--border-color); }
         body.dark-mode th { background: #0f172a; color: #f8fafc; }
-        td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
+        td { padding: 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
         
-        .txt-materia-destaque { font-weight: 800; color: #0f172a; font-size: 0.82rem; white-space: nowrap; }
+        .txt-materia-destaque { font-weight: 800; color: #0f172a; font-size: 0.82rem; }
         body.dark-mode .txt-materia-destaque { color: #60a5fa; }
 
-        input[type="number"] { width: 55px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); }
-        .input-total-readonly { background: #e2e8f0; color: #475569; border: 1px solid var(--border-color); font-weight: 800; width: 55px; text-align: center; border-radius: 4px; padding: 4px; }
-        body.dark-mode .input-total-readonly { background: #334155; color: #cbd5e1; }
-
-        select, input[type="text"], input[type="date"] { padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); font-weight: 700; font-size: 0.8rem; }
+        input[type="number"] { width: 45px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); font-size: 0.8rem; }
         
         .recorrencia-badge { font-weight: 800; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; text-transform: uppercase; display: inline-block; border: 1px solid var(--border-color); }
         .rec-muito-alta { background-color: #fee2e2; color: #991b1b; }
@@ -190,7 +182,7 @@
         .rec-media { background-color: #e0f2fe; color: #0369a1; }
         .rec-baixa { background-color: #f1f5f9; color: #475569; }
 
-        .pct-badge { font-weight: 800; padding: 2px 8px; border-radius: 12px; font-size: 0.78rem; }
+        .pct-badge { font-weight: 800; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; }
         .pct-good { background: rgba(16,185,129,0.2); color: #047857; }
         .pct-mid { background: rgba(245,158,11,0.2); color: #b45309; }
         .pct-bad { background: rgba(239,68,68,0.2); color: #b91c1c; }
@@ -200,14 +192,18 @@
         .status-ataque { background: #fee2e2; color: #991b1b; }
         .status-consolidado { background: #dcfce7; color: #166534; }
         .status-manutencao { background: #fef3c7; color: #92400e; }
-        .rev-tag { font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
+        .rev-tag { font-size: 0.72rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
 
-        /* Estilos do bloco Acompanhamento / Revisões na tabela de Direito */
-        .bloco-acompanhamento { background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 5px; min-width: 190px; }
-        .chk-estudo-finalizado { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 800; color: var(--btn-salvar); cursor: pointer; }
-        .chk-estudo-finalizado input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: var(--btn-salvar); }
-        .rev-dates-row { display: flex; gap: 4px; align-items: center; justify-content: space-between; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); }
-        .rev-dates-row input[type="date"] { font-size: 0.68rem; padding: 2px 4px; width: 110px; }
+        /* Estilo Inspirado na Imagem para Acompanhamento / Revisões */
+        .bloco-acompanhamento { background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 10px; display: flex; flex-direction: column; gap: 4px; min-width: 210px; }
+        .chk-estudo-finalizado { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 800; color: #0f172a; cursor: pointer; margin-bottom: 2px; }
+        body.dark-mode .chk-estudo-finalizado { color: #f8fafc; }
+        .chk-estudo-finalizado input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: var(--btn-salvar); }
+        
+        .rev-linha-item { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+        .rev-linha-item label { display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-main); }
+        .rev-linha-item input[type="checkbox"] { width: 13px; height: 13px; cursor: pointer; accent-color: var(--primary-blue); }
+        .rev-linha-item input[type="text"] { font-size: 0.7rem; padding: 2px 4px; width: 95px; text-align: center; }
 
         .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
         .redacao-col-left, .redacao-col-right { display: flex; flex-direction: column; gap: 15px; }
@@ -260,9 +256,6 @@
 
         .fonte-forma { font-family: 'Inter', sans-serif; font-size: 0.9rem; }
         .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.45rem; }
-
-        .caderno-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; gap: 8px; }
-        .toolbar-options { display: flex; gap: 5px; }
 
         .btn-action-group { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
         .btn-purple { background: #7c3aed; }
@@ -321,7 +314,6 @@
 </head>
 <body>
 
-    <!-- Modal Inicial de Autenticação / Identificação do Apoiador -->
     <div id="modal-acesso">
         <div class="modal-card">
             <h2>Olá, apoiador!</h2>
@@ -705,78 +697,78 @@
     <script>
         const dadosEstudo = {
             portugues: [
-                { materia: "Português", recorrencia: "muito-alta", assunto: "Interpretação e Compreensão de Texto (Fatores de Textualidade e Inferências)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "muito-alta", assunto: "Sinal Indicativo de Crase (Casos Obrigatórios, Proibidos e Facultativos)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "muito-alta", assunto: "Regência Verbal e Nominal & Sintaxe de Regência", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "muito-alta", assunto: "Concordância Verbal e Nominal", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "muito-alta", assunto: "Pontuação (Emprego da Vírgula, Dois Pontos e Travessão)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "alta", assunto: "Colocação Pronomial (Próclise, Mesóclise e Êclise)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "alta", assunto: "Emprego dos Tempos e Modos Verbais (Correlação Verbal)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "media", assunto: "Classes de Palavras (Pronomes Relativos, Demonstrativos e Conjunções)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "media", assunto: "Significação Contextual das Palavras (Sinônimos, Antônimos e Sentido Figurado)", certo: 0, errado: 0, obs: "" },
-                { materia: "Português", recorrencia: "baixa", assunto: "Ortografia Oficial e Acentuação Gráfica", certo: 0, errado: 0, obs: "" }
+                { materia: "Português", recorrencia: "muito-alta", assunto: "Interpretação e Compreensão de Texto (Fatores de Textualidade e Inferências)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "muito-alta", assunto: "Sinal Indicativo de Crase (Casos Obrigatórios, Proibidos e Facultativos)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "muito-alta", assunto: "Regência Verbal e Nominal & Sintaxe de Regência", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "muito-alta", assunto: "Concordância Verbal e Nominal", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "muito-alta", assunto: "Pontuação (Emprego da Vírgula, Dois Pontos e Travessão)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "alta", assunto: "Colocação Pronomial (Próclise, Mesóclise e Êclise)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "alta", assunto: "Emprego dos Tempos e Modos Verbais (Correlação Verbal)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "media", assunto: "Classes de Palavras (Pronomes Relativos, Demonstrativos e Conjunções)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "media", assunto: "Significação Contextual das Palavras (Sinônimos, Antônimos e Sentido Figurado)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Português", recorrencia: "baixa", assunto: "Ortografia Oficial e Acentuação Gráfica", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
             ],
             direito: [
-                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Fé Pública — arts. 293–305", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Falsa identidade — arts. 307–308", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Penal", recorrencia: "alta", assunto: "Fraudes em certames — art. 311-A", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Administração Pública — arts. 312–333", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Penal", recorrencia: "media", assunto: "Administração Pública — arts. 335–337", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Administração da Justiça — arts. 339–347", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Penal", recorrencia: "media", assunto: "Arts. 350, 357 e 359", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Sujeitos e auxiliares — arts. 251–258, 261–267 e 274", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Citações e intimações — arts. 351–372", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Procedimento comum — arts. 394–497", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "alta", assunto: "Procedimento sumário — arts. 531–538", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "baixa", assunto: "Restauração de autos — arts. 541–548", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Recursos — arts. 574–667", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Juizados Especiais Criminais", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Sujeitos/impedimento/suspeição — arts. 144–155", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Atos processuais — arts. 188–275", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Tutela provisória — arts. 294–311", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Procedimento comum — arts. 318–512", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Cumprimento de sentença — arts. 513–538", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "alta", assunto: "Recursos — arts. 994–1026", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "JEC", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Processual Civil", recorrencia: "media", assunto: "Juizado da Fazenda Pública", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Constitucional", recorrencia: "muito-alta", assunto: "Direitos individuais e coletivos — art. 5º", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Constitucional", recorrencia: "alta", assunto: "Direitos sociais — arts. 6º–11", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Constitucional", recorrencia: "media", assunto: "Nacionalidade — arts. 12–13", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Constitucional", recorrencia: "media", assunto: "Direitos políticos — arts. 14–16", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Constitucional", recorrencia: "muito-alta", assunto: "Administração Pública — arts. 37–41", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Constitucional", recorrencia: "muito-alta", assunto: "Poder Judiciário — art. 92", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Administrativo", recorrencia: "muito-alta", assunto: "Estatuto — Lei 10.261/68, arts. 239–323", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Direito Administrativo", recorrencia: "muito-alta", assunto: "Improbidade — Lei 8.429/92", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Normas da Corregedoria", recorrencia: "muito-alta", assunto: "Tomo I - Cap. III - Seções I, II, V, VI, VII - Escrituração, Protocolo e Carga de Autos", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Normas da Corregedoria", recorrencia: "muito-alta", assunto: "Tomo I - Cap. III - Seções IX a XIV - Certidões, Mandados e Ofícios", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" },
-                { materia: "Normas da Corregedoria", recorrencia: "alta", assunto: "Tomo I - Cap. II - Seção I - Função Correcional (Correção Ordinária e Extraordinária)", certo: 0, errado: 0, obs: "", finalizado: false, r1: "", r2: "", r3: "" }
+                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Fé Pública — arts. 293–305", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Falsa identidade — arts. 307–308", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Penal", recorrencia: "alta", assunto: "Fraudes em certames — art. 311-A", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Administração Pública — arts. 312–333", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Penal", recorrencia: "media", assunto: "Administração Pública — arts. 335–337", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Penal", recorrencia: "muito-alta", assunto: "Administração da Justiça — arts. 339–347", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Penal", recorrencia: "media", assunto: "Arts. 350, 357 e 359", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Sujeitos e auxiliares — arts. 251–258, 261–267 e 274", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Citações e intimações — arts. 351–372", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Procedimento comum — arts. 394–497", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "alta", assunto: "Procedimento sumário — arts. 531–538", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "baixa", assunto: "Restauração de autos — arts. 541–548", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Recursos — arts. 574–667", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Penal", recorrencia: "muito-alta", assunto: "Juizados Especiais Criminais", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Sujeitos/impedimento/suspeição — arts. 144–155", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Atos processuais — arts. 188–275", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Tutela provisória — arts. 294–311", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Procedimento comum — arts. 318–512", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "Cumprimento de sentença — arts. 513–538", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "alta", assunto: "Recursos — arts. 994–1026", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "muito-alta", assunto: "JEC", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Processual Civil", recorrencia: "media", assunto: "Juizado da Fazenda Pública", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Constitucional", recorrencia: "muito-alta", assunto: "Direitos individuais e coletivos — art. 5º", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Constitucional", recorrencia: "alta", assunto: "Direitos sociais — arts. 6º–11", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Constitucional", recorrencia: "media", assunto: "Nacionalidade — arts. 12–13", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Constitucional", recorrencia: "media", assunto: "Direitos políticos — arts. 14–16", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Constitucional", recorrencia: "muito-alta", assunto: "Administração Pública — arts. 37–41", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Constitucional", recorrencia: "muito-alta", assunto: "Poder Judiciário — art. 92", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Administrativo", recorrencia: "muito-alta", assunto: "Estatuto — Lei 10.261/68, arts. 239–323", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Direito Administrativo", recorrencia: "muito-alta", assunto: "Improbidade — Lei 8.429/92", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Normas da Corregedoria", recorrencia: "muito-alta", assunto: "Tomo I - Cap. III - Seções I, II, V, VI, VII - Escrituração, Protocolo e Carga de Autos", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Normas da Corregedoria", recorrencia: "muito-alta", assunto: "Tomo I - Cap. III - Seções IX a XIV - Certidões, Mandados e Ofícios", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Normas da Corregedoria", recorrencia: "alta", assunto: "Tomo I - Cap. II - Seção I - Função Correcional (Correção Ordinária e Extraordinária)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
             ],
             rlm: [
-                { materia: "RLM", recorrencia: "muito-alta", assunto: "Sequências Lógicas de Números, Letras, Palavras e Figuras", certo: 0, errado: 0, obs: "" },
-                { materia: "RLM", recorrencia: "muito-alta", assunto: "Equivalências Lógicas e Negações de Proposições Compostas", certo: 0, errado: 0, obs: "" },
-                { materia: "RLM", recorrencia: "muito-alta", assunto: "Tabelas-Verdade, Tautologia, Contradição e Contingência", certo: 0, errado: 0, obs: "" },
-                { materia: "RLM", recorrencia: "alta", assunto: "Diagramas Lógicos, Conjuntos e Argumentação", certo: 0, errado: 0, obs: "" },
-                { materia: "RLM", recorrencia: "alta", assunto: "Associações Lógicas e Verdades/Mentiras", certo: 0, errado: 0, obs: "" }
+                { materia: "RLM", recorrencia: "muito-alta", assunto: "Sequências Lógicas de Números, Letras, Palavras e Figuras", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "RLM", recorrencia: "muito-alta", assunto: "Equivalências Lógicas e Negações de Proposições Compostas", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "RLM", recorrencia: "muito-alta", assunto: "Tabelas-Verdade, Tautologia, Contradição e Contingência", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "RLM", recorrencia: "alta", assunto: "Diagramas Lógicos, Conjuntos e Argumentação", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "RLM", recorrencia: "alta", assunto: "Associações Lógicas e Verdades/Mentiras", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
             ],
             matematica: [
-                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Regra de Três Simples e Composta & Porcentagem", certo: 0, errado: 0, obs: "" },
-                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Razão e Proporção & Divisão Proporcional", certo: 0, errado: 0, obs: "" },
-                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Média Aritmética Simples e Ponderada", certo: 0, errado: 0, obs: "" },
-                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Noções de Geometria Plana e Espacial (Área, Perímetro e Volume)", certo: 0, errado: 0, obs: "" },
-                { materia: "Matemática", recorrencia: "alta", assunto: "Equações do 1º e 2º Grau & Sistemas de Equações", certo: 0, errado: 0, obs: "" },
-                { materia: "Matemática", recorrencia: "media", assunto: "MMC, MDC e Juros Simples", certo: 0, errado: 0, obs: "" }
+                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Regra de Três Simples e Composta & Porcentagem", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Razão e Proporção & Divisão Proporcional", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Média Aritmética Simples e Ponderada", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Matemática", recorrencia: "muito-alta", assunto: "Noções de Geometria Plana e Espacial (Área, Perímetro e Volume)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Matemática", recorrencia: "alta", assunto: "Equações do 1º e 2º Grau & Sistemas de Equações", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Matemática", recorrencia: "media", assunto: "MMC, MDC e Juros Simples", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
             ],
             informatica: [
-                { materia: "Informática", recorrencia: "muito-alta", assunto: "MS-Excel (Word/Office 365): Fórmulas SOMA, SE, PROCV, CONT.SE e Endereçamento Relativo/Absoluto ($)", certo: 0, errado: 0, obs: "" },
-                { materia: "Informática", recorrencia: "muito-alta", assunto: "MS-Word: Formatação, Quebras de Página/Seção, Caixas de Texto e Tabelas", certo: 0, errado: 0, obs: "" },
-                { materia: "Informática", recorrencia: "muito-alta", assunto: "MS-Windows 10/11: Gerenciamento de Arquivos, Atalhos de Teclado e Área de Transferência", certo: 0, errado: 0, obs: "" },
-                { materia: "Informática", recorrencia: "alta", assunto: "MS-Teams: Reuniões, Canais, Compartilhamento e Chat", certo: 0, errado: 0, obs: "" },
-                { materia: "Informática", recorrencia: "alta", assunto: "Correio Eletrônico (Campos Para, CC, CCO) e Protocolos de Internet", certo: 0, errado: 0, obs: "" }
+                { materia: "Informática", recorrencia: "muito-alta", assunto: "MS-Excel (Word/Office 365): Fórmulas SOMA, SE, PROCV, CONT.SE e Endereçamento Relativo/Absoluto ($)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Informática", recorrencia: "muito-alta", assunto: "MS-Word: Formatação, Quebras de Página/Seção, Caixas de Texto e Tabelas", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Informática", recorrencia: "muito-alta", assunto: "MS-Windows 10/11: Gerenciamento de Arquivos, Atalhos de Teclado e Área de Transferência", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Informática", recorrencia: "alta", assunto: "MS-Teams: Reuniões, Canais, Compartilhamento e Chat", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Informática", recorrencia: "alta", assunto: "Correio Eletrônico (Campos Para, CC, CCO) e Protocolos de Internet", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
             ],
             atualidades: [
-                { materia: "Atualidades", recorrencia: "muito-alta", assunto: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/15 - Arts. 1º a 13 e 34 a 38)", certo: 0, errado: 0, obs: "" },
-                { materia: "Atualidades", recorrencia: "muito-alta", assunto: "Fatos Políticos e Econômicos Nacionais Recentes (Últimos 6 Meses)", certo: 0, errado: 0, obs: "" },
-                { materia: "Atualidades", recorrencia: "alta", assunto: "Meio Ambiente, Sociedade e Conflitos Internacionais Recentes", certo: 0, errado: 0, obs: "" }
+                { materia: "Atualidades", recorrencia: "muito-alta", assunto: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/15 - Arts. 1º a 13 e 34 a 38)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Atualidades", recorrencia: "muito-alta", assunto: "Fatos Políticos e Econômicos Nacionais Recentes (Últimos 6 Meses)", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" },
+                { materia: "Atualidades", recorrencia: "alta", assunto: "Meio Ambiente, Sociedade e Conflitos Internacionais Recentes", certo: 0, errado: 0, obs: "", finalizado: false, r1Chk: false, r1Val: "", r2Chk: false, r2Val: "", r3Chk: false, r3Val: "" }
             ]
         };
 
@@ -965,14 +957,12 @@
                     assunto: nome.trim(),
                     certo: 0,
                     errado: 0,
-                    obs: ""
+                    obs: "",
+                    finalizado: false,
+                    r1Chk: false, r1Val: "",
+                    r2Chk: false, r2Val: "",
+                    r3Chk: false, r3Val: ""
                 };
-                if(mat === 'direito') {
-                    novoItem.finalizado = false;
-                    novoItem.r1 = "";
-                    novoItem.r2 = "";
-                    novoItem.r3 = "";
-                }
                 dadosEstudo[mat].push(novoItem);
                 salvarDados();
                 renderTabelas();
@@ -980,24 +970,64 @@
         }
 
         function renderTabelas() {
-            ['portugues', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
+            ['portugues', 'rlm', 'matematica', 'informatica', 'atualidades', 'direito'].forEach(mat => {
                 const container = document.getElementById(`table-${mat}`);
                 if (!container) return;
-                let html = `<table><thead><tr><th style="width: 110px; text-align: center;">Recorrência</th><th style="width: 140px;">Matéria</th><th>Assunto</th><th style="width: 150px;">Observações</th><th style="width: 60px; text-align: center;">Certo</th><th style="width: 60px; text-align: center;">Errado</th><th style="width: 60px; text-align: center;">Total</th><th style="width: 65px; text-align: center;">%</th><th style="width: 140px;">Status Atual</th><th style="width: 40px; text-align: center;"></th></tr></thead><tbody>`;
+                
+                let html = `<table><thead><tr>
+                    <th style="width: 250px;">Assunto e Artigos</th>
+                    <th style="width: 110px; text-align: center;">Recorrência</th>
+                    <th style="width: 160px; text-align: center;">Desempenho</th>
+                    <th>Acompanhamento / Revisões</th>
+                    <th style="width: 130px;">Status Atual</th>
+                    <th style="width: 35px; text-align: center;"></th>
+                </tr></thead><tbody>`;
+
                 dadosEstudo[mat].forEach((item, index) => {
                     const totalQ = item.certo + item.errado;
                     const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
                     let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
                     const statusObj = calcularStatusEHora(item.certo, item.errado);
+
+                    if (mat === 'direito') {
+                        const filtroRamo = document.getElementById('select-ramo-direito')?.value || 'todos';
+                        if (filtroRamo !== 'todos' && item.materia !== filtroRamo) return;
+                    }
+
                     html += `<tr>
+                        <td>
+                            <span class="txt-materia-destaque">${item.materia}</span><br>
+                            <button onclick="editarNomeAssunto('${mat}', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 2px; font-size: 13px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b>
+                            ${item.obs ? `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Obs: ${item.obs}</div>` : ''}
+                        </td>
                         <td style="text-align: center;">${getRecorrenciaBadge(item.recorrencia)}</td>
-                        <td><span class="txt-materia-destaque">${item.materia}</span></td>
-                        <td><button onclick="editarNomeAssunto('${mat}', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 4px; font-size: 14px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b></td>
-                        <td><input type="text" value="${item.obs || ''}" onchange="atualizarDado('${mat}', ${index}, 'obs', this.value)" style="width: 100%; border: 1px solid var(--border-color); border-radius: 4px; padding: 4px; font-size: 0.78rem;" placeholder="Obs..."></td>
-                        <td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></td>
-                        <td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></td>
-                        <td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td>
-                        <td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td>
+                        <td style="text-align: center;">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <div><div style="font-size: 0.65rem; font-weight: 800; color:var(--text-muted);">C</div><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></div>
+                                <div><div style="font-size: 0.65rem; font-weight: 800; color:var(--text-muted);">E</div><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></div>
+                                <span class="pct-badge ${pctClass}">${pct}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="bloco-acompanhamento">
+                                <label class="chk-estudo-finalizado">
+                                    <input type="checkbox" ${item.finalizado ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'finalizado', this.checked)">
+                                    ESTUDO FINALIZADO
+                                </label>
+                                <div class="rev-linha-item">
+                                    <label><input type="checkbox" ${item.r1Chk ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'r1Chk', this.checked)"> R1</label>
+                                    <input type="text" placeholder="dd/mm/aaaa" value="${item.r1Val || ''}" onchange="atualizarExtra('${mat}', ${index}, 'r1Val', this.value)">
+                                </div>
+                                <div class="rev-linha-item">
+                                    <label><input type="checkbox" ${item.r2Chk ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'r2Chk', this.checked)"> R2</label>
+                                    <input type="text" placeholder="dd/mm/aaaa" value="${item.r2Val || ''}" onchange="atualizarExtra('${mat}', ${index}, 'r2Val', this.value)">
+                                </div>
+                                <div class="rev-linha-item">
+                                    <label><input type="checkbox" ${item.r3Chk ? 'checked' : ''} onchange="atualizarExtra('${mat}', ${index}, 'r3Chk', this.checked)"> R3</label>
+                                    <input type="text" placeholder="dd/mm/aaaa" value="${item.r3Val || ''}" onchange="atualizarExtra('${mat}', ${index}, 'r3Val', this.value)">
+                                </div>
+                            </div>
+                        </td>
                         <td><div class="status-container">${statusObj.badge} ${statusObj.rev}</div></td>
                         <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir Assunto">🗑️</button></td>
                     </tr>`;
@@ -1005,57 +1035,14 @@
                 html += `</tbody></table><div style="padding: 10px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('${mat}')">➕ Adicionar Assunto</button></div>`;
                 container.innerHTML = html;
             });
-            renderTabelaDireito();
         }
 
         function renderTabelaDireito() {
-            const container = document.getElementById('table-direito');
-            if (!container) return;
-            const filtroRamo = document.getElementById('select-ramo-direito')?.value || 'todos';
-            let html = `<table><thead><tr><th style="width: 110px; text-align: center;">Recorrência</th><th style="width: 150px;">Matéria</th><th>Assunto</th><th style="width: 210px;">Acompanhamento / Revisões</th><th style="width: 50px; text-align: center;">Certo</th><th style="width: 50px; text-align: center;">Errado</th><th style="width: 55px; text-align: center;">Total</th><th style="width: 60px; text-align: center;">%</th><th style="width: 130px;">Status Atual</th><th style="width: 35px; text-align: center;"></th></tr></thead><tbody>`;
-            
-            dadosEstudo.direito.forEach((item, index) => {
-                if (filtroRamo !== 'todos' && item.materia !== filtroRamo) return;
-                const totalQ = item.certo + item.errado;
-                const pct = totalQ > 0 ? Math.round((item.certo / totalQ) * 100) : 0;
-                let pctClass = pct >= 80 ? 'pct-good' : (pct < 60 && totalQ > 0 ? 'pct-bad' : 'pct-mid');
-                const statusObj = calcularStatusEHora(item.certo, item.errado);
-                
-                html += `<tr>
-                    <td style="text-align: center;">${getRecorrenciaBadge(item.recorrencia)}</td>
-                    <td><span class="txt-materia-destaque">${item.materia}</span></td>
-                    <td><button onclick="editarNomeAssunto('direito', ${index})" class="btn-sm" style="background:transparent; color: var(--text-muted); border:none; cursor:pointer; padding: 0 4px; font-size: 14px;" title="Editar Assunto">✏️</button><b>${item.assunto}</b></td>
-                    <td>
-                        <div class="bloco-acompanhamento">
-                            <label class="chk-estudo-finalizado">
-                                <input type="checkbox" ${item.finalizado ? 'checked' : ''} onchange="atualizarDireitoExtra(${index}, 'finalizado', this.checked)">
-                                ESTUDO FINALIZADO
-                            </label>
-                            <div class="rev-dates-row">
-                                <span>R1:</span> <input type="date" value="${item.r1 || ''}" onchange="atualizarDireitoExtra(${index}, 'r1', this.value)">
-                            </div>
-                            <div class="rev-dates-row">
-                                <span>R2:</span> <input type="date" value="${item.r2 || ''}" onchange="atualizarDireitoExtra(${index}, 'r2', this.value)">
-                            </div>
-                            <div class="rev-dates-row">
-                                <span>R3:</span> <input type="date" value="${item.r3 || ''}" onchange="atualizarDireitoExtra(${index}, 'r3', this.value)">
-                            </div>
-                        </div>
-                    </td>
-                    <td style="text-align: center;"><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('direito', ${index}, 'certo', this.value)"></td>
-                    <td style="text-align: center;"><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('direito', ${index}, 'errado', this.value)"></td>
-                    <td style="text-align: center;"><input type="text" class="input-total-readonly" readonly value="${totalQ}"></td>
-                    <td style="text-align: center;"><span class="pct-badge ${pctClass}">${pct}%</span></td>
-                    <td><div class="status-container">${statusObj.badge} ${statusObj.rev}</div></td>
-                    <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('direito', ${index})" title="Excluir Assunto">🗑️</button></td>
-                </tr>`;
-            });
-            html += `</tbody></table><div style="padding: 10px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('direito')">➕ Adicionar Assunto</button></div>`;
-            container.innerHTML = html;
+            renderTabelas();
         }
 
-        function atualizarDireitoExtra(index, campo, valor) {
-            dadosEstudo.direito[index][campo] = valor;
+        function atualizarExtra(materia, index, campo, valor) {
+            dadosEstudo[materia][index][campo] = valor;
             salvarDados();
         }
 
@@ -1307,13 +1294,18 @@
                 case 'atualidades': matKey = 'atualidades'; nomeMateria = 'Atualidades'; break;
             }
             const recAuto = calcularRecorrenciaAutomatica(assunto);
-            let novoItem = { materia: nomeMateria, recorrencia: recAuto, assunto: assunto, certo: 0, errado: 0, obs: "" };
-            if(matKey === 'direito') {
-                novoItem.finalizado = false;
-                novoItem.r1 = "";
-                novoItem.r2 = "";
-                novoItem.r3 = "";
-            }
+            let novoItem = {
+                materia: nomeMateria,
+                recorrencia: recAuto,
+                assunto: assunto,
+                certo: 0,
+                errado: 0,
+                obs: "",
+                finalizado: false,
+                r1Chk: false, r1Val: "",
+                r2Chk: false, r2Val: "",
+                r3Chk: false, r3Val: ""
+            };
             dadosEstudo[matKey].push(novoItem);
             document.getElementById('add-assunto-input').value = '';
             renderTabelas();
@@ -1440,7 +1432,7 @@ ${concl}`;
 
         function toggleTema() { document.body.classList.toggle('dark-mode'); }
         function salvarDados() {
-            localStorage.setItem('gps_escrevente_model_data_v8', JSON.stringify(dadosEstudo));
+            localStorage.setItem('gps_escrevente_model_data_v9', JSON.stringify(dadosEstudo));
             localStorage.setItem('gps_grade_ciclo_custom', JSON.stringify(gradeCicloCustom));
             localStorage.setItem('gps_acervo_temas_data', JSON.stringify(acervoTemasVunesp));
             salvarRedacao();
@@ -1475,12 +1467,12 @@ ${concl}`;
         }
         function resetarDados() {
             if (confirm("Tem certeza que deseja resetar?")) {
-                ['gps_escrevente_model_data_v8', 'gps_grade_ciclo_custom', 'gps_acervo_temas_data', 'gps_redacao_blocos', 'gps_email_usuario'].forEach(k => localStorage.removeItem(k));
+                ['gps_escrevente_model_data_v9', 'gps_grade_ciclo_custom', 'gps_acervo_temas_data', 'gps_redacao_blocos', 'gps_email_usuario'].forEach(k => localStorage.removeItem(k));
                 location.reload();
             }
         }
         function carregarDadosSalvos() {
-            const localEstudo = localStorage.getItem('gps_escrevente_model_data_v8');
+            const localEstudo = localStorage.getItem('gps_escrevente_model_data_v9');
             if (localEstudo) {
                 try {
                     const parsed = JSON.parse(localEstudo);
