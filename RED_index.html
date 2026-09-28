@@ -1,53 +1,349 @@
-<div class="tabela-linha">
-  <!-- Coluna R -->
-  <div class="coluna-r">
-    <span class="indicador-vermelho"></span>
-  </div>
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Escrevente - Melhorado</title>
+    <style>
+        :root {
+            --cor-fundo: #f4f6f9;
+            --cor-borda: #e0e6ed;
+            --cor-texto: #334155;
+            --cor-primaria: #0f766e; /* Verde do painel */
+            --cor-secundaria: #3b82f6;
+            --cor-alerta: #ef4444;
+            --cor-sucesso: #22c55e;
+        }
 
-  <!-- Coluna Matéria/Assunto -->
-  <div class="coluna-materia">
-    <div class="bloco-disciplina">
-      <div class="texto-com-icone">
-        <span class="titulo-materia">DIREITO PENAL</span>
-        <i class="icone-editar">✏️</i>
-      </div>
-      <div class="texto-com-icone">
-        <span class="subtitulo-artigos">arts. 293–305</span>
-        <i class="icone-editar">✏️</i>
-      </div>
-    </div>
-    
-    <div class="bloco-tema texto-com-icone">
-      <a href="#" class="link-tema">Fé Pública</a>
-      <i class="icone-editar">✏️</i>
-    </div>
-  </div>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 20px;
+        }
 
-  <!-- Coluna Acompanhamento -->
-  <div class="coluna-acompanhamento">
-    <label class="checkbox-container">
-      <input type="checkbox" checked> ESTUDO FINALIZADO
-    </label>
-    <div class="controles-revisao">
-      <select><option>Nenhuma revisão</option></select>
-      <input type="date">
-      <button class="btn-adicionar">+</button>
-    </div>
-  </div>
+        .painel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
 
-  <!-- Coluna Desempenho -->
-  <div class="coluna-desempenho">
-    <div class="inputs-ce">
-      <div class="input-grupo"><label>C</label><input type="number" value="0"></div>
-      <div class="input-grupo"><label>E</label><input type="number" value="0"></div>
-      <span class="percentagem">0%</span>
-    </div>
-    <span class="badge-ataque">ATAQUE</span>
-    <span class="texto-revisao">Revisão em 1 dia</span>
-  </div>
+        /* Destaque de Revisões do Dia */
+        .alerta-revisoes {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--cor-borda);
+        }
 
-  <!-- Coluna Lixo -->
-  <div class="coluna-acoes">
-    <i class="icone-lixo">🗑️</i>
-  </div>
+        .alerta-revisoes h3 {
+            margin: 0;
+            color: #b45309;
+            font-size: 14px;
+        }
+
+        /* Cabeçalho da Tabela */
+        .tabela-cabecalho {
+            display: grid;
+            grid-template-columns: 40px 2fr 2fr 1.5fr 40px;
+            background-color: #f8fafc;
+            padding: 15px 10px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #64748b;
+            border-bottom: 2px solid var(--cor-borda);
+        }
+
+        /* Linha da Tabela */
+        .tabela-linha {
+            display: grid;
+            grid-template-columns: 40px 2fr 2fr 1.5fr 40px;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 10px;
+            border-bottom: 1px solid var(--cor-borda);
+            transition: background-color 0.2s;
+        }
+
+        .tabela-linha:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Coluna Matéria */
+        .coluna-materia {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bloco-disciplina {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .titulo-materia { font-weight: bold; font-size: 13px; }
+        .subtitulo-artigos { font-size: 12px; color: #64748b; }
+        .link-tema { color: var(--cor-secundaria); font-weight: bold; text-decoration: none; font-size: 14px; }
+
+        /* Coluna Acompanhamento (Revisão Espaçada) */
+        .coluna-acompanhamento {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .botoes-revisao {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-rev {
+            background: white;
+            border: 1px solid var(--cor-borda);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .btn-rev:hover {
+            background: var(--cor-secundaria);
+            color: white;
+            border-color: var(--cor-secundaria);
+        }
+
+        .data-agendada {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--cor-texto);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-atrasado {
+            color: var(--cor-alerta);
+        }
+
+        /* Coluna Desempenho */
+        .coluna-desempenho {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .inputs-ce {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contador {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--cor-borda);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .contador button {
+            background: #f1f5f9;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #64748b;
+        }
+        
+        .contador button:hover { background: #e2e8f0; }
+
+        .contador input {
+            width: 30px;
+            text-align: center;
+            border: none;
+            outline: none;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 5px 0;
+            background: white;
+        }
+
+        .percentagem {
+            font-weight: bold;
+            font-size: 14px;
+            min-width: 40px;
+            text-align: right;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #f1f5f9;
+        }
+
+        .badge-estagio {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Centralizadores */
+        .center-flex { display: flex; justify-content: center; align-items: center; }
+        .indicador { width: 12px; height: 12px; border-radius: 50%; background-color: var(--cor-alerta); }
+        .icone-lixo { cursor: pointer; color: #94a3b8; }
+        .icone-lixo:hover { color: var(--cor-alerta); }
+    </style>
+</head>
+<body>
+
+<div class="painel-container">
+    <!-- Painel de Alerta de Revisões -->
+    <div class="alerta-revisoes">
+        <h3>🔔 Resumo do Dia: Existem revisões agendadas que precisam da tua atenção!</h3>
+    </div>
+
+    <!-- Cabeçalho -->
+    <div class="tabela-cabecalho">
+        <div class="center-flex">R</div>
+        <div>MATÉRIA / ASSUNTO / TEMA</div>
+        <div>ACOMPANHAMENTO (AGENDAMENTO RÁPIDO)</div>
+        <div style="text-align: center;">DESEMPENHO & STATUS</div>
+        <div class="center-flex">🗑️</div>
+    </div>
+
+    <!-- Linha 1: Exemplo Funcional -->
+    <div class="tabela-linha">
+        <div class="center-flex"><div class="indicador"></div></div>
+        
+        <div class="coluna-materia">
+            <div class="bloco-disciplina">
+                <span class="titulo-materia">DIREITO PENAL</span>
+                <span class="subtitulo-artigos">arts. 293–305</span>
+            </div>
+            <a href="#" class="link-tema">Fé Pública</a>
+        </div>
+
+        <div class="coluna-acompanhamento">
+            <label style="font-size: 12px; font-weight: bold; display: flex; gap: 5px; align-items: center;">
+                <input type="checkbox" checked> ESTUDO FINALIZADO
+            </label>
+            <div class="botoes-revisao">
+                <button class="btn-rev" onclick="agendarRevisao(this, 1)">+1 Dia</button>
+                <button class="btn-rev" onclick="agendarRevisao(this, 7)">+7 Dias</button>
+                <button class="btn-rev" onclick="agendarRevisao(this, 15)">+15 Dias</button>
+            </div>
+            <div class="data-agendada">📅 <span class="texto-data">Sem revisão agendada</span></div>
+        </div>
+
+        <div class="coluna-desempenho">
+            <div class="inputs-ce">
+                <!-- Contador de Certas -->
+                <div class="contador">
+                    <button onclick="alterarNota(this, 'c', -1)">-</button>
+                    <input type="number" class="input-c" value="0" readonly>
+                    <button onclick="alterarNota(this, 'c', 1)" style="color: var(--cor-sucesso)">+</button>
+                </div>
+                <!-- Contador de Erradas -->
+                <div class="contador">
+                    <button onclick="alterarNota(this, 'e', -1)">-</button>
+                    <input type="number" class="input-e" value="0" readonly>
+                    <button onclick="alterarNota(this, 'e', 1)" style="color: var(--cor-alerta)">+</button>
+                </div>
+                <!-- Percentagem Dinâmica -->
+                <span class="percentagem">0%</span>
+            </div>
+            <span class="badge-estagio">ATAQUE</span>
+        </div>
+
+        <div class="center-flex"><span class="icone-lixo">🗑️</span></div>
+    </div>
+
 </div>
+
+<script>
+    // Função 1: Adicionar ou remover acertos/erros com os botões + e -
+    function alterarNota(botao, tipo, valor) {
+        const linha = botao.closest('.tabela-linha');
+        const input = tipo === 'c' ? linha.querySelector('.input-c') : linha.querySelector('.input-e');
+        
+        let atual = parseInt(input.value) || 0;
+        let novoValor = atual + valor;
+        
+        // Impede valores negativos
+        if (novoValor >= 0) {
+            input.value = novoValor;
+            calcularDesempenho(linha);
+        }
+    }
+
+    // Função 2: Calcular a percentagem e alterar a cor dinamicamente
+    function calcularDesempenho(linha) {
+        const certas = parseInt(linha.querySelector('.input-c').value) || 0;
+        const erradas = parseInt(linha.querySelector('.input-e').value) || 0;
+        const spanPerc = linha.querySelector('.percentagem');
+        
+        const total = certas + erradas;
+        
+        if (total === 0) {
+            spanPerc.innerText = "0%";
+            spanPerc.style.color = "inherit";
+            spanPerc.style.backgroundColor = "#f1f5f9";
+            return;
+        }
+
+        const percentagem = Math.round((certas / total) * 100);
+        spanPerc.innerText = percentagem + "%";
+
+        // Meta de 80%
+        if (percentagem >= 80) {
+            spanPerc.style.color = "white";
+            spanPerc.style.backgroundColor = "var(--cor-sucesso)";
+        } else {
+            spanPerc.style.color = "white";
+            spanPerc.style.backgroundColor = "var(--cor-alerta)";
+        }
+    }
+
+    // Função 3: Agendamento automático com um clique e mudança de estágio (Ataque -> Manutenção)
+    function agendarRevisao(botao, dias) {
+        const linha = botao.closest('.tabela-linha');
+        const textoData = linha.querySelector('.texto-data');
+        const badge = linha.querySelector('.badge-estagio');
+
+        // Calcula a nova data com base na data de hoje
+        const hoje = new Date();
+        hoje.setDate(hoje.getDate() + dias);
+        
+        // Formata a data para PT-BR (dd/mm/aaaa)
+        const dataFormatada = hoje.toLocaleDateString('pt-BR');
+        
+        textoData.innerText = `Revisão: ${dataFormatada}`;
+        textoData.style.color = "var(--cor-secundaria)";
+
+        // Muda automaticamente o estágio do estudo
+        if (badge.innerText === 'ATAQUE') {
+            badge.innerText = 'MANUTENÇÃO';
+            badge.style.backgroundColor = '#dbeafe'; // Azul claro
+            badge.style.color = '#1e40af'; // Azul escuro
+        } else if (badge.innerText === 'MANUTENÇÃO') {
+            badge.innerText = 'REVISÃO CONTÍNUA';
+            badge.style.backgroundColor = '#dcfce7'; // Verde claro
+            badge.style.color = '#166534'; // Verde escuro
+        }
+    }
+</script>
+
+</body>
+</html>
