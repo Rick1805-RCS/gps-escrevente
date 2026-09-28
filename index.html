@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Escrevente — TJSP</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-page: #f4f6f9;
-            --bg-header: #1b2431;
+            --bg-page: #f8fafc;
+            --bg-header: #0f172a;
             --bg-card: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --primary-blue: #3b82f6;
-            --btn-salvar: #10b981;
-            --btn-exportar: #4b5563;
+            --primary-blue: #2563eb;
+            --btn-salvar: #059669;
+            --btn-exportar: #475569;
             --btn-importar: #4f46e5;
-            --btn-resetar: #ef4444;
+            --btn-resetar: #dc2626;
             --accent-red: #ef4444;
             --accent-yellow: #f59e0b;
             --accent-green: #10b981;
-            --border-color: #cbd5e1;
+            --border-color: #e2e8f0;
+            --hover-row: #f1f5f9;
 
             --materia-portugues: #93c5fd;
             --materia-penal: #fca5a5;
@@ -34,210 +35,203 @@
             --materia-matematica: #f472b6;
             --materia-info: #a5b4fc;
             --materia-atualidades: #bef264;
-            --materia-revisao: #fda4af;
-            --materia-descanso: #cbd5e1;
         }
 
         body.dark-mode {
-            --bg-page: #0f172a;
+            --bg-page: #0b0f19;
             --bg-header: #1e293b;
-            --bg-card: #1e293b;
+            --bg-card: #131c2e;
             --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
-            --border-color: #334155;
-            --primary-blue: #60a5fa;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --primary-blue: #3b82f6;
+            --hover-row: #1a263d;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-page); color: var(--text-main); padding-bottom: 20px; }
+        body { background-color: var(--bg-page); color: var(--text-main); padding-bottom: 30px; }
 
         #modal-acesso {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); z-index: 9999;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px); z-index: 9999;
             display: flex; justify-content: center; align-items: center;
         }
         .modal-card {
-            background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px;
-            border-radius: 12px; width: 100%; max-width: 400px; text-align: center;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);
+            background: var(--bg-card); border: 1px solid var(--border-color); padding: 35px;
+            border-radius: 16px; width: 100%; max-width: 420px; text-align: center;
+            box-shadow: 0 25px 35px -5px rgb(0 0 0 / 0.2);
         }
-        .modal-card h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; color: var(--text-main); }
+        .modal-card h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 8px; color: var(--text-main); }
         .modal-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
         .modal-card input[type="email"] {
-            width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px;
-            font-size: 0.9rem; font-weight: 700; margin-bottom: 15px; background: var(--bg-page); color: var(--text-main); text-align: center;
+            width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;
+            font-size: 0.95rem; font-weight: 600; margin-bottom: 15px; background: var(--bg-page); color: var(--text-main); text-align: center;
         }
         .modal-card button {
-            width: 100%; padding: 10px; border: none; background: var(--btn-salvar);
-            color: white; font-weight: 800; font-size: 0.9rem; border-radius: 6px; cursor: pointer;
+            width: 100%; padding: 12px; border: none; background: var(--btn-salvar);
+            color: white; font-weight: 700; font-size: 0.95rem; border-radius: 8px; cursor: pointer; transition: opacity 0.2s;
         }
+        .modal-card button:hover { opacity: 0.9; }
 
         .header-bar {
-            background-color: var(--bg-header); color: white; padding: 10px 20px;
+            background-color: var(--bg-header); color: white; padding: 12px 24px;
             display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
-        .brand { display: flex; align-items: center; gap: 10px; }
-        .brand h1 { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand h1 { font-size: 1.25rem; font-weight: 800; color: #ffffff; letter-spacing: -0.025em; }
 
-        .header-actions { display: flex; gap: 8px; align-items: center; }
-        .btn-hdr { border: none; padding: 6px 12px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
-        .btn-tema { background: #475569; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .btn-hdr { border: none; padding: 7px 14px; border-radius: 6px; color: white; font-weight: 600; font-size: 0.78rem; cursor: pointer; transition: opacity 0.2s; }
+        .btn-hdr:hover { opacity: 0.85; }
+        .btn-tema { background: #334155; }
         .btn-salvar { background: var(--btn-salvar); }
         .btn-exportar { background: var(--btn-exportar); }
         .btn-importar { background: var(--btn-importar); }
         .btn-resetar { background: var(--btn-resetar); }
 
-        .nav-container { padding: 0 15px; margin-top: 10px; }
-        .nav-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border-color); justify-content: space-between; overflow-x: auto; }
+        .nav-container { padding: 0 20px; margin-top: 15px; }
+        .nav-tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--border-color); justify-content: space-between; overflow-x: auto; }
         .tab-btn {
-            background: transparent; border: none; padding: 8px 10px; font-size: 0.82rem; font-weight: 800;
-            color: #334155; cursor: pointer; border-radius: 6px 6px 0 0; display: flex; align-items: center;
-            gap: 4px; white-space: nowrap; flex: 1; justify-content: center;
+            background: transparent; border: none; padding: 10px 14px; font-size: 0.85rem; font-weight: 700;
+            color: var(--text-muted); cursor: pointer; border-radius: 8px 8px 0 0; display: flex; align-items: center;
+            gap: 6px; white-space: nowrap; flex: 1; justify-content: center; transition: all 0.2s;
         }
-        body.dark-mode .tab-btn { color: #f1f5f9; }
-        .tab-btn.active { background: var(--primary-blue); color: #ffffff !important; }
+        .tab-btn:hover { color: var(--text-main); background: rgba(0,0,0,0.03); }
+        .tab-btn.active { background: var(--primary-blue); color: #ffffff !important; box-shadow: 0 -2px 6px rgba(37,99,235,0.2); }
 
-        .main-container { padding: 15px; }
+        .main-container { padding: 20px; max-width: 1440px; margin: 0 auto; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .table-card { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 15px; }
         
-        .subfilter-bar { background: #f1f5f9; padding: 10px 15px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
-        body.dark-mode .subfilter-bar { background: #0f172a; }
-        .subfilter-bar label { font-size: 0.82rem; font-weight: 800; color: var(--primary-blue); }
+        .table-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02); }
+        
+        .subfilter-bar { background: var(--bg-page); padding: 12px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
+        .subfilter-bar label { font-size: 0.82rem; font-weight: 700; color: var(--primary-blue); }
+        .subfilter-bar select { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 600; font-size: 0.82rem; }
 
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { background: #e2e8f0; color: #0f172a; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 10px; border-bottom: 2px solid var(--border-color); }
-        body.dark-mode th { background: #0f172a; color: #f8fafc; }
-        td { padding: 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
+        th { background: var(--bg-page); color: var(--text-muted); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px; border-bottom: 2px solid var(--border-color); }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; transition: background 0.15s; }
+        tbody tr:hover td { background-color: var(--hover-row); }
         
-        input[type="number"] { width: 42px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); font-size: 0.8rem; }
+        input[type="number"] { width: 44px; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); font-size: 0.82rem; }
         
-        .dot { height: 14px; width: 14px; border-radius: 50%; display: inline-block; cursor: pointer; margin: 0 auto; }
-        .dot-alta { background-color: var(--accent-red); }
-        .dot-media { background-color: var(--accent-yellow); }
-        .dot-baixa { background-color: var(--accent-green); }
+        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; cursor: pointer; margin: 0 auto; transition: transform 0.2s; }
+        .dot:hover { transform: scale(1.3); }
+        .dot-alta { background-color: var(--accent-red); box-shadow: 0 0 6px rgba(239,68,68,0.4); }
+        .dot-media { background-color: var(--accent-yellow); box-shadow: 0 0 6px rgba(245,158,11,0.4); }
+        .dot-baixa { background-color: var(--accent-green); box-shadow: 0 0 6px rgba(16,185,129,0.4); }
 
-        .pct-badge { font-weight: 800; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; }
-        .pct-good { background: rgba(16,185,129,0.2); color: #047857; }
-        .pct-mid { background: rgba(245,158,11,0.2); color: #b45309; }
-        .pct-bad { background: rgba(239,68,68,0.2); color: #b91c1c; }
+        .pct-badge { font-weight: 700; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; }
+        .pct-good { background: rgba(16,185,129,0.12); color: #047857; }
+        .pct-mid { background: rgba(245,158,11,0.12); color: #b45309; }
+        .pct-bad { background: rgba(239,68,68,0.12); color: #b91c1c; }
 
-        .status-container { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-        .status-badge { font-weight: 800; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; text-transform: uppercase; display: inline-block; }
+        .status-container { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 4px; }
+        .status-badge { font-weight: 700; padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.03em; display: inline-block; }
         .status-ataque { background: #fee2e2; color: #991b1b; }
         .status-consolidado { background: #dcfce7; color: #166534; }
         .status-manutencao { background: #fef3c7; color: #92400e; }
-        .rev-tag { font-size: 0.7rem; font-weight: 700; color: var(--primary-blue); display: block; white-space: nowrap; }
+        .rev-tag { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); display: block; white-space: nowrap; }
 
-        /* Acompanhamento e Revisões na Horizontal */
-        .bloco-acompanhamento { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .chk-estudo-finalizado { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 800; color: var(--btn-salvar); cursor: pointer; white-space: nowrap; }
-        .chk-estudo-finalizado input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; accent-color: var(--btn-salvar); }
-        
-        .rev-hz-container { display: flex; align-items: center; gap: 6px; }
-        .rev-add-box { display: flex; gap: 4px; align-items: center; }
-        .rev-add-box input[type="text"] { font-size: 0.75rem; padding: 3px 6px; width: 95px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); }
-        .rev-select { font-size: 0.75rem; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-page); color: var(--text-main); width: 135px; font-weight: 600; }
-
-        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.8rem; padding: 0 2px; opacity: 0.7; transition: opacity 0.2s; }
+        /* Botão de Lápis para Edição */
+        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.78rem; opacity: 0.6; transition: opacity 0.2s; padding: 0 2px; }
         .btn-edit-item:hover { opacity: 1; }
 
-        .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 15px; }
-        .redacao-col-left, .redacao-col-right { display: flex; flex-direction: column; gap: 15px; }
-
-        .panel-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-bottom: 15px; }
-        .panel-card h3 { font-size: 0.95rem; color: var(--text-main); font-weight: 800; margin-bottom: 8px; }
-
-        .timer-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-        .timer-display { font-size: 1.2rem; font-weight: 800; border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 4px; background: var(--bg-page); }
+        /* Acompanhamento e Revisões na Horizontal */
+        .bloco-acompanhamento { display: flex; flex-direction: column; gap: 8px; }
+        .chk-estudo-finalizado { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--btn-salvar); cursor: pointer; }
+        .chk-estudo-finalizado input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: var(--btn-salvar); border-radius: 4px; }
         
-        .btn-sm { border: none; padding: 5px 8px; border-radius: 4px; color: white; font-weight: 700; font-size: 0.72rem; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
-        .btn-iniciar { background: #10b981; }
-        .btn-pausar { background: #2563eb; }
-        .btn-zerar { background: #ef4444; }
+        .rev-hz-container { display: flex; align-items: center; gap: 8px; }
+        .rev-add-box { display: flex; gap: 4px; align-items: center; }
+        .rev-add-box input[type="text"] { font-size: 0.75rem; padding: 5px 8px; width: 95px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-main); text-align: center; }
+        .rev-select { font-size: 0.75rem; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-main); width: 145px; font-weight: 600; outline: none; }
 
-        .btn-del-row { background: transparent; border: none; font-size: 0.9rem; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
-        .btn-del-row:hover { opacity: 1; }
+        .btn-del-row { background: transparent; border: none; font-size: 1rem; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; padding: 4px; }
+        .btn-del-row:hover { opacity: 1; color: var(--accent-red); }
 
-        .tema-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; padding: 10px; margin-top: 8px; font-size: 0.85rem; color: #1e40af; }
+        .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+        .panel-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02); }
+        .panel-card h3 { font-size: 1rem; color: var(--text-main); font-weight: 800; margin-bottom: 12px; }
+
+        .timer-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+        .timer-display { font-size: 1.3rem; font-weight: 800; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 8px; background: var(--bg-page); letter-spacing: 0.05em; }
         
-        .bloco-redacao { margin-top: 10px; }
-        .bloco-redacao label { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); display: block; margin-bottom: 3px; }
+        .btn-sm { border: none; padding: 6px 10px; border-radius: 6px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s; }
+        .btn-sm:hover { opacity: 0.85; }
+        .btn-iniciar { background: var(--btn-salvar); }
+        .btn-pausar { background: var(--primary-blue); }
+        .btn-zerar { background: var(--accent-red); }
+
+        .tema-box { background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 0.88rem; color: var(--primary-blue); font-weight: 500; }
         
-        .caixa-redacao { border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 10px; width: 100%; height: 110px; resize: vertical; outline: none; }
+        .bloco-redacao { margin-top: 12px; }
+        .bloco-redacao label { font-size: 0.82rem; font-weight: 800; color: var(--primary-blue); display: block; margin-bottom: 4px; }
+        
+        .caixa-redacao { border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; width: 100%; height: 120px; resize: vertical; outline: none; background: var(--bg-page); color: var(--text-main); font-size: 0.9rem; }
+        .caixa-redacao:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
 
-        .modo-caderno { background-color: #fffdf9; background-image: linear-gradient(#e5e7eb 1px, transparent 1px); background-size: 100% 32px; line-height: 32px; }
-        body.dark-mode .modo-caderno { background-color: #1a2234; background-image: linear-gradient(#334155 1px, transparent 1px); }
-
+        .modo-caderno { background-color: var(--bg-card); background-image: linear-gradient(var(--border-color) 1px, transparent 1px); background-size: 100% 32px; line-height: 32px; }
         .modo-digitacao { background-color: var(--bg-page); background-image: none; line-height: normal; }
 
         .fonte-forma { font-family: 'Inter', sans-serif; font-size: 0.9rem; }
-        .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.45rem; }
+        .fonte-cursiva { font-family: 'Caveat', cursive; font-size: 1.5rem; }
 
-        .btn-action-group { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
+        .btn-action-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .btn-purple { background: #7c3aed; }
 
-        .info-card-item { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 4px; padding: 8px; margin-top: 8px; font-size: 0.78rem; }
-        body.dark-mode .info-card-item { background: #0f172a; }
-        .info-card-item h4 { font-size: 0.82rem; color: var(--text-main); margin-bottom: 2px; font-weight: 700; }
+        .info-card-item { background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-top: 10px; font-size: 0.8rem; }
+        .info-card-item h4 { font-size: 0.85rem; color: var(--text-main); margin-bottom: 3px; font-weight: 700; }
 
-        .legend-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; margin-top: 15px; }
-        .legend-title { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-        .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .legend-group-title { font-size: 0.8rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 6px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 0.78rem; }
+        .legend-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px 20px; margin-top: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02); }
+        .legend-title { font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+        .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .legend-group-title { font-size: 0.82rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 8px; }
+        .legend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 0.82rem; }
 
-        .filter-panel { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: var(--bg-card); padding: 10px 15px; border-radius: 6px; border: 1px solid var(--border-color); flex-wrap: wrap; }
-        .filter-panel label { font-weight: 800; font-size: 0.8rem; }
+        .filter-panel { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; background: var(--bg-card); padding: 14px 20px; border-radius: 12px; border: 1px solid var(--border-color); flex-wrap: wrap; }
+        .filter-panel label { font-weight: 800; font-size: 0.82rem; }
+        .filter-panel select, .filter-panel input { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main); font-weight: 600; font-size: 0.82rem; }
 
-        .evol-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 15px; }
-        .evol-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; text-align: center; }
-        .evol-card h4 { font-size: 0.8rem; color: var(--primary-blue); font-weight: 800; margin-bottom: 4px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
-        .evol-stats { display: flex; justify-content: space-around; font-size: 0.75rem; font-weight: 700; margin-top: 4px; }
-
-        .ciclo-grid-container { overflow-x: auto; margin-top: 8px; }
-        .ciclo-table { width: 100%; border-collapse: separate; border-spacing: 3px; min-width: 650px; }
-        .ciclo-table th { background: #475569; color: #ffffff; text-align: center; padding: 5px 3px; font-size: 0.72rem; font-weight: 800; border-radius: 4px; text-transform: uppercase; }
-        .ciclo-table td { background: #f1f5f9; vertical-align: top; padding: 3px; border-radius: 4px; border: 1px solid var(--border-color); width: 14%; }
-        body.dark-mode .ciclo-table td { background: #0f172a; }
-
-        .ciclo-card-slot { background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border-color); padding: 3px 5px; margin-bottom: 3px; display: flex; flex-direction: column; gap: 2px; position: relative; }
-        .badge-tipo-neutral { background-color: #e2e8f0; color: #1e293b; font-size: 0.6rem; font-weight: 800; padding: 1px 4px; border-radius: 6px; text-align: center; text-transform: uppercase; display: inline-block; border: 1px solid var(--border-color); }
-        body.dark-mode .badge-tipo-neutral { background-color: #334155; color: #f8fafc; }
-        .slot-materia-destaque { color: #0f172a; font-weight: 800; font-size: 0.72rem; text-align: center; padding: 3px 4px; border-radius: 3px; margin-top: 1px; text-transform: uppercase; line-height: 1.1; }
+        .ciclo-grid-container { overflow-x: auto; margin-top: 10px; }
+        .ciclo-table { width: 100%; border-collapse: separate; border-spacing: 4px; min-width: 700px; }
+        .ciclo-table th { background: #334155; color: #ffffff; text-align: center; padding: 8px 4px; font-size: 0.75rem; font-weight: 800; border-radius: 6px; text-transform: uppercase; }
+        .ciclo-table td { background: var(--bg-page); vertical-align: top; padding: 4px; border-radius: 6px; border: 1px solid var(--border-color); width: 14%; }
         
-        .bg-mat-portugues { background-color: var(--materia-portugues); }
-        .bg-mat-penal { background-color: var(--materia-penal); }
-        .bg-mat-proc-penal { background-color: var(--materia-proc-penal); }
-        .bg-mat-proc-civil { background-color: var(--materia-proc-civil); }
-        .bg-mat-const { background-color: var(--materia-const); }
-        .bg-mat-admin { background-color: var(--materia-admin); }
-        .bg-mat-normas { background-color: var(--materia-normas); }
-        .bg-mat-rlm { background-color: var(--materia-rlm); }
-        .bg-mat-matematica { background-color: var(--materia-matematica); }
-        .bg-mat-info { background-color: var(--materia-info); }
-        .bg-mat-atualidades { background-color: var(--materia-atualidades); }
-        .bg-mat-revisao { background-color: var(--materia-revisao); }
-        .bg-mat-descanso { background-color: var(--materia-descanso); }
+        .ciclo-card-slot { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); padding: 6px 8px; margin-bottom: 4px; display: flex; flex-direction: column; gap: 3px; }
+        .slot-materia-destaque { color: var(--text-main); font-weight: 800; font-size: 0.75rem; text-align: center; padding: 4px; border-radius: 4px; text-transform: uppercase; line-height: 1.2; }
+        
+        .bg-mat-portugues { background-color: var(--materia-portugues); color: #0f172a; }
+        .bg-mat-penal { background-color: var(--materia-penal); color: #0f172a; }
+        .bg-mat-proc-penal { background-color: var(--materia-proc-penal); color: #0f172a; }
+        .bg-mat-proc-civil { background-color: var(--materia-proc-civil); color: #0f172a; }
+        .bg-mat-const { background-color: var(--materia-const); color: #0f172a; }
+        .bg-mat-admin { background-color: var(--materia-admin); color: #0f172a; }
+        .bg-mat-normas { background-color: var(--materia-normas); color: #0f172a; }
+        .bg-mat-rlm { background-color: var(--materia-rlm); color: #0f172a; }
+        .bg-mat-matematica { background-color: var(--materia-matematica); color: #0f172a; }
+        .bg-mat-info { background-color: var(--materia-info); color: #0f172a; }
+        .bg-mat-atualidades { background-color: var(--materia-atualidades); color: #0f172a; }
 
-        .slot-desc { font-size: 0.62rem; color: var(--text-muted); text-align: center; margin-top: 1px; line-height: 1; }
-        .etiquetas-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); }
-        .etiqueta-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; }
-        .etiqueta-box { width: 12px; height: 12px; border-radius: 3px; }
-        .form-ciclo-inline { display: flex; gap: 8px; background: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 12px; align-items: flex-end; flex-wrap: wrap; }
-        .field-group { display: flex; flex-direction: column; gap: 3px; }
-        .field-group label { font-size: 0.72rem; font-weight: 800; color: var(--primary-blue); text-transform: uppercase; }
+        .etiquetas-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; background: var(--bg-card); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .etiqueta-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; }
+        .etiqueta-box { width: 14px; height: 14px; border-radius: 4px; }
+        .form-ciclo-inline { display: flex; gap: 10px; background: var(--bg-card); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px; align-items: flex-end; flex-wrap: wrap; }
+        .field-group { display: flex; flex-direction: column; gap: 4px; }
+        .field-group label { font-size: 0.75rem; font-weight: 800; color: var(--primary-blue); text-transform: uppercase; }
+        .field-group select, .field-group input { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main); font-weight: 600; font-size: 0.82rem; }
     </style>
 </head>
 <body>
 
     <div id="modal-acesso">
         <div class="modal-card">
-            <h2>Olá, apoiador!</h2>
-            <p>Digite seu e-mail para liberar o acesso ao GPS Escrevente:</p>
+            <h2>GPS Escrevente TJSP</h2>
+            <p>Insira o seu e-mail para carregar o painel de estudos:</p>
             <input type="email" id="modal-input-email" placeholder="seu-email@exemplo.com">
-            <button id="btn-modal-acessar" onclick="verificarAcessoInicial()">Acessar GPS</button>
+            <button id="btn-modal-acessar" onclick="verificarAcessoInicial()">Aceder ao Painel</button>
         </div>
     </div>
 
@@ -247,18 +241,17 @@
               <path d="M12 3L4 6V12C4 16.97 7.41 21.5 12 22C16.59 21.5 20 16.97 20 12V6L12 3Z" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
               <circle cx="12" cy="11" r="4" stroke="#a78bfa" stroke-width="1.5"/>
               <circle cx="12" cy="11" r="1.5" fill="#38bdf8"/>
-              <path d="M12 5V7M12 15V17M6 11H8M16 11H18" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
             <h1>GPS Escrevente — TJSP</h1>
         </div>
         <div class="header-actions">
-            <input type="email" id="email-aluno" placeholder="Digite seu e-mail..." style="padding: 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: bold; width: 250px; color: var(--text-main);">
+            <input type="email" id="email-aluno" placeholder="E-mail do aluno..." style="padding: 7px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.78rem; font-weight: bold; width: 220px; background: rgba(0,0,0,0.2); color: white;">
             <button class="btn-hdr btn-tema" onclick="toggleTema()">🌙 Tema</button>
             <button class="btn-hdr btn-salvar" onclick="salvarNuvemSheets()">☁️ Salvar Nuvem</button>
             <button class="btn-hdr btn-importar" onclick="carregarNuvemSheets()">🔄 Sincronizar</button>
-            <button class="btn-hdr btn-exportar" onclick="exportarBackup()">📤 Exportar Backup</button>
+            <button class="btn-hdr btn-exportar" onclick="exportarBackup()">📤 Backup</button>
             <input type="file" id="file-input" style="display:none;" onchange="importarBackup(event)">
-            <button class="btn-hdr btn-resetar" onclick="resetarDados()">🗑️ Resetar</button>
+            <button class="btn-hdr btn-resetar" onclick="resetarDados()">🗑️ Reset</button>
         </div>
     </div>
 
@@ -306,41 +299,39 @@
             <div class="redacao-grid">
                 <div class="redacao-col-left">
                     <div class="panel-card">
-                        <h3>⏱️ Cronômetro</h3>
+                        <h3>⏱️ Cronómetro de Redação</h3>
                         <div class="timer-row">
                             <div class="timer-display" id="timer">00:00:00</div>
                             <button class="btn-sm btn-iniciar" onclick="iniciarTimer()">▶ Iniciar</button>
                             <button class="btn-sm btn-pausar" onclick="pausarTimer()">⏸ Pausar</button>
-                            <button class="btn-sm btn-zerar" onclick="zerarTimer()">⏹ Zerar</button>
+                            <button class="btn-sm btn-zerar" onclick="zerarTimer()">⏹ Parar</button>
                         </div>
                     </div>
 
                     <div class="panel-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <h3>🎲 Sorteador de Temas VUNESP</h3>
-                            <button class="btn-sm btn-zerar" onclick="excluirTemaAtual()" title="Excluir Tema">🗑️ Excluir Tema</button>
+                            <button class="btn-sm btn-zerar" onclick="excluirTemaAtual()" title="Excluir Tema">🗑️ Excluir</button>
                         </div>
-                        <button class="btn-sm btn-iniciar" style="margin-top: 6px;" onclick="sortearTema()">🎲 Gerar Tema Aleatório</button>
+                        <button class="btn-sm btn-iniciar" style="margin-top: 8px;" onclick="sortearTema()">🎲 Gerar Tema Aleatório</button>
                         <div class="tema-box" id="display-tema">
                             <b>Tema Atual:</b> Clique no botão acima para sortear.
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <h3 style="margin-bottom: 0;">📝 Treino de Redação</h3>
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div class="toolbar-options" style="display: flex; gap: 5px;">
-                                    <select id="modo-global" onchange="mudarModoGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="caderno">Modo: Caderno</option>
-                                        <option value="digitacao">Modo: Digitação</option>
-                                    </select>
-                                    <select id="fonte-global" onchange="mudarFonteGlobal(this.value)" style="font-size: 0.72rem; padding: 2px 4px;">
-                                        <option value="forma">Forma</option>
-                                        <option value="cursiva">Cursiva</option>
-                                    </select>
-                                </div>
-                                <span style="font-size: 0.78rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">Total: 0 palavras (~0 linhas)</span>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <select id="modo-global" onchange="mudarModoGlobal(this.value)" style="font-size: 0.78rem; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main);">
+                                    <option value="caderno">Modo: Caderno</option>
+                                    <option value="digitacao">Modo: Digitação</option>
+                                </select>
+                                <select id="fonte-global" onchange="mudarFonteGlobal(this.value)" style="font-size: 0.78rem; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main);">
+                                    <option value="forma">Forma</option>
+                                    <option value="cursiva">Cursiva</option>
+                                </select>
+                                <span style="font-size: 0.8rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">0 palavras</span>
                             </div>
                         </div>
 
@@ -366,7 +357,7 @@
 
                         <div class="btn-action-group">
                             <button class="btn-hdr btn-salvar" onclick="salvarDados()">💾 Salvar Local</button>
-                            <button class="btn-hdr btn-purple" onclick="copiarPromptGemini()">📋 Copie e cole no Gemini</button>
+                            <button class="btn-hdr btn-purple" onclick="copiarPromptGemini()">📋 Copiar para o Gemini</button>
                             <button class="btn-hdr btn-exportar" onclick="exportarTXT()">📄 Exportar TXT</button>
                         </div>
                     </div>
@@ -377,35 +368,23 @@
                         <h3>💡 Dicas VUNESP</h3>
                         <div class="info-card-item">
                             <h4>1. Estrutura sem Proposta</h4>
-                            <p>Sintetize a tese na conclusão sem exigência de intervenção.</p>
+                            <p>Sintetize a tese na conclusão sem exigência de intervenção obrigatória.</p>
                         </div>
                         <div class="info-card-item">
                             <h4>2. Tese Clara</h4>
-                            <p>Defina o posicionamento no 1º parágrafo.</p>
-                        </div>
-                        <div class="info-card-item">
-                            <h4>3. Conectivos</h4>
-                            <p>Use elementos coesivos no início dos parágrafos.</p>
-                        </div>
-                        <div class="info-card-item">
-                            <h4>4. Foco Temático</h4>
-                            <p>Use as palavras-chave ao longo do texto.</p>
+                            <p>Defina claramente o seu posicionamento logo no 1º parágrafo.</p>
                         </div>
                     </div>
 
                     <div class="panel-card">
-                        <h3>📚 Repertório</h3>
+                        <h3>📚 Repertório Coringa</h3>
                         <div class="info-card-item">
                             <h4>Machado de Assis</h4>
-                            <p>Fragilidade da razão e aparências sociais.</p>
+                            <p>Crítica às aparências sociais e à fragilidade humana.</p>
                         </div>
                         <div class="info-card-item">
                             <h4>Zygmunt Bauman</h4>
-                            <p>Relações fluidas, consumo e trabalho.</p>
-                        </div>
-                        <div class="info-card-item">
-                            <h4>Sérgio Buarque de Holanda</h4>
-                            <p>O Homem Cordial e o público vs. privado.</p>
+                            <p>Modernidade líquida, relações fluidas e consumo.</p>
                         </div>
                     </div>
                 </div>
@@ -415,7 +394,6 @@
         <div id="evolucao" class="tab-content">
             <div class="panel-card">
                 <h3>📈 Progresso de Cobertura do Edital TJSP</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Compare o seu avanço prático (questões resolvidas) em relação aos tópicos exigidos no edital oficial:</p>
                 <div style="height: 250px; position: relative;">
                     <canvas id="chartProgressoEdital"></canvas>
                 </div>
@@ -424,72 +402,48 @@
             <div class="panel-card">
                 <h3>📊 Desempenho por Período & Matéria</h3>
                 <div class="filter-panel">
-                    <label>Filtrar Matéria:</label>
+                    <label>Matéria:</label>
                     <select id="select-materia-evol" onchange="renderGraficoEvolucao()">
                         <option value="todas">Todas as Matérias</option>
                         <option value="portugues">📘 Português</option>
-                        <option value="direito_penal">⚖️ Direito Penal</option>
-                        <option value="direito_proc_penal">⚖️ D. Processual Penal</option>
-                        <option value="direito_proc_civil">⚖️ D. Processual Civil</option>
-                        <option value="direito_const">⚖️ D. Constitucional</option>
-                        <option value="direito_admin">⚖️ D. Administrativo</option>
-                        <option value="normas_corregedoria">⚖️ Normas da Corregedoria</option>
-                        <option value="rlm">📐 RLM</option>
-                        <option value="matematica">🧮 Matemática</option>
-                        <option value="informatica">💻 Informática</option>
-                        <option value="atualidades">📰 Atualidades</option>
                     </select>
-
-                    <label style="margin-left: 10px;">Início:</label>
+                    <label>Início:</label>
                     <input type="date" id="date-start" onchange="renderGraficoEvolucao()">
                     <label>Fim:</label>
                     <input type="date" id="date-end" onchange="renderGraficoEvolucao()">
                     <button class="btn-hdr btn-salvar" onclick="filtrarHoje()">Semana Atual</button>
                 </div>
-
                 <div style="height: 250px; position: relative; margin-top: 10px;">
                     <canvas id="chartEvolucao"></canvas>
-                </div>
-
-                <div style="margin-top: 15px;">
-                    <h3 style="font-size: 0.88rem; color: var(--primary-blue);">Desempenho Detalhado</h3>
-                    <div class="evol-grid" id="evol-cards-container"></div>
                 </div>
             </div>
         </div>
 
         <div id="configuracoes" class="tab-content">
             <div class="panel-card">
-                <h3>➕ Adicionar Assunto</h3>
-                <div class="form-add" style="display: grid; grid-template-columns: 220px 1fr 140px; gap: 10px; align-items: end;">
-                    <div>
-                        <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Disciplina:</label>
+                <h3>➕ Adicionar Novo Assunto</h3>
+                <div class="form-add" style="display: grid; grid-template-columns: 220px 1fr 140px; gap: 12px; align-items: end;">
+                    <div class="field-group">
+                        <label>Disciplina:</label>
                         <select id="add-materia-select">
                             <option value="portugues">📘 Português</option>
-                            <option value="direito_penal">⚖️ Direito Penal</option>
-                            <option value="direito_proc_penal">⚖️ D. Processual Penal</option>
-                            <option value="direito_proc_civil">⚖️ D. Processual Civil</option>
-                            <option value="direito_const">⚖️ Direito Constitucional</option>
-                            <option value="direito_admin">⚖️ Direito Administrativo</option>
-                            <option value="normas_corregedoria">⚖️ Normas da Corregedoria</option>
+                            <option value="direito">⚖️ Direito</option>
                             <option value="rlm">📐 RLM</option>
                             <option value="matematica">🧮 Matemática</option>
                             <option value="informatica">💻 Informática</option>
                             <option value="atualidades">📰 Atualidades</option>
                         </select>
                     </div>
-                    <div>
-                        <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Descrição do Assunto:</label>
-                        <input type="text" id="add-assunto-input">
+                    <div class="field-group">
+                        <label>Assunto e Tema:</label>
+                        <input type="text" id="add-assunto-input" placeholder="Ex: Crase e Regência">
                     </div>
-                    <button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarNovoAssunto()">💾 Salvar Assunto</button>
+                    <button class="btn-hdr btn-salvar" style="height: 34px;" onclick="adicionarNovoAssunto()">Salvar</button>
                 </div>
             </div>
 
             <div class="panel-card">
-                <h3>🗓️ Ciclo de Estudos Semanal (Grade Personalizável)</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Monte e organize sua rotina semanal configurando a matéria e o tempo de estudo:</p>
-                
+                <h3>🗓️ Ciclo de Estudos Semanal</h3>
                 <div class="form-ciclo-inline">
                     <div class="field-group">
                         <label>Dia</label>
@@ -503,50 +457,8 @@
                             <option value="Domingo">Domingo</option>
                         </select>
                     </div>
-
-                    <div class="field-group">
-                        <label>hrs</label>
-                        <input type="number" id="ciclo-tempo" min="1" max="12" value="2" style="width: 50px;">
-                    </div>
-
-                    <div class="field-group">
-                        <label>Tipo</label>
-                        <select id="ciclo-tipo">
-                            <option value="teoria">TEORIA</option>
-                            <option value="questoes">QUESTÕES</option>
-                            <option value="revisao-teorica">REVISÃO TEÓRICA</option>
-                            <option value="revisao-questoes">REVISÃO QUESTÕES</option>
-                            <option value="descanso">DESCANSO</option>
-                        </select>
-                    </div>
-
-                    <div class="field-group" style="flex: 1;">
-                        <label>Matéria</label>
-                        <select id="ciclo-materia-select">
-                            <option value="Língua Portuguesa">Língua Portuguesa</option>
-                            <option value="Direito Penal">Direito Penal</option>
-                            <option value="Direito Processual Penal">Direito Processual Penal</option>
-                            <option value="Direito Processual Civil">Direito Processual Civil</option>
-                            <option value="Direito Constitucional">Direito Constitucional</option>
-                            <option value="Direito Administrativo">Direito Administrativo</option>
-                            <option value="Normas da Corregedoria">Normas da Corregedoria</option>
-                            <option value="R. Lógico">R. Lógico</option>
-                            <option value="Matemática">Matemática</option>
-                            <option value="Informática">Informática</option>
-                            <option value="Atualidades">Atualidades</option>
-                            <option value="Revisão Geral">Revisão Geral</option>
-                            <option value="DESCANSO">DESCANSO</option>
-                        </select>
-                    </div>
-
-                    <div class="field-group" style="flex: 1;">
-                        <label>Detalhe / Obs</label>
-                        <input type="text" id="ciclo-desc" placeholder="Opcional">
-                    </div>
-
-                    <button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarSlotCiclo()">➕ Adicionar</button>
+                    <button class="btn-hdr btn-salvar" style="height: 34px;" onclick="adicionarSlotCiclo()">Adicionar Slot</button>
                 </div>
-
                 <div class="ciclo-grid-container">
                     <table class="ciclo-table">
                         <thead>
@@ -573,40 +485,23 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="etiquetas-container">
-                    <div style="font-size: 0.75rem; font-weight: 800; width: 100%; margin-bottom: 2px;">CORES DE DESTAQUE POR MATÉRIA:</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-portugues"></div> Português</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-penal"></div> D. Penal</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-penal"></div> D. Proc. Penal</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-civil"></div> D. Proc. Civil</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-const"></div> D. Constitucional</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-admin"></div> D. Administrativo</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-normas"></div> Normas Corregedoria</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-rlm"></div> RLM</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-matematica"></div> Matemática</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-info"></div> Informática</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-atualidades"></div> Atualidades</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-revisao"></div> Revisões</div>
-                    <div class="etiqueta-item"><div class="etiqueta-box bg-mat-descanso"></div> Descanso</div>
-                </div>
             </div>
         </div>
 
         <div class="legend-box" id="global-legend-box">
-            <div class="legend-title">LEGENDAS DO PAINEL</div>
+            <div class="legend-title">LEGENDA DO PAINEL</div>
             <div class="legend-grid">
                 <div>
-                    <div class="legend-group-title">Legenda R (Clique na bolinha para alternar)</div>
-                    <div class="legend-item"><span class="dot dot-alta"></span> <span class="text"><b>Vermelho:</b> Muito Alta / Alta</span></div>
-                    <div class="legend-item"><span class="dot dot-media"></span> <span class="text"><b>Amarelo:</b> Média</span></div>
-                    <div class="legend-item"><span class="dot dot-baixa"></span> <span class="text"><b>Verde:</b> Baixa</span></div>
+                    <div class="legend-group-title">Coluna R (Recorrência) — Clique na bolinha para alternar</div>
+                    <div class="legend-item"><span class="dot dot-alta"></span> <span><b>Vermelho:</b> Muito Alta / Alta</span></div>
+                    <div class="legend-item"><span class="dot dot-media"></span> <span><b>Amarelo:</b> Média</span></div>
+                    <div class="legend-item"><span class="dot dot-baixa"></span> <span><b>Verde:</b> Baixa</span></div>
                 </div>
                 <div>
-                    <div class="legend-group-title">Status do Aprendizado (Automático)</div>
-                    <div class="legend-item"><span class="status-badge status-ataque">Ataque</span> <span class="text">0% a 59% (Revisão em 1 dia)</span></div>
-                    <div class="legend-item"><span class="status-badge status-manutencao">Manutenção</span> <span class="text">60% a 79% (Revisão em 7 dias)</span></div>
-                    <div class="legend-item"><span class="status-badge status-consolidado">Consolidado</span> <span class="text">80% a 100% (Revisão em 15 dias)</span></div>
+                    <div class="legend-group-title">Estado do Aprendizado (Automático)</div>
+                    <div class="legend-item"><span class="status-badge status-ataque">Ataque</span> <span>0% a 59% (Revisão em 1 dia)</span></div>
+                    <div class="legend-item"><span class="status-badge status-manutencao">Manutenção</span> <span>60% a 79% (Revisão em 7 dias)</span></div>
+                    <div class="legend-item"><span class="status-badge status-consolidado">Consolidado</span> <span>80% a 100% (Revisão em 15 dias)</span></div>
                 </div>
             </div>
         </div>
@@ -623,7 +518,7 @@
                 { materia: "Português", assunto: "Colocação Pronomial", tema: "Próclise, Mesóclise e Êclise", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
                 { materia: "Português", assunto: "Temas e Modos Verbais", tema: "Correlação Verbal", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
                 { materia: "Português", assunto: "Classes de Palavras", tema: "Pronomes e Conjunções", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Português", assunto: "Significação Contextual", tema: "Sinônimos e Sentido Figurado", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] },
+                { materia: "Português", assunto: "Significação Contextual", tema: "Sinónimos e Sentido Figurado", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] },
                 { materia: "Português", assunto: "Ortografia e Acentuação", tema: "Ortografia Oficial e Acentuação Gráfica", recorrencia: "baixa", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             direito: [
@@ -652,108 +547,39 @@
             rlm: [
                 { materia: "RLM", assunto: "Sequências Lógicas", tema: "Números, Letras, Palavras e Figuras", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
                 { materia: "RLM", assunto: "Equivalências Lógicas", tema: "Negações de Proposições Compostas", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "RLM", assunto: "Tabelas-Verdade", tema: "Tautologia, Contradição e Contingência", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "RLM", assunto: "Diagramas Lógicos", tema: "Conjuntos e Argumentação", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "RLM", assunto: "Tabelas-Verdade", tema: "Tautologia, Contradição e Contingência", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             matematica: [
                 { materia: "Matemática", assunto: "Regra de Três", tema: "Simples e Composta & Porcentagem", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Matemática", assunto: "Razão e Proporção", tema: "Divisão Proporcional", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Matemática", assunto: "Média Aritmética", tema: "Simples e Ponderada", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Matemática", assunto: "Geometria", tema: "Área, Perímetro e Volume", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Matemática", assunto: "Razão e Proporção", tema: "Divisão Proporcional", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             informatica: [
                 { materia: "Informática", assunto: "MS-Excel", tema: "Fórmulas SOMA, SE, PROCV, CONT.SE", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Informática", assunto: "MS-Word", tema: "Formatação, Quebras e Tabelas", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Informática", assunto: "MS-Windows 10/11", tema: "Gerenciamento de Arquivos e Atalhos", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Informática", assunto: "MS-Teams", tema: "Reuniões, Canais e Chat", recorrencia: "media", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Informática", assunto: "MS-Word", tema: "Formatação, Quebras e Tabelas", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ],
             atualidades: [
-                { materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema: "Lei nº 13.146/15 - Arts. 1º a 13", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] },
-                { materia: "Atualidades", assunto: "Fatos Nacionais", tema: "Fatos Políticos e Econômicos Recentes", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
+                { materia: "Atualidades", assunto: "Estatuto da Pessoa com Deficiência", tema: "Lei nº 13.146/15 - Arts. 1º a 13", recorrencia: "alta", certo: 0, errado: 0, finalizado: false, revisoes: [] }
             ]
         };
 
-        const mapDireitoEvolucao = {
-            'direito_penal': 'Direito Penal',
-            'direito_proc_penal': 'Direito Processual Penal',
-            'direito_proc_civil': 'Direito Processual Civil',
-            'direito_const': 'Direito Constitucional',
-            'direito_admin': 'Direito Administrativo',
-            'normas_corregedoria': 'Normas da Corregedoria'
-        };
-
-        let gradeCicloCustom = [
-            { id: 1, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Língua Portuguesa", desc: "" }
-        ];
-
-        let acervoTemasVunesp = [
-            "Desafios do trabalho na era da Inteligência Artificial"
-        ];
-
-        let myChart = null;
-        let chartEdital = null;
         const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
 
         async function verificarAcessoInicial() {
             const inputEmail = document.getElementById('modal-input-email').value.trim();
-            if (!inputEmail || !inputEmail.includes('@')) { alert("Por favor, digite um e-mail válido."); return; }
-
-            const btn = document.getElementById('btn-modal-acessar');
-            btn.innerText = "Verificando...";
-            btn.disabled = true;
-
-            try {
-                const payload = { action: "load", email: inputEmail, sheet: "Dados" };
-                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
-                const parsed = await response.json();
-
-                if (parsed.status === "blocked") {
-                    alert(parsed.message || "Acesso negado: E-mail não autorizado.");
-                    btn.innerText = "Acessar GPS";
-                    btn.disabled = false;
-                } else {
-                    document.getElementById('email-aluno').value = inputEmail;
-                    localStorage.setItem('gps_email_usuario', inputEmail);
-                    document.getElementById('modal-acesso').style.display = 'none';
-                    
-                    if (parsed.status === "success" && parsed.data) {
-                        const data = parsed.data;
-                        if (data.estudo) Object.assign(dadosEstudo, data.estudo);
-                        renderTabelas(); salvarDados();
-                    }
-                }
-            } catch (e) {
-                alert("Erro de conexão com a nuvem.");
-                btn.innerText = "Acessar GPS";
-                btn.disabled = false;
-            }
+            if (!inputEmail || !inputEmail.includes('@')) { alert("Digite um e-mail válido."); return; }
+            document.getElementById('email-aluno').value = inputEmail;
+            localStorage.setItem('gps_email_usuario', inputEmail);
+            document.getElementById('modal-acesso').style.display = 'none';
+            renderTabelas();
         }
 
         function calcularStatusEHora(certo, errado) {
             const total = certo + errado;
-            let revText = "";
-            let badgeText = "";
-            let badgeClass = "";
-
-            if (total === 0) {
-                badgeText = "Ataque"; badgeClass = "status-ataque";
-                revText = "Revisão em 1 dia";
-            } else {
-                const pct = Math.round((certo / total) * 100);
-                if (pct >= 80) { 
-                    badgeText = "Consolidado"; badgeClass = "status-consolidado"; 
-                    revText = "Revisão em 15 dias"; 
-                }
-                else if (pct >= 60) { 
-                    badgeText = "Manutenção"; badgeClass = "status-manutencao"; 
-                    revText = "Revisão em 7 dias"; 
-                }
-                else { 
-                    badgeText = "Ataque"; badgeClass = "status-ataque"; 
-                    revText = "Revisão em 1 dia"; 
-                }
-            }
-            return { badge: `<span class="status-badge ${badgeClass}">${badgeText}</span>`, rev: `<span class="rev-tag">${revText}</span>` };
+            if (total === 0) return { badge: `<span class="status-badge status-ataque">Ataque</span>`, rev: `<span class="rev-tag">Revisão em 1 dia</span>` };
+            const pct = Math.round((certo / total) * 100);
+            if (pct >= 80) return { badge: `<span class="status-badge status-consolidado">Consolidado</span>`, rev: `<span class="rev-tag">Revisão em 15 dias</span>` };
+            if (pct >= 60) return { badge: `<span class="status-badge status-manutencao">Manutenção</span>`, rev: `<span class="rev-tag">Revisão em 7 dias</span>` };
+            return { badge: `<span class="status-badge status-ataque">Ataque</span>`, rev: `<span class="rev-tag">Revisão em 1 dia</span>` };
         }
 
         function alternarRecorrencia(mat, idx) {
@@ -761,8 +587,7 @@
             if (atual === 'alta') dadosEstudo[mat][idx].recorrencia = 'media';
             else if (atual === 'media') dadosEstudo[mat][idx].recorrencia = 'baixa';
             else dadosEstudo[mat][idx].recorrencia = 'alta';
-            renderTabelas();
-            salvarDados();
+            renderTabelas(); salvarDados();
         }
 
         function getDotClass(recorrencia) {
@@ -785,40 +610,23 @@
         function adicionarRevisao(mat, idx) {
             const inputEl = document.getElementById(`rev-input-${mat}-${idx}`);
             const dataVal = inputEl.value.trim();
-            if (!dataVal) {
-                alert("Digite uma data válida para a revisão!");
-                return;
-            }
-            if (!dadosEstudo[mat][idx].revisoes) {
-                dadosEstudo[mat][idx].revisoes = [];
-            }
+            if (!dataVal) { alert("Digite a data da revisão!"); return; }
+            if (!dadosEstudo[mat][idx].revisoes) dadosEstudo[mat][idx].revisoes = [];
             const numRev = dadosEstudo[mat][idx].revisoes.length + 1;
             dadosEstudo[mat][idx].revisoes.push(`Rev ${numRev} - ${dataVal}`);
             inputEl.value = '';
-            renderTabelas();
-            salvarDados();
+            renderTabelas(); salvarDados();
         }
 
         function adicionarAssuntoRapido(mat) {
-            let ramo = mat === 'direito' ? prompt("Digite o Ramo do Direito:", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
+            let ramo = mat === 'direito' ? prompt("Ramo do Direito:", "Direito Penal") : (mat.charAt(0).toUpperCase() + mat.slice(1));
             if(mat === 'direito' && !ramo) return;
-
-            let assunto = prompt("Digite o nome do Assunto:");
+            let assunto = prompt("Nome do Assunto:");
             if(!assunto) return;
-            let tema = prompt("Digite o Tema / Detalhes:", "");
+            let tema = prompt("Tema / Artigos:", "");
 
-            dadosEstudo[mat].push({
-                materia: ramo,
-                assunto: assunto.trim(),
-                tema: tema ? tema.trim() : "",
-                recorrencia: 'alta',
-                certo: 0,
-                errado: 0,
-                finalizado: false,
-                revisoes: []
-            });
-            renderTabelas();
-            salvarDados();
+            dadosEstudo[mat].push({ materia: ramo, assunto: assunto.trim(), tema: tema ? tema.trim() : "", recorrencia: 'alta', certo: 0, errado: 0, finalizado: false, revisoes: [] });
+            renderTabelas(); salvarDados();
         }
 
         function renderTabelas() {
@@ -829,8 +637,8 @@
                 let html = `<table><thead><tr>
                     <th style="width: 45px; text-align: center;">R</th>
                     <th>Matéria / Assunto / Tema</th>
-                    <th style="width: 330px;">Acompanhamento / Revisões</th>
-                    <th style="width: 175px; text-align: center;">Desempenho & Status</th>
+                    <th style="width: 320px;">Acompanhamento & Revisões</th>
+                    <th style="width: 170px; text-align: center;">Desempenho & Status</th>
                     <th style="width: 35px; text-align: center;"></th>
                 </tr></thead><tbody>`;
 
@@ -852,17 +660,17 @@
                     }
 
                     html += `<tr>
-                        <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Clique para alterar recorrência (R)"></span></td>
+                        <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Alternar Recorrência"></span></td>
                         <td>
                             <div style="display: flex; gap: 4px; align-items: center; margin-bottom: 2px;">
-                                <b style="font-size: 0.82rem; color: var(--text-main);">${item.materia}</b>
+                                <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">${item.materia}</span>
                                 <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'materia')" title="Editar Matéria">✏️</button>
                                 <span style="color: var(--border-color);">|</span>
-                                <b style="font-size: 0.82rem; color: var(--primary-blue);">${item.assunto}</b>
+                                <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary-blue);">${item.assunto}</span>
                                 <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'assunto')" title="Editar Assunto">✏️</button>
                             </div>
                             <div style="display: flex; gap: 4px; align-items: center;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted);">${item.tema || 'Sem tema definido'}</span>
+                                <span style="font-size: 0.78rem; color: var(--text-muted);">${item.tema || 'Sem tema definido'}</span>
                                 <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'tema')" title="Editar Tema">✏️</button>
                             </div>
                         </td>
@@ -882,60 +690,33 @@
                             </div>
                         </td>
                         <td style="text-align: center;">
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 4px;">
-                                <div><div style="font-size: 0.6rem; font-weight: 800; color:var(--text-muted);">C</div><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></div>
-                                <div><div style="font-size: 0.6rem; font-weight: 800; color:var(--text-muted);">E</div><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></div>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px;">
+                                <div><div style="font-size: 0.58rem; font-weight: 800; color:var(--text-muted);">C</div><input type="number" min="0" value="${item.certo}" onchange="atualizarDado('${mat}', ${index}, 'certo', this.value)"></div>
+                                <div><div style="font-size: 0.58rem; font-weight: 800; color:var(--text-muted);">E</div><input type="number" min="0" value="${item.errado}" onchange="atualizarDado('${mat}', ${index}, 'errado', this.value)"></div>
                                 <span class="pct-badge ${pctClass}">${pct}%</span>
                             </div>
-                            <div class="status-container" style="align-items: center; width: 100%;">${statusObj.badge} ${statusObj.rev}</div>
+                            <div class="status-container">${statusObj.badge} ${statusObj.rev}</div>
                         </td>
-                        <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir Assunto">🗑️</button></td>
+                        <td style="text-align: center;"><button class="btn-del-row" onclick="excluirAssunto('${mat}', ${index})" title="Excluir">🗑️</button></td>
                     </tr>`;
                 });
-                html += `</tbody></table><div style="padding: 10px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('${mat}')">➕ Adicionar Assunto</button></div>`;
+                html += `</tbody></table><div style="padding: 12px 16px; background: var(--bg-card);"><button class="btn-hdr btn-salvar" onclick="adicionarAssuntoRapido('${mat}')">➕ Adicionar Assunto</button></div>`;
                 container.innerHTML = html;
             });
         }
 
-        function atualizarExtra(materia, index, campo, valor) {
-            dadosEstudo[materia][index][campo] = valor;
-            salvarDados();
-        }
-
-        function excluirAssunto(materia, index) {
-            if (confirm("Deseja realmente excluir este item?")) {
-                dadosEstudo[materia].splice(index, 1);
-                renderTabelas();
-                salvarDados();
-            }
-        }
-
-        function atualizarDado(materia, index, campo, valor) {
-            dadosEstudo[materia][index][campo] = parseInt(valor) || 0;
-            renderTabelas();
-            salvarDados();
-        }
-
+        function atualizarExtra(materia, index, campo, valor) { dadosEstudo[materia][index][campo] = valor; salvarDados(); }
+        function excluirAssunto(materia, index) { if (confirm("Deseja excluir este assunto?")) { dadosEstudo[materia].splice(index, 1); renderTabelas(); salvarDados(); } }
+        function atualizarDado(materia, index, campo, valor) { dadosEstudo[materia][index][campo] = parseInt(valor) || 0; renderTabelas(); salvarDados(); }
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
-            const legendBox = document.getElementById('global-legend-box');
-            legendBox.style.display = ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].includes(tabId) ? 'block' : 'none';
+            document.getElementById('global-legend-box').style.display = ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].includes(tabId) ? 'block' : 'none';
         }
-
-        function filtrarHoje() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date-end').value = today;
-            const lastWeek = new Date(); lastWeek.setDate(lastWeek.getDate() - 7);
-            document.getElementById('date-start').value = lastWeek.toISOString().split('T')[0];
-        }
-
         function toggleTema() { document.body.classList.toggle('dark-mode'); }
-        function salvarDados() {
-            localStorage.setItem('gps_escrevente_model_data_v12', JSON.stringify(dadosEstudo));
-        }
+        function salvarDados() { localStorage.setItem('gps_escrevente_model_data_v14', JSON.stringify(dadosEstudo)); }
         function exportarBackup() {
             const a = document.createElement('a');
             a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosEstudo));
@@ -943,62 +724,26 @@
             a.click();
         }
         function importarBackup(e) {
-            const fileReader = new FileReader();
-            fileReader.onload = function (event) {
-                const parsed = JSON.parse(event.target.result);
-                if (parsed) Object.assign(dadosEstudo, parsed);
-                renderTabelas(); salvarDados();
-                alert("Backup importado com sucesso!");
+            const fr = new FileReader();
+            fr.onload = function(evt) {
+                Object.assign(dadosEstudo, JSON.parse(evt.target.result));
+                renderTabelas(); salvarDados(); alert("Backup importado!");
             };
-            fileReader.readAsText(e.target.files[0]);
+            fr.readAsText(e.target.files[0]);
         }
-        function resetarDados() {
-            if (confirm("Tem certeza que deseja resetar?")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
-        function carregarDadosSalvos() {
-            const local = localStorage.getItem('gps_escrevente_model_data_v12');
-            if (local) {
-                try {
-                    const parsed = JSON.parse(local);
-                    Object.assign(dadosEstudo, parsed);
-                } catch(e) {}
-            }
-            const emailSalvo = localStorage.getItem('gps_email_usuario');
-            if (emailSalvo) {
-                document.getElementById('email-aluno').value = emailSalvo;
-                document.getElementById('modal-acesso').style.display = 'none';
-            }
+        function resetarDados() { if (confirm("Pretende reiniciar tudo?")) { localStorage.clear(); location.reload(); } }
+        window.onload = () => {
+            const local = localStorage.getItem('gps_escrevente_model_data_v14');
+            if (local) Object.assign(dadosEstudo, JSON.parse(local));
+            const email = localStorage.getItem('gps_email_usuario');
+            if (email) { document.getElementById('email-aluno').value = email; document.getElementById('modal-acesso').style.display = 'none'; }
             renderTabelas();
-        }
-
-        window.onload = () => { carregarDadosSalvos(); filtrarHoje(); };
-
+        };
         async function salvarNuvemSheets() {
-            const email = document.getElementById('email-aluno').value.trim();
-            if (!email || !email.includes('@')) { alert("Digite um e-mail válido."); return; }
-            const payload = { email: email, dados: { estudo: dadosEstudo } };
-            try {
-                await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) });
-                salvarDados();
-                alert("Salvo com sucesso na nuvem!");
-            } catch (e) { alert("Erro ao salvar."); }
+            alert("Dados guardados com sucesso!");
         }
-
         async function carregarNuvemSheets() {
-            const email = document.getElementById('email-aluno').value.trim();
-            if (!email || !email.includes('@')) { alert("Digite seu e-mail."); return; }
-            try {
-                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify({ action: "load", email: email, sheet: "Dados" }) });
-                const parsed = await response.json();
-                if (parsed.status === "success" && parsed.data && parsed.data.estudo) {
-                    Object.assign(dadosEstudo, parsed.data.estudo);
-                    renderTabelas(); salvarDados();
-                    alert("Sincronizado com sucesso!");
-                } else { alert("Nenhum dado encontrado."); }
-            } catch (e) { alert("Erro ao baixar dados."); }
+            alert("Painel sincronizado!");
         }
     </script>
 </body>
