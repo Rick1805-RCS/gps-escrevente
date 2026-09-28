@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-page: #f8fafc;
+            --bg-page: #f1f5f9;
             --bg-header: #0f172a;
             --bg-card: #ffffff;
             --text-main: #1e293b;
@@ -21,20 +21,8 @@
             --accent-red: #ef4444;
             --accent-yellow: #f59e0b;
             --accent-green: #10b981;
-            --border-color: #e2e8f0;
-            --hover-row: #f1f5f9;
-
-            --materia-portugues: #93c5fd;
-            --materia-penal: #fca5a5;
-            --materia-proc-penal: #fdba74;
-            --materia-proc-civil: #fde047;
-            --materia-const: #86efac;
-            --materia-admin: #67e8f9;
-            --materia-normas: #7dd3fc;
-            --materia-rlm: #c4b5fd;
-            --materia-matematica: #f472b6;
-            --materia-info: #a5b4fc;
-            --materia-atualidades: #bef264;
+            --border-color: #cbd5e1;
+            --hover-row: #f8fafc;
         }
 
         body.dark-mode {
@@ -43,7 +31,7 @@
             --bg-card: #131c2e;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: #1e293b;
+            --border-color: #334155;
             --primary-blue: #3b82f6;
             --hover-row: #1a263d;
         }
@@ -71,7 +59,6 @@
             width: 100%; padding: 12px; border: none; background: var(--btn-salvar);
             color: white; font-weight: 700; font-size: 0.95rem; border-radius: 8px; cursor: pointer; transition: opacity 0.2s;
         }
-        .modal-card button:hover { opacity: 0.9; }
 
         .header-bar {
             background-color: var(--bg-header); color: white; padding: 12px 24px;
@@ -104,62 +91,61 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        .table-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02); }
+        .table-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.03); }
         
-        .subfilter-bar { background: var(--bg-page); padding: 12px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
-        .subfilter-bar label { font-size: 0.82rem; font-weight: 700; color: var(--primary-blue); }
-        .subfilter-bar select { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 600; font-size: 0.82rem; }
+        .subfilter-bar { background: var(--bg-card); padding: 14px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
+        .subfilter-bar label { font-size: 0.85rem; font-weight: 700; color: var(--primary-blue); }
+        .subfilter-bar select { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main); font-weight: 600; font-size: 0.85rem; }
 
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { background: var(--bg-page); color: var(--text-muted); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 12px 16px; border-bottom: 2px solid var(--border-color); }
-        td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; transition: background 0.15s; }
+        th { background: var(--bg-page); color: var(--text-muted); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 14px 16px; border-bottom: 2px solid var(--border-color); }
+        td { padding: 16px; border-bottom: 1px solid var(--border-color); font-size: 0.88rem; vertical-align: middle; transition: background 0.15s; }
         tbody tr:hover td { background-color: var(--hover-row); }
         
-        input[type="number"] { width: 44px; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); font-size: 0.82rem; }
+        input[type="number"] { width: 44px; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; text-align: center; font-weight: 700; background: var(--bg-page); color: var(--text-main); font-size: 0.85rem; }
         
-        .dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; cursor: pointer; margin: 0 auto; transition: transform 0.2s; }
+        .dot { height: 14px; width: 14px; border-radius: 50%; display: inline-block; cursor: pointer; margin: 0 auto; transition: transform 0.2s; }
         .dot:hover { transform: scale(1.3); }
         .dot-alta { background-color: var(--accent-red); box-shadow: 0 0 6px rgba(239,68,68,0.4); }
         .dot-media { background-color: var(--accent-yellow); box-shadow: 0 0 6px rgba(245,158,11,0.4); }
         .dot-baixa { background-color: var(--accent-green); box-shadow: 0 0 6px rgba(16,185,129,0.4); }
 
         .pct-badge { font-weight: 700; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; }
-        .pct-good { background: rgba(16,185,129,0.12); color: #047857; }
-        .pct-mid { background: rgba(245,158,11,0.12); color: #b45309; }
-        .pct-bad { background: rgba(239,68,68,0.12); color: #b91c1c; }
+        .pct-good { background: rgba(16,185,129,0.15); color: #047857; }
+        .pct-mid { background: rgba(245,158,11,0.15); color: #b45309; }
+        .pct-bad { background: rgba(239,68,68,0.15); color: #b91c1c; }
 
-        .status-container { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 4px; }
-        .status-badge { font-weight: 700; padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.03em; display: inline-block; }
+        .status-container { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 6px; }
+        .status-badge { font-weight: 700; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; display: inline-block; }
         .status-ataque { background: #fee2e2; color: #991b1b; }
         .status-consolidado { background: #dcfce7; color: #166534; }
         .status-manutencao { background: #fef3c7; color: #92400e; }
-        .rev-tag { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); display: block; white-space: nowrap; }
+        .rev-tag { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); display: block; white-space: nowrap; }
 
-        /* Botão de Lápis para Edição */
-        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.78rem; opacity: 0.6; transition: opacity 0.2s; padding: 0 2px; }
+        .btn-edit-item { background: transparent; border: none; cursor: pointer; font-size: 0.8rem; opacity: 0.6; transition: opacity 0.2s; padding: 0 3px; }
         .btn-edit-item:hover { opacity: 1; }
 
-        /* Acompanhamento e Revisões na Horizontal */
-        .bloco-acompanhamento { display: flex; flex-direction: column; gap: 8px; }
-        .chk-estudo-finalizado { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--btn-salvar); cursor: pointer; }
-        .chk-estudo-finalizado input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: var(--btn-salvar); border-radius: 4px; }
+        /* Acompanhamento e Revisões na Horizontal - Perfeitamente alinhado */
+        .bloco-acompanhamento { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .chk-estudo-finalizado { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: var(--btn-salvar); cursor: pointer; white-space: nowrap; }
+        .chk-estudo-finalizado input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--btn-salvar); border-radius: 4px; }
         
         .rev-hz-container { display: flex; align-items: center; gap: 8px; }
         .rev-add-box { display: flex; gap: 4px; align-items: center; }
-        .rev-add-box input[type="text"] { font-size: 0.75rem; padding: 5px 8px; width: 95px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-main); text-align: center; }
-        .rev-select { font-size: 0.75rem; padding: 5px 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-main); width: 145px; font-weight: 600; outline: none; }
+        .rev-add-box input[type="text"] { font-size: 0.78rem; padding: 6px 10px; width: 105px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-main); text-align: center; }
+        .rev-select { font-size: 0.78rem; padding: 6px 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-page); color: var(--text-main); width: 155px; font-weight: 600; outline: none; }
 
-        .btn-del-row { background: transparent; border: none; font-size: 1rem; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; padding: 4px; }
+        .btn-del-row { background: transparent; border: none; font-size: 1.1rem; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; padding: 4px; }
         .btn-del-row:hover { opacity: 1; color: var(--accent-red); }
 
         .redacao-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
-        .panel-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02); }
+        .panel-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.03); }
         .panel-card h3 { font-size: 1rem; color: var(--text-main); font-weight: 800; margin-bottom: 12px; }
 
         .timer-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
         .timer-display { font-size: 1.3rem; font-weight: 800; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 8px; background: var(--bg-page); letter-spacing: 0.05em; }
         
-        .btn-sm { border: none; padding: 6px 10px; border-radius: 6px; color: white; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s; }
+        .btn-sm { border: none; padding: 7px 12px; border-radius: 6px; color: white; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s; }
         .btn-sm:hover { opacity: 0.85; }
         .btn-iniciar { background: var(--btn-salvar); }
         .btn-pausar { background: var(--primary-blue); }
@@ -185,7 +171,7 @@
         .info-card-item { background: var(--bg-page); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-top: 10px; font-size: 0.8rem; }
         .info-card-item h4 { font-size: 0.85rem; color: var(--text-main); margin-bottom: 3px; font-weight: 700; }
 
-        .legend-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px 20px; margin-top: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.02); }
+        .legend-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px 20px; margin-top: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.03); }
         .legend-title { font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
         .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .legend-group-title { font-size: 0.82rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 8px; }
@@ -203,17 +189,17 @@
         .ciclo-card-slot { background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border-color); padding: 6px 8px; margin-bottom: 4px; display: flex; flex-direction: column; gap: 3px; }
         .slot-materia-destaque { color: var(--text-main); font-weight: 800; font-size: 0.75rem; text-align: center; padding: 4px; border-radius: 4px; text-transform: uppercase; line-height: 1.2; }
         
-        .bg-mat-portugues { background-color: var(--materia-portugues); color: #0f172a; }
-        .bg-mat-penal { background-color: var(--materia-penal); color: #0f172a; }
-        .bg-mat-proc-penal { background-color: var(--materia-proc-penal); color: #0f172a; }
-        .bg-mat-proc-civil { background-color: var(--materia-proc-civil); color: #0f172a; }
-        .bg-mat-const { background-color: var(--materia-const); color: #0f172a; }
-        .bg-mat-admin { background-color: var(--materia-admin); color: #0f172a; }
-        .bg-mat-normas { background-color: var(--materia-normas); color: #0f172a; }
-        .bg-mat-rlm { background-color: var(--materia-rlm); color: #0f172a; }
-        .bg-mat-matematica { background-color: var(--materia-matematica); color: #0f172a; }
-        .bg-mat-info { background-color: var(--materia-info); color: #0f172a; }
-        .bg-mat-atualidades { background-color: var(--materia-atualidades); color: #0f172a; }
+        .bg-mat-portugues { background-color: #93c5fd; color: #0f172a; }
+        .bg-mat-penal { background-color: #fca5a5; color: #0f172a; }
+        .bg-mat-proc-penal { background-color: #fdba74; color: #0f172a; }
+        .bg-mat-proc-civil { background-color: #fde047; color: #0f172a; }
+        .bg-mat-const { background-color: #86efac; color: #0f172a; }
+        .bg-mat-admin { background-color: #67e8f9; color: #0f172a; }
+        .bg-mat-normas { background-color: #7dd3fc; color: #0f172a; }
+        .bg-mat-rlm { background-color: #c4b5fd; color: #0f172a; }
+        .bg-mat-matematica { background-color: #f472b6; color: #0f172a; }
+        .bg-mat-info { background-color: #a5b4fc; color: #0f172a; }
+        .bg-mat-atualidades { background-color: #bef264; color: #0f172a; }
 
         .etiquetas-container { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; background: var(--bg-card); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); }
         .etiqueta-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; }
@@ -245,9 +231,9 @@
             <h1>GPS Escrevente — TJSP</h1>
         </div>
         <div class="header-actions">
-            <input type="email" id="email-aluno" placeholder="E-mail do aluno..." style="padding: 7px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.78rem; font-weight: bold; width: 220px; background: rgba(0,0,0,0.2); color: white;">
+            <input type="email" id="email-aluno" placeholder="E-mail do aluno..." style="padding: 7px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.78rem; font-weight: bold; width: 200px; background: rgba(0,0,0,0.2); color: white;">
             <button class="btn-hdr btn-tema" onclick="toggleTema()">🌙 Tema</button>
-            <button class="btn-hdr btn-salvar" onclick="salvarNuvemSheets()">☁️ Salvar Nuvem</button>
+            <button class="btn-hdr btn-salvar" onclick="salvarNuvemSheets()">☁️ Salvar</button>
             <button class="btn-hdr btn-importar" onclick="carregarNuvemSheets()">🔄 Sincronizar</button>
             <button class="btn-hdr btn-exportar" onclick="exportarBackup()">📤 Backup</button>
             <input type="file" id="file-input" style="display:none;" onchange="importarBackup(event)">
@@ -311,7 +297,7 @@
                     <div class="panel-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <h3>🎲 Sorteador de Temas VUNESP</h3>
-                            <button class="btn-sm btn-zerar" onclick="excluirTemaAtual()" title="Excluir Tema">🗑️ Excluir</button>
+                            <button class="btn-sm btn-zerar" onclick="excluirTemaAtual()">🗑️ Excluir</button>
                         </div>
                         <button class="btn-sm btn-iniciar" style="margin-top: 8px;" onclick="sortearTema()">🎲 Gerar Tema Aleatório</button>
                         <div class="tema-box" id="display-tema">
@@ -322,171 +308,26 @@
                     <div class="panel-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <h3 style="margin-bottom: 0;">📝 Treino de Redação</h3>
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <select id="modo-global" onchange="mudarModoGlobal(this.value)" style="font-size: 0.78rem; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main);">
-                                    <option value="caderno">Modo: Caderno</option>
-                                    <option value="digitacao">Modo: Digitação</option>
-                                </select>
-                                <select id="fonte-global" onchange="mudarFonteGlobal(this.value)" style="font-size: 0.78rem; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main);">
-                                    <option value="forma">Forma</option>
-                                    <option value="cursiva">Cursiva</option>
-                                </select>
-                                <span style="font-size: 0.8rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">0 palavras</span>
-                            </div>
+                            <span style="font-size: 0.8rem; color: var(--primary-blue); font-weight: 800;" id="info-contagem">0 palavras</span>
                         </div>
-
-                        <div class="bloco-redacao">
-                            <label>1. Introdução</label>
-                            <textarea id="red-intro" class="caixa-redacao modo-caderno fonte-forma" placeholder="Apresentação do tema + Tese..." oninput="calcularPalavrasRedacao()"></textarea>
-                        </div>
-
-                        <div class="bloco-redacao">
-                            <label>2. Desenvolvimento 1</label>
-                            <textarea id="red-dev1" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do primeiro argumento..." oninput="calcularPalavrasRedacao()"></textarea>
-                        </div>
-
-                        <div class="bloco-redacao">
-                            <label>3. Desenvolvimento 2</label>
-                            <textarea id="red-dev2" class="caixa-redacao modo-caderno fonte-forma" placeholder="Desenvolvimento do segundo argumento..." oninput="calcularPalavrasRedacao()"></textarea>
-                        </div>
-
-                        <div class="bloco-redacao">
-                            <label>4. Conclusão</label>
-                            <textarea id="red-concl" class="caixa-redacao modo-caderno fonte-forma" placeholder="Fechamento do texto..." oninput="calcularPalavrasRedacao()"></textarea>
-                        </div>
-
-                        <div class="btn-action-group">
-                            <button class="btn-hdr btn-salvar" onclick="salvarDados()">💾 Salvar Local</button>
-                            <button class="btn-hdr btn-purple" onclick="copiarPromptGemini()">📋 Copiar para o Gemini</button>
-                            <button class="btn-hdr btn-exportar" onclick="exportarTXT()">📄 Exportar TXT</button>
-                        </div>
+                        <div class="bloco-redacao"><label>1. Introdução</label><textarea id="red-intro" class="caixa-redacao modo-caderno fonte-forma" placeholder="Apresentação..." oninput="calcularPalavrasRedacao()"></textarea></div>
+                        <div class="bloco-redacao"><label>2. Desenvolvimento 1</label><textarea id="red-dev1" class="caixa-redacao modo-caderno fonte-forma" placeholder="Argumento 1..." oninput="calcularPalavrasRedacao()"></textarea></div>
+                        <div class="bloco-redacao"><label>3. Desenvolvimento 2</label><textarea id="red-dev2" class="caixa-redacao modo-caderno fonte-forma" placeholder="Argumento 2..." oninput="calcularPalavrasRedacao()"></textarea></div>
+                        <div class="bloco-redacao"><label>4. Conclusão</label><textarea id="red-concl" class="caixa-redacao modo-caderno fonte-forma" placeholder="Conclusão..." oninput="calcularPalavrasRedacao()"></textarea></div>
                     </div>
                 </div>
 
                 <div class="redacao-col-right">
                     <div class="panel-card">
                         <h3>💡 Dicas VUNESP</h3>
-                        <div class="info-card-item">
-                            <h4>1. Estrutura sem Proposta</h4>
-                            <p>Sintetize a tese na conclusão sem exigência de intervenção obrigatória.</p>
-                        </div>
-                        <div class="info-card-item">
-                            <h4>2. Tese Clara</h4>
-                            <p>Defina claramente o seu posicionamento logo no 1º parágrafo.</p>
-                        </div>
-                    </div>
-
-                    <div class="panel-card">
-                        <h3>📚 Repertório Coringa</h3>
-                        <div class="info-card-item">
-                            <h4>Machado de Assis</h4>
-                            <p>Crítica às aparências sociais e à fragilidade humana.</p>
-                        </div>
-                        <div class="info-card-item">
-                            <h4>Zygmunt Bauman</h4>
-                            <p>Modernidade líquida, relações fluidas e consumo.</p>
-                        </div>
+                        <div class="info-card-item"><h4>Tese Clara</h4><p>Defina o seu posicionamento logo no 1º parágrafo.</p></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="evolucao" class="tab-content">
-            <div class="panel-card">
-                <h3>📈 Progresso de Cobertura do Edital TJSP</h3>
-                <div style="height: 250px; position: relative;">
-                    <canvas id="chartProgressoEdital"></canvas>
-                </div>
-            </div>
-
-            <div class="panel-card">
-                <h3>📊 Desempenho por Período & Matéria</h3>
-                <div class="filter-panel">
-                    <label>Matéria:</label>
-                    <select id="select-materia-evol" onchange="renderGraficoEvolucao()">
-                        <option value="todas">Todas as Matérias</option>
-                        <option value="portugues">📘 Português</option>
-                    </select>
-                    <label>Início:</label>
-                    <input type="date" id="date-start" onchange="renderGraficoEvolucao()">
-                    <label>Fim:</label>
-                    <input type="date" id="date-end" onchange="renderGraficoEvolucao()">
-                    <button class="btn-hdr btn-salvar" onclick="filtrarHoje()">Semana Atual</button>
-                </div>
-                <div style="height: 250px; position: relative; margin-top: 10px;">
-                    <canvas id="chartEvolucao"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div id="configuracoes" class="tab-content">
-            <div class="panel-card">
-                <h3>➕ Adicionar Novo Assunto</h3>
-                <div class="form-add" style="display: grid; grid-template-columns: 220px 1fr 140px; gap: 12px; align-items: end;">
-                    <div class="field-group">
-                        <label>Disciplina:</label>
-                        <select id="add-materia-select">
-                            <option value="portugues">📘 Português</option>
-                            <option value="direito">⚖️ Direito</option>
-                            <option value="rlm">📐 RLM</option>
-                            <option value="matematica">🧮 Matemática</option>
-                            <option value="informatica">💻 Informática</option>
-                            <option value="atualidades">📰 Atualidades</option>
-                        </select>
-                    </div>
-                    <div class="field-group">
-                        <label>Assunto e Tema:</label>
-                        <input type="text" id="add-assunto-input" placeholder="Ex: Crase e Regência">
-                    </div>
-                    <button class="btn-hdr btn-salvar" style="height: 34px;" onclick="adicionarNovoAssunto()">Salvar</button>
-                </div>
-            </div>
-
-            <div class="panel-card">
-                <h3>🗓️ Ciclo de Estudos Semanal</h3>
-                <div class="form-ciclo-inline">
-                    <div class="field-group">
-                        <label>Dia</label>
-                        <select id="ciclo-dia">
-                            <option value="Segunda">Segunda</option>
-                            <option value="Terça">Terça</option>
-                            <option value="Quarta">Quarta</option>
-                            <option value="Quinta">Quinta</option>
-                            <option value="Sexta">Sexta</option>
-                            <option value="Sábado">Sábado</option>
-                            <option value="Domingo">Domingo</option>
-                        </select>
-                    </div>
-                    <button class="btn-hdr btn-salvar" style="height: 34px;" onclick="adicionarSlotCiclo()">Adicionar Slot</button>
-                </div>
-                <div class="ciclo-grid-container">
-                    <table class="ciclo-table">
-                        <thead>
-                            <tr>
-                                <th>SEGUNDA</th>
-                                <th>TERÇA</th>
-                                <th>QUARTA</th>
-                                <th>QUINTA</th>
-                                <th>SEXTA</th>
-                                <th>SÁBADO</th>
-                                <th>DOMINGO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td id="col-Segunda"></td>
-                                <td id="col-Terça"></td>
-                                <td id="col-Quarta"></td>
-                                <td id="col-Quinta"></td>
-                                <td id="col-Sexta"></td>
-                                <td id="col-Sábado"></td>
-                                <td id="col-Domingo"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <div id="evolucao" class="tab-content"><div class="panel-card"><h3>📈 Progresso</h3><div style="height: 250px;"><canvas id="chartProgressoEdital"></canvas></div></div></div>
+        <div id="configuracoes" class="tab-content"><div class="panel-card"><h3>⚙️ Configurações</h3><p>Painel de definições gerais.</p></div></div>
 
         <div class="legend-box" id="global-legend-box">
             <div class="legend-title">LEGENDA DO PAINEL</div>
@@ -562,9 +403,7 @@
             ]
         };
 
-        const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
-
-        async function verificarAcessoInicial() {
+        function verificarAcessoInicial() {
             const inputEmail = document.getElementById('modal-input-email').value.trim();
             if (!inputEmail || !inputEmail.includes('@')) { alert("Digite um e-mail válido."); return; }
             document.getElementById('email-aluno').value = inputEmail;
@@ -637,8 +476,8 @@
                 let html = `<table><thead><tr>
                     <th style="width: 45px; text-align: center;">R</th>
                     <th>Matéria / Assunto / Tema</th>
-                    <th style="width: 320px;">Acompanhamento & Revisões</th>
-                    <th style="width: 170px; text-align: center;">Desempenho & Status</th>
+                    <th style="width: 360px;">Acompanhamento & Revisões</th>
+                    <th style="width: 175px; text-align: center;">Desempenho & Status</th>
                     <th style="width: 35px; text-align: center;"></th>
                 </tr></thead><tbody>`;
 
@@ -662,15 +501,15 @@
                     html += `<tr>
                         <td style="text-align: center;"><span class="dot ${dotCls}" onclick="alternarRecorrencia('${mat}', ${index})" title="Alternar Recorrência"></span></td>
                         <td>
-                            <div style="display: flex; gap: 4px; align-items: center; margin-bottom: 2px;">
+                            <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 3px;">
                                 <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">${item.materia}</span>
                                 <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'materia')" title="Editar Matéria">✏️</button>
                                 <span style="color: var(--border-color);">|</span>
-                                <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary-blue);">${item.assunto}</span>
+                                <span style="font-size: 0.88rem; font-weight: 700; color: var(--primary-blue);">${item.assunto}</span>
                                 <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'assunto')" title="Editar Assunto">✏️</button>
                             </div>
-                            <div style="display: flex; gap: 4px; align-items: center;">
-                                <span style="font-size: 0.78rem; color: var(--text-muted);">${item.tema || 'Sem tema definido'}</span>
+                            <div style="display: flex; gap: 6px; align-items: center;">
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">${item.tema || 'Sem tema definido'}</span>
                                 <button class="btn-edit-item" onclick="editarCampoTexto('${mat}', ${index}, 'tema')" title="Editar Tema">✏️</button>
                             </div>
                         </td>
@@ -716,7 +555,7 @@
             document.getElementById('global-legend-box').style.display = ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].includes(tabId) ? 'block' : 'none';
         }
         function toggleTema() { document.body.classList.toggle('dark-mode'); }
-        function salvarDados() { localStorage.setItem('gps_escrevente_model_data_v14', JSON.stringify(dadosEstudo)); }
+        function salvarDados() { localStorage.setItem('gps_escrevente_model_data_v15', JSON.stringify(dadosEstudo)); }
         function exportarBackup() {
             const a = document.createElement('a');
             a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dadosEstudo));
@@ -733,18 +572,14 @@
         }
         function resetarDados() { if (confirm("Pretende reiniciar tudo?")) { localStorage.clear(); location.reload(); } }
         window.onload = () => {
-            const local = localStorage.getItem('gps_escrevente_model_data_v14');
+            const local = localStorage.getItem('gps_escrevente_model_data_v15');
             if (local) Object.assign(dadosEstudo, JSON.parse(local));
             const email = localStorage.getItem('gps_email_usuario');
             if (email) { document.getElementById('email-aluno').value = email; document.getElementById('modal-acesso').style.display = 'none'; }
             renderTabelas();
         };
-        async function salvarNuvemSheets() {
-            alert("Dados guardados com sucesso!");
-        }
-        async function carregarNuvemSheets() {
-            alert("Painel sincronizado!");
-        }
+        async function salvarNuvemSheets() { alert("Dados guardados com sucesso!"); }
+        async function carregarNuvemSheets() { alert("Painel sincronizado!"); }
     </script>
 </body>
 </html>
