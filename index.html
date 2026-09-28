@@ -392,7 +392,6 @@
             rev3: { concluida: false, data: "", certo: 0, errado: 0 } 
         });
 
-        // ESTRUTURA COMPLETA ORIGINAL RESTAURADA
         let dadosEstudo = {
             portugues: [
                 { id: "pt1", materia: "Português", assunto: "Interpretação e Compreensão de Texto", tema_artigos: "Fatores de Textualidade e Inferências", recorrencia: "Alta", certo: 0, errado: 0, finalizado: false, revisoes: revBase(), obs: "" },
@@ -470,7 +469,6 @@
             ]
         };
 
-        // GRADE COMPLETA ORIGINAL RESTAURADA
         let gradeCicloCustom = [
             { id: 1, dia: "Segunda", tempo: 2, tipo: "teoria", materia: "Língua Portuguesa", desc: "" },
             { id: 2, dia: "Segunda", tempo: 2, tipo: "questoes", materia: "Língua Portuguesa", desc: "" },
@@ -505,7 +503,6 @@
             { id: 31, dia: "Domingo", tempo: 0, tipo: "descanso", materia: "DESCANSO INTEGRAL", desc: "" }
         ];
 
-        // TEMAS COMPLETOS ORIGINAIS RESTAURADOS
         let acervoTemasVunesp = [
             "Desafios do trabalho na era da Inteligência Artificial", "Limites da liberdade de expressão nas redes sociais",
             "Envelhecimento da população e políticas públicas no Brasil", "Impactos do uso excessivo de telas na saúde mental dos jovens",
@@ -526,7 +523,6 @@
         
         let redacaoData = { intro: "", dev1: "", dev2: "", concl: "" };
 
-        // --- FUNÇÃO DE MIGRAÇÃO DE DADOS (PREVINE TRAVAMENTOS) ---
         function garantirEstruturaDados() {
             ['portugues', 'direito', 'rlm', 'matematica', 'informatica', 'atualidades'].forEach(mat => {
                 if(!dadosEstudo[mat]) dadosEstudo[mat] = [];
@@ -545,7 +541,6 @@
             });
         }
 
-        // --- UI E TOAST ---
         function showToast(msg) {
             const toast = document.getElementById('toast-msg');
             toast.innerText = msg; toast.classList.add('show');
@@ -561,7 +556,6 @@
             if (tabId === 'evolucao') renderGraficoEvolucao();
         }
 
-        // --- GERAÇÃO DE TABELAS ---
         function getCorRecorrencia(rec) {
             const r = rec.toLowerCase();
             if(r.includes('alta')) return 'rec-alta';
@@ -645,7 +639,6 @@
             document.getElementById('table-direito').innerHTML = gerarHtmlTabela('direito', dados);
         }
 
-        // --- LÓGICA DE DADOS (AUTO-SAVE) ---
         let debounceTimer;
         function agendarSalvamentoNuvem() {
             redacaoData = {
@@ -714,7 +707,6 @@
             if (confirm("Excluir este assunto?")) { dadosEstudo[mat] = dadosEstudo[mat].filter(i => i.id !== id); renderTodasTabelas(); agendarSalvamentoNuvem(); showToast("Excluído!"); }
         }
 
-        // --- NUVEM ---
         async function executarSalvamentoNuvem(dadosParaSalvar) {
             const email = document.getElementById('email-aluno').value.trim();
             const btn = document.getElementById('btn-status-nuvem');
@@ -749,24 +741,22 @@
             document.getElementById('btn-modal-acessar').innerText = "A carregar...";
             
             try {
-                try {
-                    const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify({ action: "load", email: email, sheet: "Dados" }) });
-                    const parsed = await response.json();
-                    if (parsed.status === "success" && parsed.data) {
-                        preencherDadosMemoria(parsed.data);
-                    }
-                } catch (e) {
-                    const localV2 = localStorage.getItem('gps_escrevente_data_v2');
-                    const localV1 = localStorage.getItem('gps_escrevente_model_data_v7');
-                    if (localV2) {
-                        preencherDadosMemoria(JSON.parse(localV2));
-                    } else if (localV1) {
-                        try {
-                            const parsedV1 = JSON.parse(localV1);
-                            if(parsedV1.estudo) dadosEstudo = parsedV1.estudo;
-                            else dadosEstudo = parsedV1; 
-                        } catch(err){}
-                    }
+                const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify({ action: "load", email: email, sheet: "Dados" }) });
+                const parsed = await response.json();
+                if (parsed.status === "success" && parsed.data) {
+                    preencherDadosMemoria(parsed.data);
+                }
+            } catch (e) {
+                const localV2 = localStorage.getItem('gps_escrevente_data_v2');
+                const localV1 = localStorage.getItem('gps_escrevente_model_data_v7');
+                if (localV2) {
+                    preencherDadosMemoria(JSON.parse(localV2));
+                } else if (localV1) {
+                    try {
+                        const parsedV1 = JSON.parse(localV1);
+                        if(parsedV1.estudo) dadosEstudo = parsedV1.estudo;
+                        else dadosEstudo = parsedV1; 
+                    } catch(err){}
                 }
             } finally {
                 garantirEstruturaDados(); 
@@ -784,7 +774,6 @@
             if (emailSalvo) { document.getElementById('modal-input-email').value = emailSalvo; iniciarSessao(); }
         };
 
-        // --- FUNÇÕES DOS MÓDULOS RESTAURADOS ---
         function getMateriaColorClass(materia) {
             const m = materia.toLowerCase();
             if (m.includes('português')) return 'bg-mat-portugues'; if (m.includes('processual penal')) return 'bg-mat-proc-penal';
