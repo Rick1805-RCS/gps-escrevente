@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPS Escrevente — TJSP (Acesso livre, sem e-mail obrigatório)</title>
+    <title>GPS Escrevente — TJSP (Matriz Oficial VUNESP)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
@@ -104,7 +102,7 @@
     </style>
 </head>
 <body>
-    <!-- Acesso livre: o sistema não exige e-mail para utilização local. -->
+    <!-- Modal de Revisão -->
     <div id="modal-revisao" class="modal-overlay" style="display: none;">
         <div class="modal-card" style="max-width: 350px;">
             <h3 style="margin-bottom: 4px;">Gravar Revisão</h3>
@@ -120,10 +118,10 @@
     <div class="header-bar">
         <div class="brand"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L4 6V12C4 16.97 7.41 21.5 12 22C16.59 21.5 20 16.97 20 12V6L12 3Z" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/><circle cx="12" cy="11" r="4" stroke="#a78bfa" stroke-width="1.5"/><circle cx="12" cy="11" r="1.5" fill="#38bdf8"/><path d="M12 5V7M12 15V17M6 11H8M16 11H18" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/></svg><h1>GPS Escrevente — TJSP</h1></div>
         <div class="header-actions">
-            <input type="email" id="email-aluno" placeholder="E-mail opcional (somente nuvem)" title="Não é necessário para acessar o GPS. Informe apenas se desejar usar Salvar Nuvem ou Sincronizar." style="padding: 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: bold; width: 250px; color: var(--text-main);">
+            <input type="email" id="email-aluno" placeholder="Digite seu e-mail..." style="padding: 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: bold; width: 250px; color: var(--text-main);">
             <button class="btn-hdr btn-tema" onclick="toggleTema()">🌙 Tema</button>
-            <button class="btn-hdr btn-salvar" title="Requer e-mail válido; o restante do GPS funciona sem e-mail." onclick="salvarNuvemSheets()">☁️ Salvar Nuvem</button>
-            <button class="btn-hdr btn-importar" title="Requer e-mail válido; o restante do GPS funciona sem e-mail." onclick="carregarNuvemSheets()">🔄 Sincronizar</button>
+            <button class="btn-hdr btn-salvar" onclick="salvarNuvemSheets()">☁️ Salvar Nuvem</button>
+            <button class="btn-hdr btn-importar" onclick="carregarNuvemSheets()">🔄 Sincronizar</button>
             <button class="btn-hdr btn-exportar" onclick="exportarBackup()">📤 Exportar Backup</button>
             <input type="file" id="file-input" style="display:none;" onchange="importarBackup(event)">
             <button class="btn-hdr btn-resetar" onclick="resetarDados()">🗑 Resetar</button>
@@ -206,7 +204,7 @@
             <div class="panel-card">
                 <h3>➕ Adicionar Assunto</h3>
                 <div class="form-add" style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;"><label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Disciplina:</label><select id="add-materia-select" style="width: 100%;"><option value="portugues">📘 Português</option><option value="direito_penal">⚖️ Direito Penal</option><option value="direito_proc_penal">⚖️ Direito Processual Penal</option><option value="direito_proc_civil">⚖️ Direito Processual Civil</option><option value="direito_const">⚖ Direito Constitucional</option><option value="direito_admin">⚖️ Direito Administrativo</option><option value="normas_corregedoria">⚖️ Normas da Corregedoria</option><option value="rlm">📐 RLM</option><option value="matematica">🧮 Matemática</option><option value="informatica">💻 Informática</option><option value="atualidades">📰 Atualidades</option></select></div>
+                    <div style="flex: 1; min-width: 200px;"><label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Disciplina:</label><select id="add-materia-select" style="width: 100%;"><option value="portugues">📘 Português</option><option value="direito_penal">⚖️ Direito Penal</option><option value="direito_proc_penal">⚖️ Direito Processual Penal</option><option value="direito_proc_civil">⚖️ Direito Processual Civil</option><option value="direito_const">⚖️ Direito Constitucional</option><option value="direito_admin">⚖️ Direito Administrativo</option><option value="normas_corregedoria">⚖️ Normas da Corregedoria</option><option value="rlm">📐 RLM</option><option value="matematica">🧮 Matemática</option><option value="informatica">💻 Informática</option><option value="atualidades">📰 Atualidades</option></select></div>
                     <div style="flex: 2; min-width: 200px;"><label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 3px;">Descrição do Assunto:</label><input type="text" id="add-assunto-input" style="width: 100%;"></div>
                     <button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarNovoAssunto()">💾 Salvar</button>
                 </div>
@@ -214,7 +212,7 @@
             <div class="panel-card">
                 <h3>🗓️ Ciclo de Estudos Semanal</h3>
                 <div class="form-ciclo-inline"><div class="field-group"><label>Dia</label><select id="ciclo-dia"><option>Segunda</option><option>Terça</option><option>Quarta</option><option>Quinta</option><option>Sexta</option><option>Sábado</option><option>Domingo</option></select></div><div class="field-group"><label>hrs</label><input type="number" id="ciclo-tempo" min="1" max="12" value="2" style="width: 50px;"></div><div class="field-group"><label>Tipo</label><select id="ciclo-tipo"><option value="teoria">TEORIA</option><option value="questoes">QUESTÕES</option><option value="revisao-teorica">REVISÃO TEÓRICA</option><option value="revisao-questoes">REVISÃO QUESTÕES</option><option value="descanso">DESCANSO</option></select></div><div class="field-group" style="flex: 1;"><label>Matéria</label><select id="ciclo-materia-select"><option>Língua Portuguesa</option><option>Direito Penal</option><option>Direito Processual Penal</option><option>Direito Processual Civil</option><option>Direito Constitucional</option><option>Direito Administrativo</option><option>Normas da Corregedoria</option><option>R. Lógico</option><option>Matemática</option><option>Informática</option><option>Atualidades</option><option>Revisão Geral</option><option>DESCANSO</option></select></div><div class="field-group" style="flex: 1;"><label>Detalhe / Obs</label><input type="text" id="ciclo-desc" placeholder="Opcional"></div><button class="btn-hdr btn-salvar" style="height: 31px;" onclick="adicionarSlotCiclo()">➕ Adicionar</button></div>
-                <div class="ciclo-grid-container"><table class="ciclo-table"><thead><tr><th>SEGUNDA</th><th>TERÇA</th><th>QUARTA</th><th>QUINTA</th><th>SEXTA</th><th>SÁBADO</th><th>DOMINGO</th></tr></thead><tbody><tr><td id="col-Segunda"></td><td id="col-Terça"></td><td id="col-Quarta"></td><td id="col-Quinta"></td><td id="col-Sexta"></td><td id="col-Sábado"></td><td id="col-Domingo"></td></tr></tbody></table></div>
+                <div class="ciclo-grid-container"><table class="ciclo-table"><thead><tr><th>SEGUNDA</th><th>TERÇA</th><th>QUARTA</th><th>QUINTA</th><th>SEXTASÉBADO</th><th>DOMINGO</th></tr></thead><tbody><tr><td id="col-Segunda"></td><td id="col-Terça"></td><td id="col-Quarta"></td><td id="col-Quinta"></td><td id="col-Sexta"></td><td id="col-Sábado"></td><td id="col-Domingo"></td></tr></tbody></table></div>
                 <div class="etiquetas-container"><div style="font-size: 0.75rem; font-weight: 800; width: 100%; margin-bottom: 2px;">CORES DE DESTAQUE POR MATÉRIA:</div><div class="etiqueta-item"><div class="etiqueta-box bg-mat-portugues"></div> Português</div><div class="etiqueta-item"><div class="etiqueta-box bg-mat-penal"></div> D. Penal</div><div class="etiqueta-item"><div class="etiqueta-box bg-mat-proc-penal"></div> D. Proc. Penal</div><div class="etiqueta-item"><div class="etiqueta-box bg-mat-const"></div> D. Constitucional</div><div class="etiqueta-item"><div class="etiqueta-box bg-mat-admin"></div> D. Admin.</div><div class="etiqueta-item"><div class="etiqueta-box bg-mat-revisao"></div> Revisões</div></div>
             </div>
         </div>
@@ -229,7 +227,6 @@
     </div>
 
     <script>
-        // NOVO BANCO DE DADOS: ESPELHO DO EDITAL VUNESP TJSP
         const dadosEstudo = {
             portugues: [
                 { materia: "Português", prioridade: "alta", assunto: "1. Leitura e interpretação de diversos tipos de textos (lit. e não lit.)", certo: 0, errado: 0, obs: "", historicoRevisoes: [] },
@@ -313,8 +310,6 @@
         let myChart = null; let chartEdital = null; let chartRev = null; let chartHistRev = null;
         const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxVOmQWo4KpU2K7orqzMoldU4ptLvGMc6azdtgjS9PUzXLeBy--cC11sZw3yBdsBrEu1Q/exec";
 
-        // O acesso ao GPS é livre. O uso local não exige e-mail nem conexão.
-
         let revMatAtual = null; let revIdxAtual = null;
         function abrirModalRevisao(materia, index) {
             revMatAtual = materia; revIdxAtual = index; const item = dadosEstudo[materia][index];
@@ -333,7 +328,6 @@
             let item = dadosEstudo[revMatAtual][revIdxAtual];
             if(!item.historicoRevisoes) item.historicoRevisoes = [];
             
-            // TRAVA DE SEGURANÇA: Só salva no gráfico se houver questões feitas.
             if ((certoRev + erradoRev) > 0) {
                 item.historicoRevisoes.push({ data: dataInput, certo: certoRev, errado: erradoRev });
                 item.historicoRevisoes.sort((a, b) => new Date(a.data) - new Date(b.data));
@@ -430,12 +424,10 @@
             materiasFiltradas.forEach(m => { let c = 0, e = 0; if (mapDireitoEvolucao[m.id]) { dadosEstudo.direito.filter(d => d.materia === mapDireitoEvolucao[m.id]).forEach(item => { c += item.certo; e += item.errado; }); } else { dadosEstudo[m.id].forEach(item => { c += item.certo; e += item.errado; }); } const total = c + e; const pct = total > 0 ? Math.round((c / total) * 100) : 0; html += `<div class="evol-card"><h4>${m.nome}</h4><div style="font-size: 1.2rem; font-weight: 800; color: var(--primary-blue);">${pct}%</div><div class="evol-stats"><span>Acertos: ${c}</span><span>Erros: ${e}</span><span>Total: ${total}</span></div></div>`; }); container.innerHTML = html;
         }
 
-        // FUNÇÕES MENORES E COMPLEMENTARES (Ciclo e Redação)
         let timerInterval, seconds = 0, timerRunning = false; function iniciarTimer() { if (!timerRunning) { timerRunning = true; timerInterval = setInterval(() => { seconds++; const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0'); const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0'); const secs = String(seconds % 60).padStart(2, '0'); document.getElementById('timer').innerText = `${hrs}:${mins}:${secs}`; }, 1000); } } function pausarTimer() { timerRunning = false; clearInterval(timerInterval); } function zerarTimer() { pausarTimer(); seconds = 0; document.getElementById('timer').innerText = "00:00:00"; }
         function mudarModoGlobal(modo) { ['intro', 'dev1', 'dev2', 'concl'].forEach(bloco => { const ta = document.getElementById(`red-${bloco}`); if (modo === 'caderno') { ta.classList.remove('modo-digitacao'); ta.classList.add('modo-caderno'); } else { ta.classList.remove('modo-caderno'); ta.classList.add('modo-digitacao'); } }); }
         function mudarFonteGlobal(fonte) { ['intro', 'dev1', 'dev2', 'concl'].forEach(bloco => { const ta = document.getElementById(`red-${bloco}`); if (fonte === 'cursiva') { ta.classList.remove('fonte-forma'); ta.classList.add('fonte-cursiva'); } else { ta.classList.remove('fonte-cursiva'); ta.classList.add('fonte-forma'); } }); }
         
-        // Correção GAP: Contagem de palavras com array vazio
         function calcularPalavrasRedacao() {
             const textoCompleto = `${document.getElementById('red-intro').value} ${document.getElementById('red-dev1').value} ${document.getElementById('red-dev2').value} ${document.getElementById('red-concl').value}`.trim();
             const palavras = textoCompleto.length > 0 ? textoCompleto.split(/\s+/).length : 0;
@@ -463,13 +455,12 @@
             const localCiclo = localStorage.getItem('gps_grade_ciclo_custom'); if (localCiclo) { try { const p = JSON.parse(localCiclo); if (p && p.length > 0) gradeCicloCustom = p; } catch(e) {} }
             const localTemas = localStorage.getItem('gps_acervo_temas_data'); if (localTemas) { try { const p = JSON.parse(localTemas); if (p && p.length > 0) acervoTemasVunesp = p; } catch(e) {} }
             const localRedacao = localStorage.getItem('gps_redacao_blocos'); if (localRedacao) { try { const p = JSON.parse(localRedacao); if (p) { document.getElementById('red-intro').value = p.intro || ""; document.getElementById('red-dev1').value = p.dev1 || ""; document.getElementById('red-dev2').value = p.dev2 || ""; document.getElementById('red-concl').value = p.concl || ""; calcularPalavrasRedacao(); } } catch(e) {} }
-            const emailSalvo = localStorage.getItem('gps_email_usuario'); if (emailSalvo) document.getElementById('email-aluno').value = emailSalvo;
+            const emailSalvo = localStorage.getItem('gps_email_usuario'); if (emailSalvo) { document.getElementById('email-aluno').value = emailSalvo; }
             renderTabelas(); renderCicloTable();
         }
         window.onload = () => { carregarDadosSalvos(); };
-        async function salvarNuvemSheets() { const email = document.getElementById('email-aluno').value.trim(); if (!email || !email.includes('@')) { alert("O e-mail é opcional para usar o GPS. Para salvar ou sincronizar na nuvem, informe um e-mail válido no campo superior."); return; } const payload = { email: email, dados: { estudo: dadosEstudo, ciclo: gradeCicloCustom, temas: acervoTemasVunesp, redacao: { intro: document.getElementById('red-intro').value, dev1: document.getElementById('red-dev1').value, dev2: document.getElementById('red-dev2').value, concl: document.getElementById('red-concl').value } } }; const btn = document.querySelector('button[onclick="salvarNuvemSheets()"]'); if(btn) btn.innerText = "A guardar..."; try { const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) }); const parsed = await response.json(); if (parsed.status === "blocked") { alert(parsed.message || "Acesso negado."); } else { salvarDados(); alert("Progresso salvo com sucesso!"); } if(btn) btn.innerText = "☁️ Salvar Nuvem"; } catch (e) { if(btn) btn.innerText = "☁️ Salvar Nuvem"; alert("Erro de conexão ao salvar na nuvem."); } }
-        async function carregarNuvemSheets() { const email = document.getElementById('email-aluno').value.trim(); if (!email || !email.includes('@')) { alert("O e-mail é opcional para usar o GPS. Para salvar ou sincronizar na nuvem, informe um e-mail válido no campo superior."); return; } const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]'); if(btn) btn.innerText = "A baixar..."; try { const payload = { action: "load", email: email, sheet: "Dados" }; const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) }); const parsed = await response.json(); if (parsed.status === "success") { const data = parsed.data; if (!data) { alert("Nenhum progresso encontrado."); } else { if (data.estudo) Object.assign(dadosEstudo, data.estudo); if(data.ciclo) gradeCicloCustom = data.ciclo; if (data.temas) acervoTemasVunesp = data.temas; if (data.redacao) { document.getElementById('red-intro').value = data.redacao.intro || ""; document.getElementById('red-dev1').value = data.redacao.dev1 || ""; document.getElementById('red-dev2').value = data.redacao.dev2 || ""; document.getElementById('red-concl').value = data.redacao.concl || ""; calcularPalavrasRedacao(); } renderTabelas(); renderCicloTable(); salvarDados(); alert("Dados atualizados."); } } else if (parsed.status === "blocked") { alert(parsed.message || "Acesso negado."); } else { alert("Erro: " + (parsed.message || "Desconhecido")); } if(btn) btn.innerText = "🔄 Sincronizar"; } catch (e) { if(btn) btn.innerText = "🔄 Sincronizar"; alert("Erro de conexão ao baixar."); } }
+        async function salvarNuvemSheets() { const email = document.getElementById('email-aluno').value.trim(); if (!email || !email.includes('@')) { alert("Digite um e-mail válido no topo para salvar na nuvem."); return; } const payload = { email: email, dados: { estudo: dadosEstudo, ciclo: gradeCicloCustom, temas: acervoTemasVunesp, redacao: { intro: document.getElementById('red-intro').value, dev1: document.getElementById('red-dev1').value, dev2: document.getElementById('red-dev2').value, concl: document.getElementById('red-concl').value } } }; const btn = document.querySelector('button[onclick="salvarNuvemSheets()"]'); if(btn) btn.innerText = "A guardar..."; try { const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) }); const parsed = await response.json(); if (parsed.status === "blocked") { alert(parsed.message || "Acesso negado."); } else { salvarDados(); alert("Progresso salvo com sucesso!"); } if(btn) btn.innerText = "☁️ Salvar Nuvem"; } catch (e) { if(btn) btn.innerText = "☁️ Salvar Nuvem"; alert("Erro de conexão ao salvar na nuvem."); } }
+        async function carregarNuvemSheets() { const email = document.getElementById('email-aluno').value.trim(); if (!email || !email.includes('@')) { alert("Digite um e-mail válido no topo para sincronizar."); return; } const btn = document.querySelector('button[onclick="carregarNuvemSheets()"]'); if(btn) btn.innerText = "A baixar..."; try { const payload = { action: "load", email: email, sheet: "Dados" }; const response = await fetch(URL_PLANILHA, { method: 'POST', body: JSON.stringify(payload) }); const parsed = await response.json(); if (parsed.status === "success") { const data = parsed.data; if (!data) { alert("Nenhum progresso encontrado."); } else { if (data.estudo) Object.assign(dadosEstudo, data.estudo); if(data.ciclo) gradeCicloCustom = data.ciclo; if (data.temas) acervoTemasVunesp = data.temas; if (data.redacao) { document.getElementById('red-intro').value = data.redacao.intro || ""; document.getElementById('red-dev1').value = data.redacao.dev1 || ""; document.getElementById('red-dev2').value = data.redacao.dev2 || ""; document.getElementById('red-concl').value = data.redacao.concl || ""; calcularPalavrasRedacao(); } renderTabelas(); renderCicloTable(); salvarDados(); alert("Dados atualizados."); } } else if (parsed.status === "blocked") { alert(parsed.message || "Acesso negado."); } else { alert("Erro: " + (parsed.message || "Desconhecido")); } if(btn) btn.innerText = "🔄 Sincronizar"; } catch (e) { if(btn) btn.innerText = "🔄 Sincronizar"; alert("Erro de conexão ao baixar."); } }
     </script>
 </body>
 </html>
-⋮⋮⋮⋮
