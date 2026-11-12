@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Escrevente - TJSP | Modo Caverna</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        caverna: {
+                            darkest: '#090d16',
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155',
+                            accent: '#f59e0b',
+                            accentHover: '#d97706',
+                            success: '#10b981',
+                            info: '#3b82f6',
+                            warning: '#f97316',
+                            danger: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="bg-caverna-darkest text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+    <!-- Top Header -->
+    <header class="bg-caverna-dark border-b border-caverna-border sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md shadow-amber-500/20">
+                    <i class="fa-solid fa-compass text-black text-lg font-bold"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2">
+                        GPS Escrevente <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">TJSP 2026</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">Controle Total • Ciclos, Caderno de Erros & Flashcards • Modo Caverna</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button onclick="resetData()" class="text-xs bg-slate-800 hover:bg-red-950/40 text-slate-300 hover:text-red-400 border border-slate-700 hover:border-red-800/60 px-3 py-2 rounded-lg transition-all flex items-center gap-1.5" title="Redefinir dados">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span class="hidden md:inline">Resetar</span>
+                </button>
+                <div class="h-6 w-px bg-caverna-border"></div>
+                <div class="text-right hidden sm:block">
+                    <div class="text-xs text-slate-400">Edital Concluído</div>
+                    <div id="header-progress-pct" class="text-sm font-bold text-amber-400">0%</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-caverna-dark/80 backdrop-blur-md border-b border-caverna-border sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto space-x-2 py-2.5 no-scrollbar">
+            <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 bg-amber-500 text-black shadow-lg shadow-amber-500/20 whitespace-nowrap">
+                <i class="fa-solid fa-chart-pie"></i> Painel Geral
+            </button>
+            <button onclick="switchTab('edital')" id="btn-tab-edital" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-800 whitespace-nowrap">
+                <i class="fa-solid fa-list-check"></i> Edital Verticalizado (<span id="total-badge">112</span>)
+            </button>
+            <button onclick="switchTab('ciclo')" id="btn-tab-ciclo" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-800 whitespace-nowrap">
+                <i class="fa-solid fa-arrows-spin"></i> Ciclo de Estudos
+            </button>
+            <button onclick="switchTab('erros')" id="btn-tab-erros" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-800 whitespace-nowrap">
+                <i class="fa-solid fa-triangle-exclamation"></i> Caderno de Erros & Flashcards
+            </button>
+            <button onclick="switchTab('redacao')" id="btn-tab-redacao" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-800 whitespace-nowrap">
+                <i class="fa-solid fa-pen-nib"></i> Módulo Redação
+            </button>
+            <button onclick="switchTab('notas')" id="btn-tab-notas" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-800 whitespace-nowrap">
+                <i class="fa-solid fa-book-bookmark"></i> Notas e Fontes
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- ================= TAB 1: PAINEL GERAL ================= -->
+        <div id="tab-dashboard" class="tab-content space-y-6">
+            <div class="bg-gradient-to-r from-slate-900 via-caverna-card to-slate-900 border border-caverna-border rounded-2xl p-6 sm:p-8 relative overflow-hidden shadow-xl">
+                <div class="absolute right-0 top-0 translate-x-6 -translate-y-6 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 inline-block mb-3">
+                        <i class="fa-solid fa-fire mr-1"></i> Modo Caverna • TJSP
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Painel de Controle do Escrevente</h2>
+                    <p class="text-slate-300 mt-2 text-sm sm:text-base">
+                        Acompanhe seu progresso em tempo real nos 112 tópicos do edital, execute o ciclo semanal (A-G), alimente seu Caderno de Erros e gere Flashcards automáticos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs uppercase font-bold tracking-wider">Total Tópicos</span>
+                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                    </div>
+                    <div id="kpi-total" class="text-2xl sm:text-3xl font-extrabold text-white">112</div>
+                    <div class="text-xs text-slate-400 mt-1">Edital completo</div>
+                </div>
+
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs uppercase font-bold tracking-wider">Concluídos</span>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                    </div>
+                    <div id="kpi-concluidos" class="text-2xl sm:text-3xl font-extrabold text-emerald-400">0</div>
+                    <div class="text-xs text-slate-400 mt-1"><span id="kpi-pct-concluidos">0</span>% concluído</div>
+                </div>
+
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs uppercase font-bold tracking-wider">Erros Registrados</span>
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div id="kpi-erros" class="text-2xl sm:text-3xl font-extrabold text-amber-400">0</div>
+                    <div class="text-xs text-slate-400 mt-1">Caderno de Erros</div>
+                </div>
+
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md">
+                    <div class="flex items-center justify-between text-slate-400 mb-2">
+                        <span class="text-xs uppercase font-bold tracking-wider">Flashcards Ativos</span>
+                        <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                            <i class="fa-solid fa-clone"></i>
+                        </div>
+                    </div>
+                    <div id="kpi-flashcards" class="text-2xl sm:text-3xl font-extrabold text-purple-400">0</div>
+                    <div class="text-xs text-slate-400 mt-1">Revisão interativa</div>
+                </div>
+            </div>
+
+            <!-- Secondary Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Questões Resolvidas</div>
+                        <div id="kpi-questoes-total" class="text-2xl font-bold text-white mt-1">0</div>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                </div>
+
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Acertos Totais</div>
+                        <div id="kpi-acertos-total" class="text-2xl font-bold text-emerald-400 mt-1">0</div>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                </div>
+
+                <div class="bg-caverna-card border border-caverna-border rounded-xl p-5 shadow-md flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Aproveitamento Médio</div>
+                        <div id="kpi-aproveitamento-geral" class="text-2xl font-bold text-amber-400 mt-1">0%</div>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-caverna-card border border-caverna-border rounded-xl p-6 shadow-md">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-semibold text-sm text-slate-200">Evolução Geral do Edital</span>
+                    <span id="progress-bar-text" class="text-sm font-bold text-amber-400">0% Concluído</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden border border-slate-700">
+                    <div id="progress-bar-fill" class="bg-gradient-to-r from-amber-500 to-orange-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 2: EDITAL VERTICALIZADO ================= -->
+        <div id="tab-edital" class="tab-content hidden space-y-6">
+            <div class="bg-caverna-card border border-caverna-border rounded-xl p-4 shadow-md flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="w-full md:w-1/3 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="search-input" oninput="filterEdital()" placeholder="Buscar tópico..." class="w-full bg-caverna-dark border border-caverna-border rounded-lg pl-10 pr-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div class="flex flex-wrap gap-2 w-full md:w-auto items-center">
+                    <select id="filter-bloco" onchange="filterEdital()" class="bg-caverna-dark border border-caverna-border rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+                        <option value="">Todos os Blocos</option>
+                        <option value="Bloco I">Bloco I</option>
+                        <option value="Bloco II">Bloco II</option>
+                        <option value="Bloco III">Bloco III</option>
+                    </select>
+
+                    <select id="filter-disciplina" onchange="filterEdital()" class="bg-caverna-dark border border-caverna-border rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+                        <option value="">Todas as Disciplinas</option>
+                    </select>
+
+                    <select id="filter-status" onchange="filterEdital()" class="bg-caverna-dark border border-caverna-border rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+                        <option value="">Todos os Status</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em andamento">Em andamento</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-caverna-card border border-caverna-border rounded-xl shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/80 border-b border-caverna-border text-xs uppercase text-slate-400 font-semibold tracking-wider">
+                                <th class="py-3 px-4 w-12 text-center">#</th>
+                                <th class="py-3 px-4 w-28">Bloco</th>
+                                <th class="py-3 px-4 w-44">Disciplina</th>
+                                <th class="py-3 px-4">Tópico do Edital</th>
+                                <th class="py-3 px-4 w-36 text-center">Status</th>
+                                <th class="py-3 px-4 w-24 text-center">Q. Feitas</th>
+                                <th class="py-3 px-4 w-24 text-center">Acertos</th>
+                                <th class="py-3 px-4 w-24 text-center">% Acerto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="edital-tbody" class="divide-y divide-caverna-border text-sm text-slate-300">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: CICLO DE ESTUDOS ================= -->
+        <div id="tab-ciclo" class="tab-content hidden space-y-6">
+            <div class="bg-caverna-card border border-caverna-border rounded-xl p-6 shadow-md">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-spin text-amber-400"></i> Ciclo de Estudos — Padrão TJSP (A a G)
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">Ciclo oficial com Blocos A, B, C, metas, execução e acompanhamento persistente.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/80 border-b border-caverna-border text-xs uppercase text-slate-400 font-semibold tracking-wider">
+                                <th class="py-3 px-4 w-20 text-center">Ciclo</th>
+                                <th class="py-3 px-4">Bloco principal A</th>
+                                <th class="py-3 px-4">Bloco complementar B</th>
+                                <th class="py-3 px-4">Bloco complementar C</th>
+                                <th class="py-3 px-4">Meta de execução</th>
+                                <th class="py-3 px-4">Como executar</th>
+                                <th class="py-3 px-4 w-28 text-center">Concluído?</th>
+                                <th class="py-3 px-4 w-48">Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ciclo-tbody" class="divide-y divide-caverna-border text-sm text-slate-300">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 4: CADERNO DE ERROS & FLASHCARDS ================= -->
+        <div id="tab-erros" class="tab-content hidden space-y-6">
+            <div class="bg-caverna-card border border-caverna-border rounded-xl p-6 shadow-md space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Caderno de Erros & Flashcards Interativos
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">Registre seus erros nos 4 blocos exatos, cole prints e clique em "Criar Flashcards" para memorização ativa.</p>
+                    </div>
+                    <button onclick="switchErrosSubtab('form')" class="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 shadow-lg shadow-amber-500/25">
+                        <i class="fa-solid fa-plus"></i> Novo Erro / Card
+                    </button>
+                </div>
+
+                <!-- Subtab Selector -->
+                <div class="flex space-x-2 border-b border-caverna-border pb-3">
+                    <button onclick="switchErrosSubtab('list')" id="subbtn-list" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all">
+                        <i class="fa-solid fa-list mr-1.5"></i> Meus Erros Registrados
+                    </button>
+                    <button onclick="switchErrosSubtab('form')" id="subbtn-form" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all">
+                        <i class="fa-solid fa-pen-to-square mr-1.5"></i> Cadastrar Novo Erro
+                    </button>
+                    <button onclick="switchErrosSubtab('flashcards')" id="subbtn-flashcards" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all">
+                        <i class="fa-solid fa-clone mr-1.5"></i> Flashcards Interativos (<span id="fc-count">0</span>)
+                    </button>
+                </div>
+
+                <!-- SUBTAB A: LISTAGEM DE ERROS -->
+                <div id="erros-sub-list" class="space-y-4">
+                    <div id="erros-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- SUBTAB B: FORMULÁRIO DE CADASTRO DE ERRO (4 BLOCOS) -->
+                <div id="erros-sub-form" class="space-y-6 hidden">
+                    <div class="bg-caverna-dark border border-caverna-border rounded-xl p-6 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-white text-base">Novo Registro no Caderno de Erros</h4>
+                            <select id="erro-disciplina" class="bg-caverna-card border border-caverna-border rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                                <option value="Língua Portuguesa">Língua Portuguesa</option>
+                                <option value="Normas da Corregedoria">Normas da Corregedoria</option>
+                                <option value="Direito Administrativo">Direito Administrativo</option>
+                                <option value="Direito Constitucional">Direito Constitucional</option>
+                                <option value="Direito Penal">Direito Penal</option>
+                                <option value="Direito Processual Penal">Direito Processual Penal</option>
+                                <option value="Direito Processual Civil">Direito Processual Civil</option>
+                                <option value="Matemática">Matemática</option>
+                                <option value="Raciocínio Lógico">Raciocínio Lógico</option>
+                                <option value="Noções de Informática">Noções de Informática</option>
+                                <option value="Atualidades">Atualidades</option>
+                            </select>
+                        </div>
+
+                        <!-- 4 Blocos Form -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Bloco 1 -->
+                            <div class="bg-caverna-card border border-caverna-border rounded-xl p-4 space-y-2 flex flex-col">
+                                <label class="text-xs uppercase font-bold text-slate-300 flex items-center justify-between">
+                                    <span>O enunciado</span>
+                                    <span class="text-[10px] text-slate-500 font-normal">Aceita texto ou colar print (Ctrl+V)</span>
+                                </label>
+                                <div id="box-enunciado" contenteditable="true" onpaste="handleImagePaste(event, 'img-enunciado')" class="w-full flex-grow min-h-[120px] bg-caverna-dark border border-caverna-border rounded-lg p-3 text-xs text-slate-100 focus:outline-none focus:border-amber-500 overflow-y-auto"></div>
+                                <input type="hidden" id="img-enunciado" value="">
+                                <div id="preview-enunciado" class="mt-2 hidden"></div>
+                            </div>
+
+                            <!-- Bloco 2 -->
+                            <div class="bg-caverna-card border border-caverna-border rounded-xl p-4 space-y-2 flex flex-col">
+                                <label class="text-xs uppercase font-bold text-slate-300 flex items-center justify-between">
+                                    <span>O que você marcou</span>
+                                    <span class="text-[10px] text-slate-500 font-normal">Erro cometido</span>
+                                </label>
+                                <div id="box-marcado" contenteditable="true" onpaste="handleImagePaste(event, 'img-marcado')" class="w-full flex-grow min-h-[120px] bg-caverna-dark border border-caverna-border rounded-lg p-3 text-xs text-slate-100 focus:outline-none focus:border-amber-500 overflow-y-auto"></div>
+                                <input type="hidden" id="img-marcado" value="">
+                                <div id="preview-marcado" class="mt-2 hidden"></div>
+                            </div>
+
+                            <!-- Bloco 3 -->
+                            <div class="bg-caverna-card border border-caverna-border rounded-xl p-4 space-y-2 flex flex-col">
+                                <label class="text-xs uppercase font-bold text-emerald-400 flex items-center justify-between">
+                                    <span>A resposta certa</span>
+                                    <span class="text-[10px] text-slate-500 font-normal">Gabarito correto</span>
+                                </label>
+                                <div id="box-certa" contenteditable="true" onpaste="handleImagePaste(event, 'img-certa')" class="w-full flex-grow min-h-[120px] bg-caverna-dark border border-emerald-500/30 rounded-lg p-3 text-xs text-slate-100 focus:outline-none focus:border-emerald-500 overflow-y-auto"></div>
+                                <input type="hidden" id="img-certa" value="">
+                                <div id="preview-certa" class="mt-2 hidden"></div>
+                            </div>
+
+                            <!-- Bloco 4 -->
+                            <div class="bg-caverna-card border border-red-500/30 rounded-xl p-4 space-y-2 flex flex-col">
+                                <label class="text-xs uppercase font-bold text-amber-400 flex items-center justify-between">
+                                    <span>A explicação com as suas palavras</span>
+                                    <span class="text-[10px] text-slate-500 font-normal">Justificativa</span>
+                                </label>
+                                <div id="box-explicacao" contenteditable="true" onpaste="handleImagePaste(event, 'img-explicacao')" class="w-full flex-grow min-h-[120px] bg-caverna-dark border border-amber-500/30 rounded-lg p-3 text-xs text-slate-100 focus:outline-none focus:border-amber-500 overflow-y-auto"></div>
+                                <input type="hidden" id="img-explicacao" value="">
+                                <div id="preview-explicacao" class="mt-2 hidden"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 pt-2">
+                            <button onclick="switchErrosSubtab('list')" class="px-4 py-2 rounded-lg text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">Cancelar</button>
+                            <button onclick="salvarNovoErro()" class="px-5 py-2 rounded-lg text-xs bg-amber-500 hover:bg-amber-600 font-semibold text-black transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                                <i class="fa-solid fa-floppy-disk"></i> Salvar Erro & Gerar Flashcard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB C: FLASHCARDS INTERATIVOS (FLIP CARDS) -->
+                <div id="erros-sub-flashcards" class="space-y-6 hidden">
+                    <div id="flashcards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Injected dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 5: MÓDULO REDAÇÃO ================= -->
+        <div id="tab-redacao" class="tab-content hidden space-y-6">
+            <div class="bg-caverna-card border border-caverna-border rounded-xl p-6 shadow-md space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-pen-nib text-amber-400"></i> Módulo de Redação — Simulador Vunesp
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1">Estrutura completa em blocos (Introdução, Desenv. 1 & 2, Conclusão), contagem de linhas e simulador de envio.</p>
+                    </div>
+                </div>
+
+                <!-- Redaction Editor Workspace -->
+                <div class="bg-caverna-dark border border-caverna-border rounded-xl p-5 sm:p-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Tema da Redação (Proposta Vunesp)</label>
+                            <input type="text" id="live-tema" placeholder="Ex: Os impactos da inteligência artificial no judiciário brasileiro" class="w-full bg-caverna-card border border-caverna-border rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Nota Preliminar (0 a 10)</label>
+                            <input type="number" step="0.5" min="0" max="10" id="live-nota" placeholder="Ex: 8.0" class="w-full bg-caverna-card border border-caverna-border rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <!-- Introdução -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold text-slate-400">
+                                <span>1. Introdução (Tese + Contextualização)</span>
+                                <span id="count-intro">0 linhas / 5-7 recomendadas</span>
+                            </div>
+                            <textarea id="live-intro" oninput="updateLineCounts()" rows="4" placeholder="Escreva sua introdução aqui..." class="w-full bg-caverna-card border border-caverna-border rounded-lg p-3 text-sm text-slate-100 focus:outline-none focus:border-amber-500"></textarea>
+                        </div>
+
+                        <!-- Desenvolvimento 1 -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold text-slate-400">
+                                <span>2. Desenvolvimento 1 (Argumento Principal)</span>
+                                <span id="count-dev1">0 linhas / 8-10 recomendadas</span>
+                            </div>
+                            <textarea id="live-dev1" oninput="updateLineCounts()" rows="4" placeholder="Escreva o primeiro parágrafo de desenvolvimento..." class="w-full bg-caverna-card border border-caverna-border rounded-lg p-3 text-sm text-slate-100 focus:outline-none focus:border-amber-500"></textarea>
+                        </div>
+
+                        <!-- Desenvolvimento 2 -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold text-slate-400">
+                                <span>3. Desenvolvimento 2 (Argumento Secundário)</span>
+                                <span id="count-dev2">0 linhas / 8-10 recomendadas</span>
+                            </div>
+                            <textarea id="live-dev2" oninput="updateLineCounts()" rows="4" placeholder="Escreva o segundo parágrafo de desenvolvimento..." class="w-full bg-caverna-card border border-caverna-border rounded-lg p-3 text-sm text-slate-100 focus:outline-none focus:border-amber-500"></textarea>
+                        </div>
+
+                        <!-- Conclusão -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold text-slate-400">
+                                <span>4. Conclusão (Proposta de Intervenção / Síntese)</span>
+                                <span id="count-concl">0 linhas / 5-7 recomendadas</span>
+                            </div>
+                            <textarea id="live-concl" oninput="updateLineCounts()" rows="4" placeholder="Escreva sua conclusão aqui..." class="w-full bg-caverna-card border border-caverna-border rounded-lg p-3 text-sm text-slate-100 focus:outline-none focus:border-amber-500"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
+                        <div class="text-xs text-amber-400 font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Total estimado: <span id="total-lines" class="text-white font-bold">0</span> linhas (Padrão Vunesp: 20 a 30 linhas)
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="clearRedacaoForm()" class="px-4 py-2 rounded-lg text-sm bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all">Limpar</button>
+                            <button onclick="simularEnvioRedacao()" class="px-4 py-2 rounded-lg text-sm bg-amber-500 hover:bg-amber-600 font-semibold text-black transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                                <i class="fa-solid fa-paper-plane"></i> Salvar e Simular Envio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redaction History Table -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-white text-base">Histórico de Redações Salvas</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-900/80 border-b border-caverna-border text-xs uppercase text-slate-400 font-semibold tracking-wider">
+                                    <th class="py-3 px-4">Data</th>
+                                    <th class="py-3 px-4">Tema</th>
+                                    <th class="py-3 px-4 text-center">Nota</th>
+                                    <th class="py-3 px-4 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="redacao-tbody" class="divide-y divide-caverna-border text-sm text-slate-300">
+                                <!-- Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 6: NOTAS E FONTES ================= -->
+        <div id="tab-notas" class="tab-content hidden space-y-6">
+            <div class="bg-caverna-card border border-caverna-border rounded-xl p-6 sm:p-8 shadow-md space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-book-bookmark text-amber-400"></i> Notas, Critérios e Fontes Oficiais — TJSP
+                    </h3>
+                    <p class="text-sm text-slate-300">
+                        Diretrizes extraídas da planilha oficial do edital verticalizado e parâmetros da banca Vunesp para o concurso de Escrevente Técnico Judiciário.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-caverna-dark border border-caverna-border rounded-xl p-5 space-y-3">
+                        <h4 class="font-bold text-amber-400 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-scale-balanced"></i> Estrutura da Prova Objetiva
+                        </h4>
+                        <ul class="text-sm text-slate-300 space-y-2 list-disc list-inside">
+                            <li><strong>Total de Questões:</strong> 100 questões de múltipla escolha (alternativas de A a E).</li>
+                            <li><strong>Bloco I (Língua Portuguesa):</strong> 24 questões.</li>
+                            <li><strong>Bloco II (Conhecimentos Específicos):</strong> 40 questões (Direito Administrativo, Constitucional, Penal, Processual Penal, Processual Civil, Normas da Corregedoria).</li>
+                            <li><strong>Bloco III (Conhecimentos Gerais):</strong> 36 questões (Atualidades, Matemática, Raciocínio Lógico e Informática).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-caverna-dark border border-caverna-border rounded-xl p-5 space-y-3">
+                        <h4 class="font-bold text-amber-400 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-file-pen"></i> Prova Prática (Redação)
+                        </h4>
+                        <ul class="text-sm text-slate-300 space-y-2 list-disc list-inside">
+                            <li><strong>Caráter:</strong> Eliminatório e classificatório.</li>
+                            <li><strong>Nota mínima:</strong> 5,00 pontos em uma escala de 0,00 a 10,00.</li>
+                            <li><strong>Critérios Vunesp:</strong> Avalia-se o tema/texto (coerência, progressão temática) e a norma-padrão da língua portuguesa.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-caverna-dark border border-caverna-border rounded-xl p-5 space-y-3">
+                    <h4 class="font-bold text-amber-400 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved"></i> Regras do Modo Caverna
+                    </h4>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Este aplicativo armazena automaticamente todo o seu progresso no armazenamento local do navegador (<code class="text-amber-400 bg-slate-900 px-1.5 py-0.5 rounded text-xs">localStorage</code>). Mantenha suas revisões diárias e o ciclo atualizados.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom Notification Box -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 border border-amber-500/50 text-slate-100 px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-medium">Ação realizada com sucesso!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-caverna-dark border-t border-caverna-border py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            GPS Escrevente TJSP • Modo Caverna © 2026. Todos os 112 tópicos sincronizados no armazenamento local.
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Official 112 Edital Items
+        const editalDataRaw = [
+            // Bloco I - Língua Portuguesa
+            { id: 1, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Compreensão e interpretação de textos de gêneros variados." },
+            { id: 2, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Reconhecimento de tipos e gêneros textuais." },
+            { id: 3, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Significação contextual de palavras e expressões." },
+            { id: 4, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Sinônimos e antônimos." },
+            { id: 5, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Sentido próprio e figurado das palavras." },
+            { id: 6, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Ortografia oficial." },
+            { id: 7, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Acentuação gráfica." },
+            { id: 8, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Emprego das classes de palavras: substantivo, adjetivo, numeral, pronome, verbo, advérbio, preposição e conjunção." },
+            { id: 9, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Emprego do modo e tempo verbal." },
+            { id: 10, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Sintaxe da oração e do período: termos da oração, processos de coordenação e subordinação." },
+            { id: 11, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Emprego dos sinais de pontuação." },
+            { id: 12, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Concordância verbal e nominal." },
+            { id: 13, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Regência verbal e nominal." },
+            { id: 14, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Emprego do sinal craseado." },
+            { id: 15, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Colocação pronominal." },
+
+            // Bloco II - Normas da Corregedoria
+            { id: 16, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo I: Da Disciplina Judiciária e Funções Correcionais (Arts. 5º ao 27)." },
+            { id: 17, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo III: Dos Ofícios de Justiça (Arts. 45 a 62)." },
+            { id: 18, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo IV: Dos Livros Obrigatórios (Arts. 63 a 74)." },
+            { id: 19, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo V: Dos Classificadores (Arts. 75 a 83)." },
+            { id: 20, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo XI: Da Expedição de Mandados e Citações (Arts. 140 a 160)." },
+            { id: 21, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo XIII: Dos Prazos e Atos Processuais (Arts. 161 a 180)." },
+            { id: 22, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo XIV: Da Distribuição, Autuação e Protocolo (Arts. 181 a 200)." },
+
+            // Bloco II - Direito Administrativo
+            { id: 23, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Conceito, objeto e fontes do Direito Administrativo." },
+            { id: 24, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Princípios básicos da Administração Pública." },
+            { id: 25, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Organização administrativa da Administração Pública: direta e indireta." },
+            { id: 26, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Poderes administrativos: hierárquico, disciplinar, regulamentar, de polícia." },
+            { id: 27, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Uso e abuso do poder." },
+            { id: 28, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Ato administrativo: conceito, requisitos, atributos, classificação e espécies." },
+            { id: 29, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Invalidação, revogação, anulação e convalidação do ato administrativo." },
+            { id: 30, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Serviços Públicos: conceito, princípios e classificação." },
+            { id: 31, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Servidores Públicos: Estatuto dos Funcionários Públicos Civis do Estado de São Paulo (Lei nº 10.261/68)." },
+            { id: 32, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Improbidade administrativa: Lei nº 8.429/1992 e suas alterações (Lei nº 14.230/2021)." },
+            { id: 33, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Lei de Acesso à Informação - LAI (Lei nº 12.527/2011)." },
+
+            // Bloco II - Direito Constitucional
+            { id: 34, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Constituição da República Federativa do Brasil de 1988: Princípios fundamentais." },
+            { id: 35, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Dos Direitos e Garantias Fundamentais: Direitos e deveres individuais e coletivos (Art. 5º)." },
+            { id: 36, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Dos Direitos Sociais, da Nacionalidade e dos Direitos Políticos." },
+            { id: 37, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Da Administração Pública: disposições gerais e servidores públicos (Arts. 37 a 41)." },
+            { id: 38, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Do Poder Judiciário: disposições gerais e órgãos do poder (Arts. 92 a 126)." },
+            { id: 39, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Do Supremo Tribunal Federal, Superior Tribunal de Justiça e Tribunais Regionais Federais." },
+            { id: 40, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Dos Juizados Especiais e da Justiça dos Estados (Art. 125)." },
+
+            // Bloco II - Direito Penal
+            { id: 41, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Princípios basilares do Direito Penal." },
+            { id: 42, bloco: "Bloco II", disciplina: "Direito Penal", topico: "A lei penal no tempo e no espaço." },
+            { id: 43, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Infração penal: elementos, espécies, crime e contravenção." },
+            { id: 44, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Tipicidade, ilicitude, culpabilidade e punibilidade." },
+            { id: 45, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Crimes contra a Administração Pública (Arts. 312 a 327 do Código Penal)." },
+            { id: 46, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Peculato, Concussão, Corrupção Passiva, Prevaricação, Advocacia Administrativa." },
+            { id: 47, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Crimes contra a Fé Pública (Falsificação de papel público, moeda falsa, falsidade ideológica)." },
+
+            // Bloco II - Direito Processual Penal
+            { id: 48, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Aplicação da lei processual penal no tempo, no espaço e princípios processuais." },
+            { id: 49, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Inquérito policial: histórico, natureza, características, início e prazo." },
+            { id: 50, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Ação penal: espécies, condições e exercício." },
+            { id: 51, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Jurisdição e Competência: regras de fixação e modificação de competência." },
+            { id: 52, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Provas: disposições gerais, exame do corpo de delito, testemunhas, confissão, interrogatório." },
+            { id: 53, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Prisão em flagrante, prisão preventiva, prisão temporária e liberdade provisória." },
+
+            // Bloco II - Direito Processual Civil
+            { id: 54, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Normas fundamentais do Processo Civil (Arts. 1º ao 15 do CPC/2015)." },
+            { id: 55, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Jurisdição e da Ação: conceito, condições e exercício." },
+            { id: 56, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Competência interna e internacional, modificação e conflito de competência." },
+            { id: 57, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Dos Atos Processuais: forma, tempo, lugar, prazos, comunicação (citação e intimação)." },
+            { id: 58, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Da Formação, da Suspensão e da Extinção do Processo." },
+            { id: 59, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Procedimento Comum: petição inicial, contestação, reconvenção, revelia, provas, sentença." },
+            { id: 60, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Dos Recursos: disposições gerais, apelação, agravo de instrumento, embargos de declaração." },
+            { id: 61, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Juizados Especiais Cíveis (Lei nº 9.099/1995): disposições gerais e atos essenciais." },
+
+            // Bloco III - Matemática e Raciocínio Lógico
+            { id: 62, bloco: "Bloco III", disciplina: "Matemática", topico: "Operações com números reais, inteiros e racionais." },
+            { id: 63, bloco: "Bloco III", disciplina: "Matemática", topico: "Sistema legal de medidas." },
+            { id: 64, bloco: "Bloco III", disciplina: "Matemática", topico: "Razões e proporções: divisão proporcional, regras de três simples e composta." },
+            { id: 65, bloco: "Bloco III", disciplina: "Matemática", topico: "Porcentagens, juros simples e compostos." },
+            { id: 66, bloco: "Bloco III", disciplina: "Matemática", topico: "Relações e funções, equações de 1º e 2º graus." },
+            { id: 67, bloco: "Bloco III", disciplina: "Matemática", topico: "Noções de geometria: perímetro, área e volume de figuras geométricas básicas." },
+            { id: 68, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Operações com conjuntos." },
+            { id: 69, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Lógica proposicional: proposições simples e compostas, conectivos lógicos." },
+            { id: 70, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Tabelas-verdade e equivalências lógicas." },
+            { id: 71, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Leis de Morgan e argumentação lógica." },
+            { id: 72, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Problemas lógicos com dados, fichas, posições e parentescos." },
+
+            // Bloco III - Noções de Informática
+            { id: 73, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Conceitos básicos de hardware, arquitetura de computadores e periféricos." },
+            { id: 74, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Sistema Operacional Windows 10 e 11: gerenciamento de arquivos, pastas, janelas e painel de controle." },
+            { id: 75, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Editor de Texto Microsoft Word: formatação de fontes, parágrafos, tabelas, cabeçalhos, rodapés e mala direta." },
+            { id: 76, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Planilha Eletrônica Microsoft Excel: fórmulas, funções aritméticas, lógicas, data/hora e pesquisa (SOMA, MÉDIA, SE, PROCV, CONT.SE)." },
+            { id: 77, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Apresentações Microsoft PowerPoint: slides, animações, transições e modos de exibição." },
+            { id: 78, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Redes de computadores: conceitos fundamentais, intranet, extranet e internet." },
+            { id: 79, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Navegadores de internet (Google Edge, Chrome, Mozilla Firefox): histórico, favoritos, cookies e segurança web." },
+            { id: 80, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Correio eletrônico (e-mail): webmail, clientes de correio, protocolos (SMTP, POP3, IMAP), anexos e regras." },
+            { id: 81, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Segurança da Informação: malwares (vírus, worms, trojans, ransomware), antivírus, firewall e criptografia." },
+            { id: 82, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Conceitos de nuvem (Cloud Computing) e ferramentas de armazenamento online (OneDrive, Google Drive)." },
+
+            // Bloco III - Atualidades
+            { id: 83, bloco: "Bloco III", disciplina: "Atualidades", topico: "Fatos e acontecimentos relevantes e atuais políticos, econômicos, sociais e culturais no Brasil e no mundo." },
+            { id: 84, bloco: "Bloco III", disciplina: "Atualidades", topico: "Diretrizes e temas econômicos contemporâneos nacionais e internacionais." },
+            { id: 85, bloco: "Bloco III", disciplina: "Atualidades", topico: "Meio ambiente, sustentabilidade e inovação tecnológica mundial." },
+            { id: 86, bloco: "Bloco III", disciplina: "Atualidades", topico: "Estatuto da Pessoa com Deficiência (Lei nº 13.146/2015): disposições gerais aplicadas." },
+
+            // Extensões
+            { id: 87, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Paráfrase, síntese e reescrita de textos." },
+            { id: 88, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Coesão e coerência textual." },
+            { id: 89, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Figuras de linguagem (metáfora, metonímia, antítese, ironia)." },
+            { id: 90, bloco: "Bloco I", disciplina: "Língua Portuguesa", topico: "Polissemia e ambiguidade." },
+            { id: 91, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo XV: Da Carga e Conclusão dos Autos (Arts. 201 a 215)." },
+            { id: 92, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Capítulo XVI: Dos Atos do Juiz e Comunicação (Arts. 216 a 230)." },
+            { id: 93, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Responsabilidade civil do Estado." },
+            { id: 94, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Bens públicos: regime jurídico, classificação e alienação." },
+            { id: 95, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Das Finanças Públicas e Orçamento (Arts. 165 a 169)." },
+            { id: 96, bloco: "Bloco II", disciplina: "Direito Constitucional", topico: "Da Ordem Econômica e Financeira e Ordem Social." },
+            { id: 97, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Concurso de pessoas e concurso de crimes." },
+            { id: 98, bloco: "Bloco II", disciplina: "Direito Penal", topico: "Crimes contra a Administração da Justiça (Arts. 338 a 359 do CP)." },
+            { id: 99, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Da Prisão em espécie e medidas cautelares diversas da prisão." },
+            { id: 100, bloco: "Bloco II", disciplina: "Direito Processual Penal", topico: "Das Citações e Intimações no processo penal." },
+            { id: 101, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Das Tutelas Provisórias: urgência e evidência." },
+            { id: 102, bloco: "Bloco II", disciplina: "Direito Processual Civil", topico: "Da Execução de Título Extrajudicial e Cumprimento de Sentença." },
+            { id: 103, bloco: "Bloco III", disciplina: "Matemática", topico: "Progressões aritméticas e geométricas (PA e PG)." },
+            { id: 104, bloco: "Bloco III", disciplina: "Matemática", topico: "Estatística básica: média aritmética, mediana, moda e desvio." },
+            { id: 105, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Diagramas lógicos e conjuntos numéricos." },
+            { id: 106, bloco: "Bloco III", disciplina: "Raciocínio Lógico", topico: "Princípio fundamental de contagem e probabilidade." },
+            { id: 107, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Segurança de dados e backups locais e em nuvem." },
+            { id: 108, bloco: "Bloco III", disciplina: "Noções de Informática", topico: "Ferramentas de colaboração e reuniões virtuais (Teams, Zoom, Meet)." },
+            { id: 109, bloco: "Bloco III", disciplina: "Atualidades", topico: "Globalização e blocos econômicos mundiais." },
+            { id: 110, bloco: "Bloco III", disciplina: "Atualidades", topico: "Avanços científicos e biotecnologia na sociedade contemporânea." },
+            { id: 111, bloco: "Bloco II", disciplina: "Normas da Corregedoria", topico: "Tomo I - Atribuições dos Serventuários e Oficiais de Justiça." },
+            { id: 112, bloco: "Bloco II", disciplina: "Direito Administrativo", topico: "Licitações e Contratos Administrativos (Lei nº 14.133/2021 - Noções básicas)." }
+        ];
+
+        // Official Cycle Data (A to G)
+        const cicloDataRaw = [
+            { ciclo: "A", blocoA: "Penal", blocoB: "Processo Penal", blocoC: "Português", meta: "3 blocos de questoes + questões", execucao: "10 Questões + Caderno de Erros + Lei seca/teoria curta; depois questões;", obs: "" },
+            { ciclo: "B", blocoA: "Administrativo", blocoB: "Constitucional", blocoC: "Português", meta: "3 blocos de questoes + questões", execucao: "10 Questões + Caderno de Erros + Lei seca/teoria curta; depois questões;", obs: "" },
+            { ciclo: "C", blocoA: "Processo Civil", blocoB: "Normas", blocoC: "RLM", meta: "3 blocos de questoes + questões", execucao: "10 Questões + Caderno de Erros + Lei seca/teoria curta; depois questões;", obs: "" },
+            { ciclo: "D", blocoA: "RLM", blocoB: "Português", blocoC: "Informática", meta: "3 blocos de questoes + questões", execucao: "10 Questões + Caderno de Erros + Lei seca/teoria curta; depois questões;", obs: "" },
+            { ciclo: "E", blocoA: "Informática", blocoB: "Constitucional", blocoC: "Atualidades", meta: "3 blocos de questoes + questões", execucao: "10 Questões + Caderno de Erros + Lei seca/teoria curta; depois questões;", obs: "" },
+            { ciclo: "F", blocoA: "Redação", blocoB: "Atualidades + PCD", blocoC: "Matematica", meta: "1 redação + atualização/revisão", execucao: "1 Treino discursivo + revisão de informativos e leis especiais", obs: "" },
+            { ciclo: "G", blocoA: "Revisão/recuperação", blocoB: "Questões mistas", blocoC: "-", meta: "Fechamento semanal flexível", execucao: "REVISAR OS ERROS + QUESTÕES GERAIS", obs: "" }
+        ];
+
+        let editalState = [];
+        let cicloState = [];
+        let redacaoState = [];
+        let errosState = [];
+        let flashcardsState = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            initFilters();
+            renderEdital();
+            renderCiclo();
+            renderErros();
+            renderFlashcards();
+            renderRedacao();
+            renderDashboard();
+        });
+
+        function loadData() {
+            const ed = localStorage.getItem('gps_escrevente_edital');
+            editalState = ed ? JSON.parse(ed) : editalDataRaw.map(i => ({...i, status: "Pendente", questoes: 0, acertos: 0}));
+
+            const ci = localStorage.getItem('gps_escrevente_ciclo');
+            cicloState = ci ? JSON.parse(ci) : cicloDataRaw.map(i => ({...i, concluido: false, observacoes: ""}));
+
+            const rd = localStorage.getItem('gps_escrevente_redacao');
+            redacaoState = rd ? JSON.parse(rd) : [
+                { id: 1, data: "2026-05-10", tema: "Os desafios da inteligência artificial no poder judiciário", nota: 7.5, intro: "...", dev1: "...", dev2: "...", concl: "..." }
+            ];
+
+            const err = localStorage.getItem('gps_escrevente_erros');
+            errosState = err ? JSON.parse(err) : [
+                {
+                    id: 1,
+                    disciplina: "Direito Administrativo",
+                    enunciado: "No que tange à improbidade administrativa, a nova lei exige...",
+                    marcado: "Culpa grave",
+                    certa: "Dolo específico",
+                    explicacao: "A Lei 14.230/2021 extinguiu a modalidade culposa, exigindo dolo específico para configuração do ato.",
+                    imgEnunciado: "",
+                    imgMarcado: "",
+                    imgCerta: "",
+                    imgExplicacao: "",
+                    data: "2026-05-12"
+                }
+            ];
+
+            const fc = localStorage.getItem('gps_escrevente_flashcards');
+            flashcardsState = fc ? JSON.parse(fc) : [
+                {
+                    id: 1,
+                    pergunta: "O que exige a Lei 14.230/2021 para configuração de improbidade administrativa?",
+                    resposta: "Exige dolo específico (a modalidade culposa foi extinta)."
+                }
+            ];
+        }
+
+        function saveData() {
+            localStorage.setItem('gps_escrevente_edital', JSON.stringify(editalState));
+            localStorage.setItem('gps_escrevente_ciclo', JSON.stringify(cicloState));
+            localStorage.setItem('gps_escrevente_redacao', JSON.stringify(redacaoState));
+            localStorage.setItem('gps_escrevente_erros', JSON.stringify(errosState));
+            localStorage.setItem('gps_escrevente_flashcards', JSON.stringify(flashcardsState));
+            renderDashboard();
+        }
+
+        function resetData() {
+            if (confirm("Deseja redefinir todos os dados para o padrão inicial?")) {
+                localStorage.clear();
+                loadData();
+                renderEdital();
+                renderCiclo();
+                renderErros();
+                renderFlashcards();
+                renderRedacao();
+                renderDashboard();
+                showToast("Dados reinicializados com sucesso!", "success");
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/20');
+                btn.classList.add('text-slate-300', 'hover:text-white', 'hover:bg-slate-800');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+            activeBtn.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-slate-800');
+            activeBtn.classList.add('bg-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/20');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchErrosSubtab(sub) {
+            document.getElementById('erros-sub-list').classList.add('hidden');
+            document.getElementById('erros-sub-form').classList.add('hidden');
+            document.getElementById('erros-sub-flashcards').classList.add('hidden');
+
+            document.getElementById('subbtn-list').className = "px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all";
+            document.getElementById('subbtn-form').className = "px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all";
+            document.getElementById('subbtn-flashcards').className = "px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white transition-all";
+
+            if (sub === 'list') {
+                document.getElementById('erros-sub-list').classList.remove('hidden');
+                document.getElementById('subbtn-list').className = "px-4 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all";
+                renderErros();
+            } else if (sub === 'form') {
+                document.getElementById('erros-sub-form').classList.remove('hidden');
+                document.getElementById('subbtn-form').className = "px-4 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all";
+            } else if (sub === 'flashcards') {
+                document.getElementById('erros-sub-flashcards').classList.remove('hidden');
+                document.getElementById('subbtn-flashcards').className = "px-4 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all";
+                renderFlashcards();
+            }
+        }
+
+        function initFilters() {
+            const disciplinas = [...new Set(editalDataRaw.map(item => item.disciplina))].sort();
+            const selectDisc = document.getElementById('filter-disciplina');
+            disciplinas.forEach(disc => {
+                const opt = document.createElement('option');
+                opt.value = disc;
+                opt.textContent = disc;
+                selectDisc.appendChild(opt);
+            });
+        }
+
+        function renderEdital(filteredList = null) {
+            const tbody = document.getElementById('edital-tbody');
+            tbody.innerHTML = '';
+            const list = filteredList || editalState;
+
+            list.forEach((item) => {
+                const pct = item.questoes > 0 ? Math.round((item.acertos / item.questoes) * 100) : 0;
+                let badgeClass = "bg-slate-800 text-slate-400 border-slate-700";
+                if (item.status === "Em andamento") badgeClass = "bg-amber-500/10 text-amber-400 border-amber-500/30";
+                if (item.status === "Concluído") badgeClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/50 transition-all border-b border-caverna-border/50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-center text-xs text-slate-500">${item.id}</td>
+                    <td class="py-3 px-4 font-medium text-xs text-slate-400">${item.bloco}</td>
+                    <td class="py-3 px-4 font-semibold text-xs text-slate-200">${item.disciplina}</td>
+                    <td class="py-3 px-4 text-slate-300 text-xs sm:text-sm leading-relaxed">${item.topico}</td>
+                    <td class="py-3 px-4 text-center">
+                        <select onchange="updateItemStatus(${item.id}, this.value)" class="text-xs font-semibold px-2.5 py-1 rounded-lg border ${badgeClass} bg-caverna-dark focus:outline-none focus:border-amber-500 cursor-pointer">
+                            <option value="Pendente" ${item.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                            <option value="Em andamento" ${item.status === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
+                            <option value="Concluído" ${item.status === 'Concluído' ? 'selected' : ''}>Concluído</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <input type="number" min="0" value="${item.questoes}" onchange="updateItemQuestao(${item.id}, 'questoes', this.value)" class="w-16 bg-caverna-dark border border-caverna-border rounded-lg px-2 py-1 text-center text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <input type="number" min="0" value="${item.acertos}" onchange="updateItemQuestao(${item.id}, 'acertos', this.value)" class="w-16 bg-caverna-dark border border-caverna-border rounded-lg px-2 py-1 text-center text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </td>
+                    <td class="py-3 px-4 text-center font-bold text-xs ${pct >= 70 ? 'text-emerald-400' : (pct >= 50 ? 'text-amber-400' : 'text-slate-400')}">
+                        ${pct}%
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterEdital() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const bloco = document.getElementById('filter-bloco').value;
+            const disciplina = document.getElementById('filter-disciplina').value;
+            const status = document.getElementById('filter-status').value;
+
+            const filtered = editalState.filter(item => {
+                const matchQuery = item.topico.toLowerCase().includes(query) || item.disciplina.toLowerCase().includes(query);
+                const matchBloco = bloco ? item.bloco === bloco : true;
+                const matchDisc = disciplina ? item.disciplina === disciplina : true;
+                const matchStatus = status ? item.status === status : true;
+                return matchQuery && matchBloco && matchDisc && matchStatus;
+            });
+            renderEdital(filtered);
+        }
+
+        function updateItemStatus(id, newStatus) {
+            const item = editalState.find(i => i.id === id);
+            if (item) {
+                item.status = newStatus;
+                saveData();
+                renderEdital();
+                showToast("Status atualizado!", "success");
+            }
+        }
+
+        function updateItemQuestao(id, field, value) {
+            const item = editalState.find(i => i.id === id);
+            if (item) {
+                const val = parseInt(value) || 0;
+                if (field === 'acertos' && val > item.questoes) {
+                    showToast("Acertos não podem ser superiores às questões!", "error");
+                    renderEdital();
+                    return;
+                }
+                item[field] = val;
+                saveData();
+                renderEdital();
+            }
+        }
+
+        function renderCiclo() {
+            const tbody = document.getElementById('ciclo-tbody');
+            tbody.innerHTML = '';
+
+            cicloState.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/50 transition-all border-b border-caverna-border/50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-center font-bold text-amber-400">${item.ciclo}</td>
+                    <td class="py-3 px-4 font-semibold text-slate-200">${item.blocoA}</td>
+                    <td class="py-3 px-4 text-slate-300">${item.blocoB}</td>
+                    <td class="py-3 px-4 text-slate-300">${item.blocoC}</td>
+                    <td class="py-3 px-4 text-xs text-slate-400">${item.meta}</td>
+                    <td class="py-3 px-4 text-xs text-slate-400">${item.execucao}</td>
+                    <td class="py-3 px-4 text-center">
+                        <input type="checkbox" ${item.concluido ? 'checked' : ''} onchange="toggleCiclo(${index}, this.checked)" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 focus:ring-amber-500 cursor-pointer">
+                    </td>
+                    <td class="py-3 px-4">
+                        <input type="text" value="${item.observacoes || ''}" onchange="updateCicloObs(${index}, this.value)" placeholder="Anotações..." class="w-full bg-caverna-dark border border-caverna-border rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleCiclo(index, val) {
+            cicloState[index].concluido = val;
+            saveData();
+            renderCiclo();
+            showToast("Ciclo atualizado!", "success");
+        }
+
+        function updateCicloObs(index, val) {
+            cicloState[index].observacoes = val;
+            saveData();
+        }
+
+        // Image Paste Handler for Caderno de Erros
+        function handleImagePaste(event, targetInputId) {
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file') {
+                    const blob = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64Img = e.target.result;
+                        document.getElementById(targetInputId).value = base64Img;
+                        const containerId = 'preview-' + targetInputId.replace('img-', '');
+                        const previewEl = document.getElementById(containerId);
+                        previewEl.innerHTML = `<img src="${base64Img}" class="max-h-32 rounded border border-caverna-border mt-1">`;
+                        previewEl.classList.remove('hidden');
+                        showToast("Print/Imagem colado com sucesso!", "success");
+                    };
+                    reader.readAsDataURL(blob);
+                    event.preventDefault();
+                }
+            }
+        }
+
+        function salvarNovoErro() {
+            const disciplina = document.getElementById('erro-disciplina').value;
+            const enunciado = document.getElementById('box-enunciado').innerHTML.trim();
+            const marcado = document.getElementById('box-marcado').innerHTML.trim();
+            const certa = document.getElementById('box-certa').innerHTML.trim();
+            const explicacao = document.getElementById('box-explicacao').innerHTML.trim();
+
+            const imgEnunciado = document.getElementById('img-enunciado').value;
+            const imgMarcado = document.getElementById('img-marcado').value;
+            const imgCerta = document.getElementById('img-certa').value;
+            const imgExplicacao = document.getElementById('img-explicacao').value;
+
+            if (!enunciado && !imgEnunciado) {
+                showToast("Preencha ao menos o enunciado do erro.", "error");
+                return;
+            }
+
+            const novoErro = {
+                id: Date.now(),
+                disciplina,
+                enunciado,
+                marcado,
+                certa,
+                explicacao,
+                imgEnunciado,
+                imgMarcado,
+                imgCerta,
+                imgExplicacao,
+                data: new Date().toISOString().split('T')[0]
+            };
+
+            errosState.unshift(novoErro);
+
+            // Automatically create Flashcard
+            const novoFc = {
+                id: Date.now() + 1,
+                pergunta: `[${disciplina}] O que diz a resposta correta para: "${enunciado.replace(/<[^>]*>?/gm, '').substring(0, 80)}..."?`,
+                resposta: `${certa}\n\nExplicação: ${explicacao}`
+            };
+            flashcardsState.unshift(novoFc);
+
+            saveData();
+            clearErroForm();
+            switchErrosSubtab('list');
+            showToast("Erro salvo e Flashcard gerado com sucesso!", "success");
+        }
+
+        function clearErroForm() {
+            document.getElementById('box-enunciado').innerHTML = "";
+            document.getElementById('box-marcado').innerHTML = "";
+            document.getElementById('box-certa').innerHTML = "";
+            document.getElementById('box-explicacao').innerHTML = "";
+            document.getElementById('img-enunciado').value = "";
+            document.getElementById('img-marcado').value = "";
+            document.getElementById('img-certa').value = "";
+            document.getElementById('img-explicacao').value = "";
+            ['preview-enunciado', 'preview-marcado', 'preview-certa', 'preview-explicacao'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.innerHTML = ""; el.classList.add('hidden'); }
+            });
+        }
+
+        function renderErros() {
+            const grid = document.getElementById('erros-grid');
+            grid.innerHTML = '';
+
+            if (errosState.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 py-12 text-center text-slate-500">Nenhum erro cadastrado no seu Caderno de Erros ainda.</div>`;
+                return;
+            }
+
+            errosState.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-caverna-dark border border-caverna-border rounded-xl p-5 space-y-4 shadow-md flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-caverna-border pb-3">
+                        <span class="px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-xs font-semibold border border-amber-500/20">${item.disciplina}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-slate-500">${item.data}</span>
+                            <button onclick="gerarFlashcardAvulso(${item.id})" class="text-xs bg-slate-800 hover:bg-purple-950/40 text-purple-400 border border-purple-800/50 px-2.5 py-1 rounded-lg transition-all" title="Criar Flashcard">
+                                <i class="fa-solid fa-clone mr-1"></i> Criar Flashcard
+                            </button>
+                            <button onclick="deletarErro(${item.id})" class="text-slate-500 hover:text-red-400 p-1" title="Excluir">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-caverna-card p-3 rounded-lg border border-caverna-border space-y-1">
+                            <div class="font-bold text-slate-400 uppercase text-[10px]">O enunciado</div>
+                            <div class="text-slate-200">${item.enunciado || '(Sem texto)'}</div>
+                            ${item.imgEnunciado ? `<img src="${item.imgEnunciado}" class="max-h-24 rounded mt-1">` : ''}
+                        </div>
+
+                        <div class="bg-caverna-card p-3 rounded-lg border border-red-950/40 space-y-1">
+                            <div class="font-bold text-red-400 uppercase text-[10px]">O que você marcou</div>
+                            <div class="text-slate-200">${item.marcado || '(Não informado)'}</div>
+                            ${item.imgMarcado ? `<img src="${item.imgMarcado}" class="max-h-24 rounded mt-1">` : ''}
+                        </div>
+
+                        <div class="bg-caverna-card p-3 rounded-lg border border-emerald-950/40 space-y-1">
+                            <div class="font-bold text-emerald-400 uppercase text-[10px]">A resposta certa</div>
+                            <div class="text-slate-200">${item.certa || '(Não informado)'}</div>
+                            ${item.imgCerta ? `<img src="${item.imgCerta}" class="max-h-24 rounded mt-1">` : ''}
+                        </div>
+
+                        <div class="bg-caverna-card p-3 rounded-lg border border-amber-950/40 space-y-1">
+                            <div class="font-bold text-amber-400 uppercase text-[10px]">A explicação com as suas palavras</div>
+                            <div class="text-slate-200">${item.explicacao || '(Não informado)'}</div>
+                            ${item.imgExplicacao ? `<img src="${item.imgExplicacao}" class="max-h-24 rounded mt-1">` : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            document.getElementById('fc-count').textContent = flashcardsState.length;
+        }
+
+        function deletarErro(id) {
+            if (confirm("Deseja excluir este erro?")) {
+                errosState = errosState.filter(e => e.id !== id);
+                saveData();
+                renderErros();
+                showToast("Erro excluído.", "info");
+            }
+        }
+
+        function gerarFlashcardAvulso(erroId) {
+            const erro = errosState.find(e => e.id === erroId);
+            if (erro) {
+                const novoFc = {
+                    id: Date.now(),
+                    pergunta: `[${erro.disciplina}] ${erro.enunciado.replace(/<[^>]*>?/gm, '').substring(0, 90)}...`,
+                    resposta: `${erro.certa}\n\nExplicação: ${erro.explicacao}`
+                };
+                flashcardsState.unshift(novoFc);
+                saveData();
+                renderFlashcards();
+                showToast("Flashcard gerado com sucesso!", "success");
+            }
+        }
+
+        function renderFlashcards() {
+            const container = document.getElementById('flashcards-container');
+            container.innerHTML = '';
+
+            if (flashcardsState.length === 0) {
+                container.innerHTML = `<div class="col-span-3 py-12 text-center text-slate-500">Nenhum flashcard gerado ainda. Cadastre erros para gerar cartas de memorização.</div>`;
+                document.getElementById('fc-count').textContent = 0;
+                return;
+            }
+
+            flashcardsState.forEach((fc, index) => {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = "h-64 perspective-1000 cursor-pointer";
+                cardWrapper.innerHTML = `
+                    <div id="fc-inner-${fc.id}" class="w-full h-full relative transform-style-3d transition-transform duration-500 shadow-xl rounded-xl" onclick="flipCard(${fc.id})">
+                        <!-- Front -->
+                        <div class="absolute inset-0 w-full h-full bg-caverna-dark border border-caverna-border rounded-xl p-5 flex flex-col justify-between backface-hidden">
+                            <div class="flex justify-between items-center text-xs text-amber-400 font-bold">
+                                <span>Flashcard #${index + 1}</span>
+                                <span class="text-[10px] text-slate-500 uppercase">Clique para virar</span>
+                            </div>
+                            <div class="text-sm font-medium text-slate-200 overflow-y-auto my-auto">
+                                ${fc.pergunta}
+                            </div>
+                            <div class="text-center text-xs text-slate-500">
+                                <i class="fa-solid fa-rotate mr-1"></i> Virar carta
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 w-full h-full bg-slate-900 border border-emerald-500/40 rounded-xl p-5 flex flex-col justify-between backface-hidden rotate-y-180">
+                            <div class="flex justify-between items-center text-xs text-emerald-400 font-bold">
+                                <span>Resposta / Gabarito</span>
+                                <button onclick="deletarFlashcard(event, ${fc.id})" class="text-slate-500 hover:text-red-400 text-xs" title="Excluir Flashcard">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <div class="text-xs text-slate-300 overflow-y-auto my-auto leading-relaxed whitespace-pre-line">
+                                ${fc.resposta}
+                            </div>
+                            <div class="text-center text-[10px] text-slate-500">
+                                Clique novamente para desvirar
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(cardWrapper);
+            });
+            document.getElementById('fc-count').textContent = flashcardsState.length;
+        }
+
+        function flipCard(id) {
+            const inner = document.getElementById(`fc-inner-${id}`);
+            if (inner) {
+                inner.classList.toggle('rotate-y-180');
+            }
+        }
+
+        function deletarFlashcard(event, id) {
+            event.stopPropagation();
+            if (confirm("Deseja excluir este flashcard?")) {
+                flashcardsState = flashcardsState.filter(f => f.id !== id);
+                saveData();
+                renderFlashcards();
+                showToast("Flashcard excluído.", "info");
+            }
+        }
+
+        function updateLineCounts() {
+            const intro = document.getElementById('live-intro').value.trim();
+            const dev1 = document.getElementById('live-dev1').value.trim();
+            const dev2 = document.getElementById('live-dev2').value.trim();
+            const concl = document.getElementById('live-concl').value.trim();
+
+            const countWords = (text) => text === "" ? 0 : text.split(/\s+/).length;
+            const approxLines = (text) => {
+                const words = countWords(text);
+                return Math.max(1, Math.ceil(words / 10));
+            };
+
+            const lIntro = approxLines(intro);
+            const lDev1 = approxLines(dev1);
+            const lDev2 = approxLines(dev2);
+            const lConcl = approxLines(concl);
+
+            document.getElementById('count-intro').textContent = `${lIntro} linhas`;
+            document.getElementById('count-dev1').textContent = `${lDev1} linhas`;
+            document.getElementById('count-dev2').textContent = `${lDev2} linhas`;
+            document.getElementById('count-concl').textContent = `${lConcl} linhas`;
+
+            const total = lIntro + lDev1 + lDev2 + lConcl;
+            document.getElementById('total-lines').textContent = total;
+        }
+
+        function clearRedacaoForm() {
+            document.getElementById('live-tema').value = "";
+            document.getElementById('live-nota').value = "";
+            document.getElementById('live-intro').value = "";
+            document.getElementById('live-dev1').value = "";
+            document.getElementById('live-dev2').value = "";
+            document.getElementById('live-concl').value = "";
+            updateLineCounts();
+            showToast("Formulário limpo.", "info");
+        }
+
+        function simularEnvioRedacao() {
+            const tema = document.getElementById('live-tema').value.trim();
+            const nota = parseFloat(document.getElementById('live-nota').value) || 0;
+            const intro = document.getElementById('live-intro').value.trim();
+            const dev1 = document.getElementById('live-dev1').value.trim();
+            const dev2 = document.getElementById('live-dev2').value.trim();
+            const concl = document.getElementById('live-concl').value.trim();
+
+            if (!tema) {
+                showToast("Por favor, informe o tema da redação.", "error");
+                return;
+            }
+
+            const novaRedacao = {
+                id: Date.now(),
+                data: new Date().toISOString().split('T')[0],
+                tema,
+                nota,
+                intro,
+                dev1,
+                dev2,
+                concl
+            };
+
+            redacaoState.unshift(novaRedacao);
+            saveData();
+            renderRedacao();
+            showToast("Redação salva e simulada com sucesso!", "success");
+        }
+
+        function renderRedacao() {
+            const tbody = document.getElementById('redacao-tbody');
+            tbody.innerHTML = '';
+
+            if (redacaoState.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-500">Nenhum treino de redação salvo ainda.</td></tr>`;
+                return;
+            }
+
+            redacaoState.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/50 transition-all border-b border-caverna-border/50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-xs text-slate-400 font-medium">${item.data}</td>
+                    <td class="py-3 px-4 font-semibold text-slate-200 text-sm">${item.tema}</td>
+                    <td class="py-3 px-4 text-center font-bold text-amber-400 text-sm">${item.nota}</td>
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="deleteRedacao(${item.id})" class="text-slate-500 hover:text-red-400 transition-all p-1" title="Excluir">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteRedacao(id) {
+            if (confirm("Deseja excluir este registro de redação?")) {
+                redacaoState = redacaoState.filter(r => r.id !== id);
+                saveData();
+                renderRedacao();
+                showToast("Registro excluído.", "info");
+            }
+        }
+
+        function renderDashboard() {
+            const total = editalState.length;
+            const concluidos = editalState.filter(i => i.status === 'Concluído').length;
+            const pctConcluidos = Math.round((concluidos / total) * 100);
+
+            let totalQ = 0;
+            let totalA = 0;
+            editalState.forEach(i => {
+                totalQ += i.questoes;
+                totalA += i.acertos;
+            });
+            const aproveitamentoGeral = totalQ > 0 ? Math.round((totalA / totalQ) * 100) : 0;
+
+            document.getElementById('kpi-total').textContent = total;
+            document.getElementById('kpi-concluidos').textContent = concluidos;
+            document.getElementById('kpi-pct-concluidos').textContent = pctConcluidos;
+            document.getElementById('kpi-erros').textContent = errosState.length;
+            document.getElementById('kpi-flashcards').textContent = flashcardsState.length;
+
+            document.getElementById('kpi-questoes-total').textContent = totalQ;
+            document.getElementById('kpi-acertos-total').textContent = totalA;
+            document.getElementById('kpi-aproveitamento-geral').textContent = aproveitamentoGeral + '%';
+
+            document.getElementById('header-progress-pct').textContent = pctConcluidos + '%';
+            document.getElementById('progress-bar-text').textContent = pctConcluidos + '% Concluído (' + concluidos + '/' + total + ')';
+            document.getElementById('progress-bar-fill').style.width = pctConcluidos + '%';
+            document.getElementById('total-badge').textContent = total;
+        }
+
+        function showToast(msg, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.textContent = msg;
+            if (type === "success") {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+            } else if (type === "error") {
+                toastIcon.className = "fa-solid fa-circle-exclamation text-red-400 text-lg";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-info text-blue-400 text-lg";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
